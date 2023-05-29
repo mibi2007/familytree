@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "165254828005",
+    "project_id": "mibi-family-tree",
+    "storage_bucket": "mibi-family-tree.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165254828005:android:f8dc2e55c7ef914518e90c",
+        "android_client_info": {
+          "package_name": "com.mibi.familytree"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165254828005-igdlcu39pqekvcgc6v0skjal3q2msj6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mibi.familytree",
+            "certificate_hash": "a9091d0d87d968e391a4fe7b167ffb95a65364ae"
+          }
+        },
+        {
+          "client_id": "165254828005-rh4rps5vpqd95nftu4nt6bi3so1552kn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI5-jfv4y--ZLduLr_dKuKbyXO58_32fw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165254828005-rh4rps5vpqd95nftu4nt6bi3so1552kn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

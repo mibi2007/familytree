@@ -1,0 +1,30 @@
+{
+  "@@locale": "en",
+  "appTitle": "KYONS",
+  "loginSuccess": "Login Success",
+  "email": "Email",
+  "password": "Password",
+  "signIn": "Sign in",
+  "signOut": "Sign out",
+  "signUp": "Sign up",
+  "language": "Language",
+  "invalidThing": "Invalid {thing}",
+  "@invalidThing": {
+    "placeholders": {
+      "thing": {
+        "type": "String"
+      }
+    }
+  },
+  "settings": "Settings",
+  "themeMode": "Theme mode",
+  "themeModeSystem": "System",
+  "lightMode": "Light mode",
+  "dartMode": "Dark mode",
+  "vi": "Tiếng Việt",
+  "languageName": "English",
+  "en": "English",
+  "home": "Home",
+  "account": "Account",
+  "back": "Back"
+}

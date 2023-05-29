@@ -1,0 +1,30 @@
+{
+  "@@locale": "vi",
+  "appTitle": "KYONS",
+  "loginSuccess": "Đăng nhập thành công",
+  "email": "Email",
+  "password": "Mật khẩu",
+  "signIn": "Đăng nhập",
+  "signOut": "Đăng xuất",
+  "signUp": "Đăng ký",
+  "language": "Ngôn ngữ",
+  "invalidThing": "{thing} chưa đúng",
+  "@invalidThing": {
+    "placeholders": {
+      "thing": {
+        "type": "String"
+      }
+    }
+  },
+  "settings": "Cài đặt",
+  "themeMode": "Chế độ sáng tối",
+  "themeModeSystem": "Theo hệ thống",
+  "lightMode": "Nền sáng",
+  "dartMode": "Nền tối",
+  "vi": "Tiếng Việt",
+  "languageName": "Tiếng Việt",
+  "en": "English",
+  "home": "Trang chủ",
+  "account": "Tài khoản",
+  "back": "Quay lại"
+}
