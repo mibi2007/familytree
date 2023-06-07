@@ -3,10 +3,13 @@
   "appTitle": "KYONS",
   "loginSuccess": "Đăng nhập thành công",
   "email": "Email",
+  "phoneNumber": "Số điện thoại",
+  "verifyCode": "Mã xác thực",
   "password": "Mật khẩu",
   "signIn": "Đăng nhập",
   "signOut": "Đăng xuất",
   "signUp": "Đăng ký",
+  "errorPleaseCheckAgain": "Có lỗi xảy ra, vui lòng kiểm tra lại",
   "language": "Ngôn ngữ",
   "invalidThing": "{thing} chưa đúng",
   "@invalidThing": {

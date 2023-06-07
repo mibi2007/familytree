@@ -18,13 +18,13 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: currentPath != AppPaths.home.path
           ? IconButton(
-              icon: AppIcons.backIcon,
+              icon: const Icon(Icons.arrow_back),
               onPressed: () => backPath != null ? context.go(backPath!.path) : context.canPop(),
             )
           : null,
       title: context.isLargerThanSmScreen() ? const TopMenu() : null,
       actions: context.isLargerThanSmScreen()
-          ? [const DropdownMenu(), AppIcons.notificationIcon]
+          ? [const DropdownMenu(), const Icon(Icons.notifications)]
           : [
               // GestureDetector(
               //   onTap: () {},
@@ -34,7 +34,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               Builder(
                 builder: (context) {
                   return IconButton(
-                    icon: const Icon(AppIcons.menuHambuger),
+                    icon: const Icon(Icons.menu),
                     onPressed: () => Scaffold.of(context).openEndDrawer(),
                   );
                 },
@@ -62,7 +62,7 @@ class TopMenu extends StatelessWidget {
           TopMenuItem(
             appPath: AppPaths.home,
             pageName: t(context).home,
-            icon: AppIcons.home,
+            icon: Icons.home,
           ),
           AppSizesUnit.sizedBox24,
           TopMenuItem(

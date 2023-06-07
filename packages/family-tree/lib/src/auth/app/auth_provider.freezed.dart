@@ -20,8 +20,9 @@ mixin _$AuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() authenticatedHasAccess,
-    required TResult Function() authenticatedNoAccess,
+    required TResult Function() verify,
+    required TResult Function() error,
+    required TResult Function() authenticated,
     required TResult Function() unAuthenticated,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,8 +30,9 @@ mixin _$AuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? authenticatedHasAccess,
-    TResult? Function()? authenticatedNoAccess,
+    TResult? Function()? verify,
+    TResult? Function()? error,
+    TResult? Function()? authenticated,
     TResult? Function()? unAuthenticated,
   }) =>
       throw _privateConstructorUsedError;
@@ -38,39 +40,41 @@ mixin _$AuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? authenticatedHasAccess,
-    TResult Function()? authenticatedNoAccess,
+    TResult Function()? verify,
+    TResult Function()? error,
+    TResult Function()? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(AuthenticatedHasAccess value)
-        authenticatedHasAccess,
-    required TResult Function(AuthenticatedNoAccess value)
-        authenticatedNoAccess,
-    required TResult Function(UnAuthenticated value) unAuthenticated,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Verify value) verify,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_UnAuthenticated value) unAuthenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult? Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult? Function(UnAuthenticated value)? unAuthenticated,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Verify value)? verify,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_UnAuthenticated value)? unAuthenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult Function(UnAuthenticated value)? unAuthenticated,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Verify value)? verify,
+    TResult Function(_Error value)? error,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_UnAuthenticated value)? unAuthenticated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -94,23 +98,24 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
 }
 
 /// @nodoc
-abstract class _$$InitialCopyWith<$Res> {
-  factory _$$InitialCopyWith(_$Initial value, $Res Function(_$Initial) then) =
-      __$$InitialCopyWithImpl<$Res>;
+abstract class _$$_InitialCopyWith<$Res> {
+  factory _$$_InitialCopyWith(
+          _$_Initial value, $Res Function(_$_Initial) then) =
+      __$$_InitialCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$InitialCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$Initial>
-    implements _$$InitialCopyWith<$Res> {
-  __$$InitialCopyWithImpl(_$Initial _value, $Res Function(_$Initial) _then)
+class __$$_InitialCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$_Initial>
+    implements _$$_InitialCopyWith<$Res> {
+  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$Initial with DiagnosticableTreeMixin implements Initial {
-  const _$Initial();
+class _$_Initial with DiagnosticableTreeMixin implements _Initial {
+  const _$_Initial();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -126,7 +131,7 @@ class _$Initial with DiagnosticableTreeMixin implements Initial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Initial);
+        (other.runtimeType == runtimeType && other is _$_Initial);
   }
 
   @override
@@ -137,8 +142,9 @@ class _$Initial with DiagnosticableTreeMixin implements Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() authenticatedHasAccess,
-    required TResult Function() authenticatedNoAccess,
+    required TResult Function() verify,
+    required TResult Function() error,
+    required TResult Function() authenticated,
     required TResult Function() unAuthenticated,
   }) {
     return initial();
@@ -149,8 +155,9 @@ class _$Initial with DiagnosticableTreeMixin implements Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? authenticatedHasAccess,
-    TResult? Function()? authenticatedNoAccess,
+    TResult? Function()? verify,
+    TResult? Function()? error,
+    TResult? Function()? authenticated,
     TResult? Function()? unAuthenticated,
   }) {
     return initial?.call();
@@ -161,8 +168,9 @@ class _$Initial with DiagnosticableTreeMixin implements Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? authenticatedHasAccess,
-    TResult Function()? authenticatedNoAccess,
+    TResult Function()? verify,
+    TResult Function()? error,
+    TResult Function()? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {
@@ -175,13 +183,12 @@ class _$Initial with DiagnosticableTreeMixin implements Initial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(AuthenticatedHasAccess value)
-        authenticatedHasAccess,
-    required TResult Function(AuthenticatedNoAccess value)
-        authenticatedNoAccess,
-    required TResult Function(UnAuthenticated value) unAuthenticated,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Verify value) verify,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_UnAuthenticated value) unAuthenticated,
   }) {
     return initial(this);
   }
@@ -189,11 +196,12 @@ class _$Initial with DiagnosticableTreeMixin implements Initial {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult? Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult? Function(UnAuthenticated value)? unAuthenticated,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Verify value)? verify,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_UnAuthenticated value)? unAuthenticated,
   }) {
     return initial?.call(this);
   }
@@ -201,11 +209,12 @@ class _$Initial with DiagnosticableTreeMixin implements Initial {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult Function(UnAuthenticated value)? unAuthenticated,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Verify value)? verify,
+    TResult Function(_Error value)? error,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_UnAuthenticated value)? unAuthenticated,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -215,28 +224,29 @@ class _$Initial with DiagnosticableTreeMixin implements Initial {
   }
 }
 
-abstract class Initial implements AuthState {
-  const factory Initial() = _$Initial;
+abstract class _Initial implements AuthState {
+  const factory _Initial() = _$_Initial;
 }
 
 /// @nodoc
-abstract class _$$LoadingCopyWith<$Res> {
-  factory _$$LoadingCopyWith(_$Loading value, $Res Function(_$Loading) then) =
-      __$$LoadingCopyWithImpl<$Res>;
+abstract class _$$_LoadingCopyWith<$Res> {
+  factory _$$_LoadingCopyWith(
+          _$_Loading value, $Res Function(_$_Loading) then) =
+      __$$_LoadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoadingCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$Loading>
-    implements _$$LoadingCopyWith<$Res> {
-  __$$LoadingCopyWithImpl(_$Loading _value, $Res Function(_$Loading) _then)
+class __$$_LoadingCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$_Loading>
+    implements _$$_LoadingCopyWith<$Res> {
+  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$Loading with DiagnosticableTreeMixin implements Loading {
-  const _$Loading();
+class _$_Loading with DiagnosticableTreeMixin implements _Loading {
+  const _$_Loading();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -252,7 +262,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Loading);
+        (other.runtimeType == runtimeType && other is _$_Loading);
   }
 
   @override
@@ -263,8 +273,9 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() authenticatedHasAccess,
-    required TResult Function() authenticatedNoAccess,
+    required TResult Function() verify,
+    required TResult Function() error,
+    required TResult Function() authenticated,
     required TResult Function() unAuthenticated,
   }) {
     return loading();
@@ -275,8 +286,9 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? authenticatedHasAccess,
-    TResult? Function()? authenticatedNoAccess,
+    TResult? Function()? verify,
+    TResult? Function()? error,
+    TResult? Function()? authenticated,
     TResult? Function()? unAuthenticated,
   }) {
     return loading?.call();
@@ -287,8 +299,9 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? authenticatedHasAccess,
-    TResult Function()? authenticatedNoAccess,
+    TResult Function()? verify,
+    TResult Function()? error,
+    TResult Function()? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {
@@ -301,13 +314,12 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(AuthenticatedHasAccess value)
-        authenticatedHasAccess,
-    required TResult Function(AuthenticatedNoAccess value)
-        authenticatedNoAccess,
-    required TResult Function(UnAuthenticated value) unAuthenticated,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Verify value) verify,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_UnAuthenticated value) unAuthenticated,
   }) {
     return loading(this);
   }
@@ -315,11 +327,12 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult? Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult? Function(UnAuthenticated value)? unAuthenticated,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Verify value)? verify,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_UnAuthenticated value)? unAuthenticated,
   }) {
     return loading?.call(this);
   }
@@ -327,11 +340,12 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult Function(UnAuthenticated value)? unAuthenticated,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Verify value)? verify,
+    TResult Function(_Error value)? error,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_UnAuthenticated value)? unAuthenticated,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -341,49 +355,44 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   }
 }
 
-abstract class Loading implements AuthState {
-  const factory Loading() = _$Loading;
+abstract class _Loading implements AuthState {
+  const factory _Loading() = _$_Loading;
 }
 
 /// @nodoc
-abstract class _$$AuthenticatedHasAccessCopyWith<$Res> {
-  factory _$$AuthenticatedHasAccessCopyWith(_$AuthenticatedHasAccess value,
-          $Res Function(_$AuthenticatedHasAccess) then) =
-      __$$AuthenticatedHasAccessCopyWithImpl<$Res>;
+abstract class _$$_VerifyCopyWith<$Res> {
+  factory _$$_VerifyCopyWith(_$_Verify value, $Res Function(_$_Verify) then) =
+      __$$_VerifyCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthenticatedHasAccessCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthenticatedHasAccess>
-    implements _$$AuthenticatedHasAccessCopyWith<$Res> {
-  __$$AuthenticatedHasAccessCopyWithImpl(_$AuthenticatedHasAccess _value,
-      $Res Function(_$AuthenticatedHasAccess) _then)
+class __$$_VerifyCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$_Verify>
+    implements _$$_VerifyCopyWith<$Res> {
+  __$$_VerifyCopyWithImpl(_$_Verify _value, $Res Function(_$_Verify) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthenticatedHasAccess
-    with DiagnosticableTreeMixin
-    implements AuthenticatedHasAccess {
-  const _$AuthenticatedHasAccess();
+class _$_Verify with DiagnosticableTreeMixin implements _Verify {
+  const _$_Verify();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthState.authenticatedHasAccess()';
+    return 'AuthState.verify()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty('type', 'AuthState.authenticatedHasAccess'));
+    properties.add(DiagnosticsProperty('type', 'AuthState.verify'));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AuthenticatedHasAccess);
+        (other.runtimeType == runtimeType && other is _$_Verify);
   }
 
   @override
@@ -394,11 +403,12 @@ class _$AuthenticatedHasAccess
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() authenticatedHasAccess,
-    required TResult Function() authenticatedNoAccess,
+    required TResult Function() verify,
+    required TResult Function() error,
+    required TResult Function() authenticated,
     required TResult Function() unAuthenticated,
   }) {
-    return authenticatedHasAccess();
+    return verify();
   }
 
   @override
@@ -406,11 +416,12 @@ class _$AuthenticatedHasAccess
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? authenticatedHasAccess,
-    TResult? Function()? authenticatedNoAccess,
+    TResult? Function()? verify,
+    TResult? Function()? error,
+    TResult? Function()? authenticated,
     TResult? Function()? unAuthenticated,
   }) {
-    return authenticatedHasAccess?.call();
+    return verify?.call();
   }
 
   @override
@@ -418,13 +429,14 @@ class _$AuthenticatedHasAccess
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? authenticatedHasAccess,
-    TResult Function()? authenticatedNoAccess,
+    TResult Function()? verify,
+    TResult Function()? error,
+    TResult Function()? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {
-    if (authenticatedHasAccess != null) {
-      return authenticatedHasAccess();
+    if (verify != null) {
+      return verify();
     }
     return orElse();
   }
@@ -432,89 +444,85 @@ class _$AuthenticatedHasAccess
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(AuthenticatedHasAccess value)
-        authenticatedHasAccess,
-    required TResult Function(AuthenticatedNoAccess value)
-        authenticatedNoAccess,
-    required TResult Function(UnAuthenticated value) unAuthenticated,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Verify value) verify,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_UnAuthenticated value) unAuthenticated,
   }) {
-    return authenticatedHasAccess(this);
+    return verify(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult? Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult? Function(UnAuthenticated value)? unAuthenticated,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Verify value)? verify,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_UnAuthenticated value)? unAuthenticated,
   }) {
-    return authenticatedHasAccess?.call(this);
+    return verify?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult Function(UnAuthenticated value)? unAuthenticated,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Verify value)? verify,
+    TResult Function(_Error value)? error,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_UnAuthenticated value)? unAuthenticated,
     required TResult orElse(),
   }) {
-    if (authenticatedHasAccess != null) {
-      return authenticatedHasAccess(this);
+    if (verify != null) {
+      return verify(this);
     }
     return orElse();
   }
 }
 
-abstract class AuthenticatedHasAccess implements AuthState {
-  const factory AuthenticatedHasAccess() = _$AuthenticatedHasAccess;
+abstract class _Verify implements AuthState {
+  const factory _Verify() = _$_Verify;
 }
 
 /// @nodoc
-abstract class _$$AuthenticatedNoAccessCopyWith<$Res> {
-  factory _$$AuthenticatedNoAccessCopyWith(_$AuthenticatedNoAccess value,
-          $Res Function(_$AuthenticatedNoAccess) then) =
-      __$$AuthenticatedNoAccessCopyWithImpl<$Res>;
+abstract class _$$_ErrorCopyWith<$Res> {
+  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
+      __$$_ErrorCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthenticatedNoAccessCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthenticatedNoAccess>
-    implements _$$AuthenticatedNoAccessCopyWith<$Res> {
-  __$$AuthenticatedNoAccessCopyWithImpl(_$AuthenticatedNoAccess _value,
-      $Res Function(_$AuthenticatedNoAccess) _then)
+class __$$_ErrorCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$_Error>
+    implements _$$_ErrorCopyWith<$Res> {
+  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthenticatedNoAccess
-    with DiagnosticableTreeMixin
-    implements AuthenticatedNoAccess {
-  const _$AuthenticatedNoAccess();
+class _$_Error with DiagnosticableTreeMixin implements _Error {
+  const _$_Error();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthState.authenticatedNoAccess()';
+    return 'AuthState.error()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty('type', 'AuthState.authenticatedNoAccess'));
+    properties.add(DiagnosticsProperty('type', 'AuthState.error'));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AuthenticatedNoAccess);
+        (other.runtimeType == runtimeType && other is _$_Error);
   }
 
   @override
@@ -525,11 +533,12 @@ class _$AuthenticatedNoAccess
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() authenticatedHasAccess,
-    required TResult Function() authenticatedNoAccess,
+    required TResult Function() verify,
+    required TResult Function() error,
+    required TResult Function() authenticated,
     required TResult Function() unAuthenticated,
   }) {
-    return authenticatedNoAccess();
+    return error();
   }
 
   @override
@@ -537,11 +546,12 @@ class _$AuthenticatedNoAccess
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? authenticatedHasAccess,
-    TResult? Function()? authenticatedNoAccess,
+    TResult? Function()? verify,
+    TResult? Function()? error,
+    TResult? Function()? authenticated,
     TResult? Function()? unAuthenticated,
   }) {
-    return authenticatedNoAccess?.call();
+    return error?.call();
   }
 
   @override
@@ -549,13 +559,14 @@ class _$AuthenticatedNoAccess
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? authenticatedHasAccess,
-    TResult Function()? authenticatedNoAccess,
+    TResult Function()? verify,
+    TResult Function()? error,
+    TResult Function()? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {
-    if (authenticatedNoAccess != null) {
-      return authenticatedNoAccess();
+    if (error != null) {
+      return error();
     }
     return orElse();
   }
@@ -563,72 +574,205 @@ class _$AuthenticatedNoAccess
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(AuthenticatedHasAccess value)
-        authenticatedHasAccess,
-    required TResult Function(AuthenticatedNoAccess value)
-        authenticatedNoAccess,
-    required TResult Function(UnAuthenticated value) unAuthenticated,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Verify value) verify,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_UnAuthenticated value) unAuthenticated,
   }) {
-    return authenticatedNoAccess(this);
+    return error(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult? Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult? Function(UnAuthenticated value)? unAuthenticated,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Verify value)? verify,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_UnAuthenticated value)? unAuthenticated,
   }) {
-    return authenticatedNoAccess?.call(this);
+    return error?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult Function(UnAuthenticated value)? unAuthenticated,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Verify value)? verify,
+    TResult Function(_Error value)? error,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_UnAuthenticated value)? unAuthenticated,
     required TResult orElse(),
   }) {
-    if (authenticatedNoAccess != null) {
-      return authenticatedNoAccess(this);
+    if (error != null) {
+      return error(this);
     }
     return orElse();
   }
 }
 
-abstract class AuthenticatedNoAccess implements AuthState {
-  const factory AuthenticatedNoAccess() = _$AuthenticatedNoAccess;
+abstract class _Error implements AuthState {
+  const factory _Error() = _$_Error;
 }
 
 /// @nodoc
-abstract class _$$UnAuthenticatedCopyWith<$Res> {
-  factory _$$UnAuthenticatedCopyWith(
-          _$UnAuthenticated value, $Res Function(_$UnAuthenticated) then) =
-      __$$UnAuthenticatedCopyWithImpl<$Res>;
+abstract class _$$_AuthenticatedCopyWith<$Res> {
+  factory _$$_AuthenticatedCopyWith(
+          _$_Authenticated value, $Res Function(_$_Authenticated) then) =
+      __$$_AuthenticatedCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$UnAuthenticatedCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$UnAuthenticated>
-    implements _$$UnAuthenticatedCopyWith<$Res> {
-  __$$UnAuthenticatedCopyWithImpl(
-      _$UnAuthenticated _value, $Res Function(_$UnAuthenticated) _then)
+class __$$_AuthenticatedCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$_Authenticated>
+    implements _$$_AuthenticatedCopyWith<$Res> {
+  __$$_AuthenticatedCopyWithImpl(
+      _$_Authenticated _value, $Res Function(_$_Authenticated) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$UnAuthenticated
+class _$_Authenticated with DiagnosticableTreeMixin implements _Authenticated {
+  const _$_Authenticated();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'AuthState.authenticated()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'AuthState.authenticated'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$_Authenticated);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() verify,
+    required TResult Function() error,
+    required TResult Function() authenticated,
+    required TResult Function() unAuthenticated,
+  }) {
+    return authenticated();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? verify,
+    TResult? Function()? error,
+    TResult? Function()? authenticated,
+    TResult? Function()? unAuthenticated,
+  }) {
+    return authenticated?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? verify,
+    TResult Function()? error,
+    TResult Function()? authenticated,
+    TResult Function()? unAuthenticated,
+    required TResult orElse(),
+  }) {
+    if (authenticated != null) {
+      return authenticated();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Verify value) verify,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_UnAuthenticated value) unAuthenticated,
+  }) {
+    return authenticated(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Verify value)? verify,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_UnAuthenticated value)? unAuthenticated,
+  }) {
+    return authenticated?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Verify value)? verify,
+    TResult Function(_Error value)? error,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_UnAuthenticated value)? unAuthenticated,
+    required TResult orElse(),
+  }) {
+    if (authenticated != null) {
+      return authenticated(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Authenticated implements AuthState {
+  const factory _Authenticated() = _$_Authenticated;
+}
+
+/// @nodoc
+abstract class _$$_UnAuthenticatedCopyWith<$Res> {
+  factory _$$_UnAuthenticatedCopyWith(
+          _$_UnAuthenticated value, $Res Function(_$_UnAuthenticated) then) =
+      __$$_UnAuthenticatedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_UnAuthenticatedCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$_UnAuthenticated>
+    implements _$$_UnAuthenticatedCopyWith<$Res> {
+  __$$_UnAuthenticatedCopyWithImpl(
+      _$_UnAuthenticated _value, $Res Function(_$_UnAuthenticated) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$_UnAuthenticated
     with DiagnosticableTreeMixin
-    implements UnAuthenticated {
-  const _$UnAuthenticated();
+    implements _UnAuthenticated {
+  const _$_UnAuthenticated();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -644,7 +788,7 @@ class _$UnAuthenticated
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$UnAuthenticated);
+        (other.runtimeType == runtimeType && other is _$_UnAuthenticated);
   }
 
   @override
@@ -655,8 +799,9 @@ class _$UnAuthenticated
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() authenticatedHasAccess,
-    required TResult Function() authenticatedNoAccess,
+    required TResult Function() verify,
+    required TResult Function() error,
+    required TResult Function() authenticated,
     required TResult Function() unAuthenticated,
   }) {
     return unAuthenticated();
@@ -667,8 +812,9 @@ class _$UnAuthenticated
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function()? authenticatedHasAccess,
-    TResult? Function()? authenticatedNoAccess,
+    TResult? Function()? verify,
+    TResult? Function()? error,
+    TResult? Function()? authenticated,
     TResult? Function()? unAuthenticated,
   }) {
     return unAuthenticated?.call();
@@ -679,8 +825,9 @@ class _$UnAuthenticated
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? authenticatedHasAccess,
-    TResult Function()? authenticatedNoAccess,
+    TResult Function()? verify,
+    TResult Function()? error,
+    TResult Function()? authenticated,
     TResult Function()? unAuthenticated,
     required TResult orElse(),
   }) {
@@ -693,13 +840,12 @@ class _$UnAuthenticated
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(AuthenticatedHasAccess value)
-        authenticatedHasAccess,
-    required TResult Function(AuthenticatedNoAccess value)
-        authenticatedNoAccess,
-    required TResult Function(UnAuthenticated value) unAuthenticated,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Verify value) verify,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_UnAuthenticated value) unAuthenticated,
   }) {
     return unAuthenticated(this);
   }
@@ -707,11 +853,12 @@ class _$UnAuthenticated
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult? Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult? Function(UnAuthenticated value)? unAuthenticated,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Verify value)? verify,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_UnAuthenticated value)? unAuthenticated,
   }) {
     return unAuthenticated?.call(this);
   }
@@ -719,11 +866,12 @@ class _$UnAuthenticated
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(AuthenticatedHasAccess value)? authenticatedHasAccess,
-    TResult Function(AuthenticatedNoAccess value)? authenticatedNoAccess,
-    TResult Function(UnAuthenticated value)? unAuthenticated,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Verify value)? verify,
+    TResult Function(_Error value)? error,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_UnAuthenticated value)? unAuthenticated,
     required TResult orElse(),
   }) {
     if (unAuthenticated != null) {
@@ -733,6 +881,6 @@ class _$UnAuthenticated
   }
 }
 
-abstract class UnAuthenticated implements AuthState {
-  const factory UnAuthenticated() = _$UnAuthenticated;
+abstract class _UnAuthenticated implements AuthState {
+  const factory _UnAuthenticated() = _$_UnAuthenticated;
 }

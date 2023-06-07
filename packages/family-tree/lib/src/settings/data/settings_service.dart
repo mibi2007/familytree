@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A service that stores and retrieves user settings.
@@ -33,3 +34,7 @@ class SettingsService {
     await prefs.setString('locale', newLocale.toString());
   }
 }
+
+final settingsServiceProvider = Provider<SettingsService>((ref) {
+  return SettingsService();
+});

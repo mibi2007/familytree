@@ -5,19 +5,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_package/shared_package.dart';
 
-import '../firebase_options.dart';
 import '../src/auth/app/auth_provider.dart';
+import '../src/auth/data/auth_api.dart';
 import '../src/core/helper/translate.dart';
 import '../src/navigation/app/router.dart';
 import '../src/settings/app/settings_controller.dart';
 import '../src/settings/data/settings_service.dart';
 import 'config_reader.dart';
+import 'firebase_options.dart';
 
 Future<void> mainCommon(Environment env) async {
   // if (!kIsWeb) runApp(const SplashScreen());
@@ -25,7 +27,6 @@ Future<void> mainCommon(Environment env) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize the settings controller
-  final settingsProvider = SettingsProvider(SettingsService());
   GoogleFonts.config.allowRuntimeFetching = false;
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
@@ -33,7 +34,6 @@ Future<void> mainCommon(Environment env) async {
   });
   await Future.wait([
     ConfigReader.initialize(env),
-    settingsProvider.loadSettings(),
     if (!kIsWeb) Future.delayed(const Duration(seconds: 1)),
   ]);
 
@@ -96,7 +96,7 @@ void guardedMain() {
   ));
 }
 
-class AppWidget extends ConsumerStatefulWidget {
+class AppWidget extends StatefulHookConsumerWidget {
   const AppWidget({
     Key? key,
   }) : super(key: key);
@@ -110,6 +110,10 @@ class _AppWidgetState extends ConsumerState<AppWidget> with WidgetsBindingObserv
   initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    final auth = ref.read(authApiProvider);
+    auth.setLanguageCode('vi');
+    final settingsProvider = SettingsController(SettingsService());
+    settingsProvider.loadSettings();
   }
 
   @override
@@ -151,7 +155,7 @@ class _AppWidgetState extends ConsumerState<AppWidget> with WidgetsBindingObserv
   Widget build(BuildContext context) {
     // final trackingNotifier = ref.read(trackingNotifierProvider.notifier);
     ref.listen<AuthState>(authNotifierProvider, (s1, s2) {
-      if (s2 == const AuthState.authenticatedHasAccess()) {
+      if (s2 == const AuthState.authenticated()) {
         // trackingNotifier.enable();
       } else {
         // trackingNotifier.disable();
@@ -163,9 +167,20 @@ class _AppWidgetState extends ConsumerState<AppWidget> with WidgetsBindingObserv
 }
 
 AnimatedBuilder _builder(WidgetRef ref) {
-  final settingsProvider = ref.read(settingsNotifierProvider);
+  final settingsState = ref.watch(settingsNotifierProvider);
+  final auth = ref.read(authApiProvider);
+  final animation = useAnimationController(duration: const Duration(microseconds: 500));
+  // animation.addStatusListener((status) {
+  //   if (status == AnimationStatus.completed) {
+  //     animation.reverse();
+  //   }
+  // });
+  ref.listen(settingsNotifierProvider, (old, state) {
+    auth.setLanguageCode(state.locale.languageCode);
+    animation.forward();
+  });
   return AnimatedBuilder(
-    animation: settingsProvider,
+    animation: animation,
     builder: (BuildContext context, Widget? child) {
       return MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -188,7 +203,7 @@ AnimatedBuilder _builder(WidgetRef ref) {
           Locale('vi', ''),
           Locale('en', ''), // English, no country code
         ],
-        locale: settingsProvider.locale,
+        locale: settingsState.locale,
 
         // Use AppLocalizations to configure the correct application title
         // depending on the user's locale.
@@ -200,9 +215,9 @@ AnimatedBuilder _builder(WidgetRef ref) {
         // Define a light and dark color theme. Then, read the user's
         // preferred ThemeMode (light, dark, or system default) from the
         // SettingsController to display the correct theme.
-        theme: lightTheme(),
-        // darkTheme: darkTheme(),
-        // themeMode: settingsNotifierProvider.themeMode,
+        theme: FamilyTheme.light,
+        darkTheme: FamilyTheme.dark,
+        themeMode: ref.read(settingsNotifierProvider).themeMode,
         routeInformationParser: AppRouter.router.routeInformationParser,
         routerDelegate: AppRouter.router.routerDelegate,
         routeInformationProvider: AppRouter.router.routeInformationProvider,

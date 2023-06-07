@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../core/helper/translate.dart';
-import '../../navigation/domain/app_paths.dart';
 import 'package:shared_package/shared_package.dart';
 
+import '../../core/helper/translate.dart';
+import '../../navigation/domain/app_paths.dart';
 import '../app/settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -18,7 +18,7 @@ class ThemeSettingsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settingsProvider = ref.read(settingsNotifierProvider);
+    final controller = ref.read(settingsNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: Text(t(context).themeMode),
@@ -26,7 +26,7 @@ class ThemeSettingsPage extends HookConsumerWidget {
           onTap: () => context.canPop() ? context.pop() : context.go(AppPaths.home.path),
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
-            child: AppIcons.backIcon,
+            child: Icon(Icons.arrow_back),
           ),
         ),
       ),
@@ -42,7 +42,7 @@ class ThemeSettingsPage extends HookConsumerWidget {
               shrinkWrap: true,
               children: [
                 GestureDetector(
-                  onTap: () => settingsProvider.updateThemeMode(ThemeMode.system),
+                  onTap: () => controller.updateThemeMode(ThemeMode.system),
                   child: ListTile(
                     title: Text(
                       t(context).themeModeSystem,
@@ -51,7 +51,7 @@ class ThemeSettingsPage extends HookConsumerWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => settingsProvider.updateThemeMode(ThemeMode.light),
+                  onTap: () => controller.updateThemeMode(ThemeMode.light),
                   child: ListTile(
                     title: Text(
                       t(context).lightMode,
@@ -60,7 +60,7 @@ class ThemeSettingsPage extends HookConsumerWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => settingsProvider.updateThemeMode(ThemeMode.dark),
+                  onTap: () => controller.updateThemeMode(ThemeMode.dark),
                   child: ListTile(
                     title: Text(
                       t(context).dartMode,

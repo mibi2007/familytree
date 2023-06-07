@@ -28,7 +28,7 @@ class SettingsPage extends StatelessWidget {
           onTap: () => context.canPop() ? context.pop() : context.go(AppPaths.home.path),
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
-            child: AppIcons.backIcon,
+            child: Icon(Icons.arrow_back),
           ),
         ),
       ),

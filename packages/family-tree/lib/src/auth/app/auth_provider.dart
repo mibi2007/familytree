@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -18,7 +16,7 @@ final logger = Logger("AuthNotifier");
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthApi authApi;
 
-  AuthNotifier._(this.authApi) : super(AuthState.initial());
+  AuthNotifier._(this.authApi) : super(const AuthState.initial());
 
   factory AuthNotifier(authApi, knowledgeApi, trackingApi) => AuthNotifier._(authApi);
 
@@ -38,22 +36,35 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<Unit> stateChanged() async {
     // state = const AuthState.loading();
     final userEither = await auth_service.getUser().run(authApi);
-    Either<String, bool> hasAccess = left('');
-    if (userEither.isRight()) {
-      hasAccess = await auth_service.hasAccess(userEither.getOrElse((l) => User.empty()).email).run(authApi);
-    }
     state = userEither.fold((failure) => const AuthState.unAuthenticated(), (user) {
-      return hasAccess.isRight() && hasAccess.getOrElse((l) => false)
-          ? const AuthState.authenticatedHasAccess()
-          : const AuthState.authenticatedNoAccess();
+      return user.isEmpty ? const AuthState.authenticated() : const AuthState.unAuthenticated();
     });
     return unit;
   }
 
-  Future<Unit> signIn() async {
+  Future<Unit> signInGoogle() async {
     // state = const AuthState.loading();
-    await authApi.signInGoogle();
+    await auth_service.signInGoogle().run(authApi);
     stateChanged();
+    return unit;
+  }
+
+  Future<Unit> signInPhone(String phoneNumber) async {
+    if (phoneNumber.isEmpty) {
+      return unit;
+    }
+    // regex to check phone number with 10-11 digits
+    final phoneRegExp = RegExp(r'(^(?:[+0]9)?[0-9]{10,11}$)');
+    if (!phoneRegExp.hasMatch(phoneNumber)) {
+      return unit;
+    }
+
+    if (phoneNumber[0] == '0') {
+      phoneNumber = phoneNumber.replaceFirst('0', '+84');
+    }
+    state = const AuthState.loading();
+    final resultEither = await auth_service.signInPhone(phoneNumber).run(authApi);
+    state = resultEither.isRight() ? const AuthState.verify() : const AuthState.error();
     return unit;
   }
 
@@ -65,17 +76,25 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   bool isSignedIn() {
-    return state is AuthenticatedNoAccess || state is AuthenticatedHasAccess;
+    return state == const AuthState.authenticated();
   }
 
   Future<User> getUser() async {
     return await authApi.getUser();
   }
+
+  Future<Unit> verifyPhone(String verificationCode) async {
+    // Regex verify code with 6 numbers
+    final verifyCodeRegExp = RegExp(r'(^(?:[0-9]){6}$)');
+    if (!verifyCodeRegExp.hasMatch(verificationCode)) {
+      return unit;
+    }
+    state = const AuthState.loading();
+    final resultEither = await auth_service.verifyPhone(verificationCode).run(authApi);
+    state = resultEither.isRight() ? const AuthState.authenticated() : const AuthState.error();
+    return unit;
+  }
 }
 
 final authNotifierProvider =
     StateNotifierProvider<AuthNotifier, AuthState>((ref) => AuthNotifier._(ref.read(authApiProvider)));
-
-final authApiProvider = Provider<AuthApi>(
-  (ref) => AuthApi(FirebaseAuth.instance, Dio()),
-);

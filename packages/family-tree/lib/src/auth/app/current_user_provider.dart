@@ -3,9 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../auth/data/auth_service.dart' as auth_service;
+import '../data/auth_api.dart';
 import '../domain/i_auth.dart';
 import '../domain/user.dart';
-import 'auth_provider.dart';
 
 part 'current_user_provider.freezed.dart';
 part 'current_user_state.dart';

@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_package/shared_package.dart';
 
 import '../../auth/app/auth_provider.dart';
 import '../../auth/view/sign_in_page.dart';
 import '../../home/home_page.dart';
 import '../../navigation/app/auth_guard.dart';
 import '../../navigation/domain/app_paths.dart';
+import '../../settings/app/settings_controller.dart';
 import '../../settings/view/language_settings_page.dart';
 import '../../settings/view/settings_page.dart';
 import '../../settings/view/theme_settings_page.dart';
@@ -28,12 +30,17 @@ class AppRouter {
       routes: <GoRoute>[
         GoRoute(
           path: '/',
-          redirect: (_, __) => AppPaths.home.path,
-        ),
-        GoRoute(
-          path: AppPaths.home.path,
           builder: (BuildContext context, GoRouterState state) => const HomePage(),
           redirect: (_, state) => guard(state, ref),
+        ),
+        GoRoute(
+          path: '/design',
+          builder: (BuildContext context, GoRouterState state) => DesignPage(
+            themeMode: ref.watch(settingsNotifierProvider).themeMode,
+            onThemeModeChanged: (ThemeMode value) {
+              ref.read(settingsNotifierProvider.notifier).updateThemeMode(value);
+            },
+          ),
         ),
         GoRoute(
           path: AppPaths.signIn.path,

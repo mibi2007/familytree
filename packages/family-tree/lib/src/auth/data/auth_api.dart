@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:fpdart/fpdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../domain/i_auth.dart';
 import '../domain/user.dart';
@@ -15,17 +15,17 @@ class AuthApi implements IAuthApi {
 
   AuthApi(this.auth, this.dio);
 
+  late ConfirmationResult confirmationResult;
+
   @override
-  signInGoogle() async {
+  Future<Unit> signInGoogle() async {
     final googleProvider = GoogleAuthProvider();
     await auth.signInWithPopup(googleProvider);
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', await auth.currentUser?.getIdToken() ?? '');
     return unit;
   }
 
   @override
-  signOut() async {
+  Future<Unit> signOut() async {
     await auth.signOut();
     await service.deleteToken();
     return unit;
@@ -42,9 +42,25 @@ class AuthApi implements IAuthApi {
   }
 
   @override
-  Future<bool> checkACL(String email) async {
-    final aclList = await dio.get(
-        'https://mimetic-slice-377808-default-rtdb.asia-southeast1.firebasedatabase.app/user_access_control_list.json');
-    return (aclList.data as List<dynamic>).filter((e) => e['email'] == 'binh@t7.sg').isNotEmpty;
+  Future<Unit> signInPhone(String phoneNumber) async {
+    confirmationResult = await auth.signInWithPhoneNumber(phoneNumber);
+    return unit;
+  }
+
+  @override
+  Future<Unit> verifyPhone(String verificationCode) async {
+    await confirmationResult.confirm(verificationCode);
+    return unit;
+  }
+
+  @override
+  Unit setLanguageCode(String languageCode) {
+    auth.setLanguageCode(languageCode);
+    return unit;
   }
 }
+
+final authApiProvider = Provider<AuthApi>((ref) => AuthApi(
+      FirebaseAuth.instance,
+      Dio(),
+    ));

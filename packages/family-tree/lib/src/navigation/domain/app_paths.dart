@@ -1,7 +1,7 @@
 class AppPaths {
   AppPaths._();
 
-  static const home = AppPath(path: '/home', serverRedirectName: 'HomePage');
+  static const home = AppPath(path: '/', serverRedirectName: 'HomePage');
 
   // Authentication
   static const signIn = AppPath(path: '/sign-in');

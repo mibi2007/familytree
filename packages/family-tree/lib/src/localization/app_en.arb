@@ -3,10 +3,13 @@
   "appTitle": "KYONS",
   "loginSuccess": "Login Success",
   "email": "Email",
+  "phoneNumber": "Phone number",
+  "verifyCode": "Verify code",
   "password": "Password",
   "signIn": "Sign in",
   "signOut": "Sign out",
   "signUp": "Sign up",
+  "errorPleaseCheckAgain": "Error, please check again",
   "language": "Language",
   "invalidThing": "Invalid {thing}",
   "@invalidThing": {

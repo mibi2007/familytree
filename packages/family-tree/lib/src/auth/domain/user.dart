@@ -27,4 +27,6 @@ class User with _$User {
   }
 
   factory User.empty() => const User(id: '', email: '', name: '');
+
+  bool get isEmpty => id.isEmpty;
 }

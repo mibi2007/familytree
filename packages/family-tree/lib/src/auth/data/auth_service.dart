@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:fpdart/fpdart.dart';
+import 'package:shared_package/shared_package.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../domain/i_auth.dart';
@@ -40,19 +42,67 @@ TaskEither<String, User> _getUser(
       },
     );
 
-Reader<IAuthApi, Future<Either<String, bool>>> hasAccess(String email) {
+Reader<IAuthApi, Future<Either<AuthFailure, Unit>>> signInGoogle() {
   return Reader(
-    (api) => _hasAccess(email, api).run(),
+    (api) => _signInGoogle(api).run(),
   );
 }
 
-TaskEither<String, bool> _hasAccess(
-  String email,
+TaskEither<AuthFailure, Unit> _signInGoogle(
   IAuthApi api,
 ) =>
     TaskEither.tryCatch(
-      () => api.checkACL(email),
+      () => api.signInGoogle(),
       (error, __) {
-        return 'getAccess';
+        if (error is AuthFailure) {
+          return error;
+        }
+        return const AuthFailure.serverError();
+      },
+    );
+
+Reader<IAuthApi, Future<Either<AuthFailure, Unit>>> signInPhone(String phoneNumber) {
+  return Reader(
+    (api) => _signInPhone(api, phoneNumber).run(),
+  );
+}
+
+TaskEither<AuthFailure, Unit> _signInPhone(
+  IAuthApi api,
+  String phoneNumber,
+) =>
+    TaskEither.tryCatch(
+      () => api.signInPhone(phoneNumber),
+      (error, __) {
+        if (error is FirebaseAuthException) {
+          return switch (error.code) {
+            'unknown' => const AuthFailure.invalidPhone(),
+            _ => const AuthFailure.serverError(),
+          };
+        }
+        return const AuthFailure.serverError();
+      },
+    );
+
+Reader<IAuthApi, Future<Either<AuthFailure, Unit>>> verifyPhone(String verificationCode) {
+  return Reader(
+    (api) => _verifyPhone(api, verificationCode).run(),
+  );
+}
+
+TaskEither<AuthFailure, Unit> _verifyPhone(
+  IAuthApi api,
+  String verificationCode,
+) =>
+    TaskEither.tryCatch(
+      () => api.verifyPhone(verificationCode),
+      (error, __) {
+        if (error is FirebaseAuthException) {
+          return switch (error.code) {
+            'unknown' => const AuthFailure.invalidCode(),
+            _ => const AuthFailure.serverError(),
+          };
+        }
+        return const AuthFailure.serverError();
       },
     );

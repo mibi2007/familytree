@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../core/helper/translate.dart';
-import '../../navigation/domain/app_paths.dart';
 import 'package:shared_package/shared_package.dart';
 
+import '../../core/helper/translate.dart';
+import '../../navigation/domain/app_paths.dart';
 import '../app/settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -18,15 +18,15 @@ class LanguageSettingsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settingsProvider = ref.read(settingsNotifierProvider);
+    final controller = ref.read(settingsNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: Text(t(context).language),
         leading: GestureDetector(
           onTap: () => context.canPop() ? context.pop() : context.go(AppPaths.home.path),
-          child: MouseRegion(
+          child: const MouseRegion(
             cursor: SystemMouseCursors.click,
-            child: AppIcons.backIcon,
+            child: Icon(Icons.arrow_back),
           ),
         ),
       ),
@@ -42,7 +42,7 @@ class LanguageSettingsPage extends HookConsumerWidget {
               shrinkWrap: true,
               children: [
                 GestureDetector(
-                  onTap: () => settingsProvider.updateLocale(const Locale('en', '')),
+                  onTap: () => controller.updateLocale(const Locale('en', '')),
                   child: ListTile(
                     mouseCursor: SystemMouseCursors.click,
                     title: Text(
@@ -52,7 +52,7 @@ class LanguageSettingsPage extends HookConsumerWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => settingsProvider.updateLocale(const Locale('vi', '')),
+                  onTap: () => controller.updateLocale(const Locale('vi', '')),
                   child: ListTile(
                     mouseCursor: SystemMouseCursors.click,
                     title: Text(

@@ -25,7 +25,7 @@ class AppDrawer extends ConsumerWidget {
                 child: Row(
                   children: [
                     const Icon(
-                      AppIcons.arrowLeft,
+                      Icons.arrow_back,
                       size: AppSizesUnit.medium24,
                     ),
                     AppSizesUnit.sizedBox8,
@@ -43,9 +43,7 @@ class AppDrawer extends ConsumerWidget {
               ),
             ),
           ),
-          DrawerMenuItem(appPath: AppPaths.home, icon: AppIcons.home, pageName: t(context).home),
-          const Divider(),
-          DrawerMenuItem(appPath: AppPaths.account, icon: AppIcons.bankTransfer, pageName: t(context).account),
+          DrawerMenuItem(appPath: AppPaths.home, icon: Icons.home, pageName: t(context).home),
           // const Divider(),
           // DrawerMenuItem(appPath: AppPaths.settings, icon: Icons.settings, pageName: t(context).settings),
           // ListTile(
@@ -68,8 +66,6 @@ class AppDrawer extends ConsumerWidget {
           //   onTap: () => context.go(AppPaths.game.path),
           // ),
           // const Divider(),
-          const Divider(),
-          DrawerMenuItem(appPath: AppPaths.signOut, icon: AppIcons.signOut, pageName: t(context).signOut),
           AppSizesUnit.sizedBox48,
           const Padding(padding: EdgeInsets.all(16), child: LanguageSwitcher()),
         ],
@@ -112,7 +108,7 @@ class DrawerMenuItem extends StatelessWidget {
                 child: Heading(8, pageName, color: color),
               ),
               AppSizesUnit.sizedBox8,
-              Icon(AppIcons.arrowRight, size: AppSizesUnit.medium24, color: Theme.of(context).colorScheme.tertiary),
+              Icon(Icons.arrow_right, size: AppSizesUnit.medium24, color: Theme.of(context).colorScheme.tertiary),
             ],
           ),
         ),
