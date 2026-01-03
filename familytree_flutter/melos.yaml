@@ -1,0 +1,20 @@
+name: family_tree_chat
+
+packages:
+  - apps/**
+  - packages/**
+
+scripts:
+  bootstrap:
+    exec: flutter pub get
+    description: Run 'flutter pub get' in all packages.
+  
+  clean:
+    exec: flutter clean
+    description: Clean all packages.
+
+  generate:
+    exec: flutter pub run build_runner build --delete-conflicting-outputs
+    packageFilters:
+      dependsOn: build_runner
+    description: Generate code for all packages.
