@@ -1,0 +1,29 @@
+{
+  "projects": {
+    "default": "mibi-family-tree",
+    "prod": "mibi-family-tree",
+    "dev": "mibi-family-tree-dev"
+  },
+  "targets": {
+    "mibi-family-tree": {
+      "hosting": {
+        "user_prod": [
+          "mibi-family-tree"
+        ],
+        "admin_prod": [
+          "mibi-family-tree-admin"
+        ]
+      }
+    },
+    "mibi-family-tree-dev": {
+      "hosting": {
+        "user_dev": [
+          "mibi-family-tree-dev"
+        ],
+        "admin_dev": [
+          "mibi-family-tree-admin-dev"
+        ]
+      }
+    }
+  }
+}

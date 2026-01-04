@@ -1,0 +1,6 @@
+# Firebase local cache
+.firebase/
+
+# Build artifacts in hosting (ignore everything inside app folders)
+hosting/*/*/**
+!hosting/*/*/.gitkeep
