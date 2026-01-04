@@ -1,3 +1,4 @@
-// Export all shared widgets and providers
-// export 'widgets/member_card.dart';
-// export 'providers/family_provider.dart';
+library presentation;
+
+export 'providers/auth_provider.dart';
+// export 'widgets/auth_widgets.dart'; // To be implemented

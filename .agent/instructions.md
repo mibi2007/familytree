@@ -10,6 +10,7 @@ You are working on the Family Tree Chat App. Follow these rules strictly for a b
 ## 2. Tools & Commands
 - Use `melos` for package operations (e.g., `melos bootstrap`, `melos run`).
 - When creating new features, generate the 4-layer structure automatically.
+- **Scripting**: Use Bash scripts (`.sh`) for all automation. Do NOT use PowerShell (`.ps1`).
 
 ## 3. AI Helper (@family)
 - Use `https://docs.flutter.dev/ai/genui` patterns for implementing AI UI.

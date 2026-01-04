@@ -77,8 +77,15 @@ CREATE TABLE IF NOT EXISTS family_tree_snapshots (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Immutable wrapper for unaccent to allow functional indices
+CREATE OR REPLACE FUNCTION f_unaccent(text)
+  RETURNS text AS
+$func$
+SELECT public.unaccent($1)
+$func$  LANGUAGE sql IMMUTABLE;
+
 -- Indices for Performance
-CREATE INDEX IF NOT EXISTS idx_users_email_unaccent ON users (unaccent(lower(email)));
-CREATE INDEX IF NOT EXISTS idx_users_display_name_unaccent ON users (unaccent(lower(display_name)));
+CREATE INDEX IF NOT EXISTS idx_users_email_unaccent ON users (f_unaccent(lower(email)));
+CREATE INDEX IF NOT EXISTS idx_users_display_name_unaccent ON users (f_unaccent(lower(display_name)));
 CREATE INDEX IF NOT EXISTS idx_family_members_family_id ON family_members (family_id);
 CREATE INDEX IF NOT EXISTS idx_secure_tokens_expires_at ON secure_tokens (expires_at) WHERE expires_at IS NOT NULL;

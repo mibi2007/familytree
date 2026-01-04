@@ -4,7 +4,7 @@ part 'auth_user.freezed.dart';
 part 'auth_user.g.dart';
 
 @freezed
-class AuthUser with _$AuthUser {
+sealed class AuthUser with _$AuthUser {
   const factory AuthUser({
     required String id,
     required String email,

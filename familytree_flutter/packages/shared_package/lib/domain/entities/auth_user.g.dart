@@ -11,7 +11,6 @@ _AuthUser _$AuthUserFromJson(Map<String, dynamic> json) => _AuthUser(
   email: json['email'] as String,
   displayName: json['displayName'] as String?,
   photoUrl: json['photoUrl'] as String?,
-  isAdmin: json['isAdmin'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$AuthUserToJson(_AuthUser instance) => <String, dynamic>{
@@ -19,5 +18,4 @@ Map<String, dynamic> _$AuthUserToJson(_AuthUser instance) => <String, dynamic>{
   'email': instance.email,
   'displayName': instance.displayName,
   'photoUrl': instance.photoUrl,
-  'isAdmin': instance.isAdmin,
 };
