@@ -14,3 +14,15 @@
 # Env
 .env*
 !.env.example
+
+# Firebase Configuration (Sensitive)
+firebase_options*.dart
+lib/core/config/firebase_options*.dart
+**/firebase_options*.dart
+
+# Flutter/Dart artifacts
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/

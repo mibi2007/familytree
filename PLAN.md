@@ -12,12 +12,12 @@
 - [x] **Deployment Automation**: Unified `deploy.sh` for multi-env builds and gated artifact staging.
 - [x] **Git Remote Integration**: Linked and synced to `github:mibi2007/familytree`.
 - [x] **Exclusion Strategy**: Localized `.gitignore` and `.gitkeep` setup for clean repository management.
-- [ ] **Cloud Connection**: Run `flutterfire configure` for all 3 environments.
+- [x] **Cloud Connection**: Ran `flutterfire configure` for `dev` and `prod` in both apps, organized into `lib/core/config/`.
 
-## Phase 2: Backend & Data Foundations (UPCOMING)
-- [ ] **Contract Definition**: Implement `.proto` files in `familytree_go` for core gRPC services.
-- [ ] **Database Setup**: Create Postgres migration scripts (Families, Members, Relationships, Secure Tokens).
-- [ ] **Backend Baseline**: Initialize Go gRPC server with JWT middleware and Audit interceptors.
+## Phase 2: Backend & Data Foundations (IN PROGRESS)
+- [x] **Contract Definition**: Implemented `.proto` files for Auth, Family, and Common services.
+- [x] **Database Setup**: Created initial SQL migration (`0001_initial_schema.sql`).
+- [/] **Backend Baseline**: Initializing Go module, gRPC server, and service skeletons.
 - [ ] **Token System**: Implement Secure Token generation and auto-cleanup logic.
 
 ## Phase 3: Core Implementation (UPCOMING)
