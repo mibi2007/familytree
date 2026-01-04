@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"dart":{"lib/core/config/firebase_options_dev.dart":{"projectId":"mibi-family-tree-dev","configurations":{"web":"1:770274865262:web:fff8bbbc3050f7f4acb67f"}},"lib/core/config/firebase_options_prod.dart":{"projectId":"mibi-family-tree","configurations":{"web":"1:165254828005:web:302c2e3db2b4e88218e90c"}}}}}}

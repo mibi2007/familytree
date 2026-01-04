@@ -2,25 +2,26 @@
 
 ## DDD Layers
 
-### 1. Domain Layer
+### 1. Domain Layer (`shared_package`)
 - **Entities**: `AuthUser` (id, email, displayName, photoUrl).
 - **Failures**: `AuthFailure` (union for server error, email already in use, invalid credentials, etc.).
 - **Interfaces**: `IAuthRepository` (Stream<AuthUser>, signIn, signOut, deleteAccount).
 
-### 2. Infrastructure Layer
+### 2. Infrastructure Layer (`shared_package`)
 - **Data Source**: `FirebaseAuthRemoteDataSource` (supporting Google, Email, and Firebase PNV).
 - **Repository Implementation**: `FirebaseAuthRepository` (implements `IAuthRepository`).
 - **External Dependencies**: `firebase_auth`, `google_sign_in`.
 
-### 2.1 Backend Integration (Go)
+### 3. Application Layer (`shared_package`)
+
+## Backend Integration (Go)
 - **Role**: Validates Firebase JWT and manages `deletion_requested_at` in Postgres.
 - **DTOs**: `AuthUser` mapped from Firebase `IdTokenResult`.
-
-### 3. Application Layer
 - **State Management**: `auth_state_provider` (Riverpod).
 - **States**: `Initial`, `Authenticated`, `Unauthenticated`, `PendingDeletion`.
 - **Use Cases**: `SignInUseCase`, `SignUpWithEmailUseCase`, `DeleteAccountUseCase`, `UpdateProfileUseCase`, `VerifyEmailUpdateUseCase`.
 
-### 4. Presentation Layer
-- **Widgets**: `LoginForm`, `GoogleSignInButton`, `DeletionWarningDialog`.
-- **Pages**: `SignInPage`, `SplashPage`.
+### 4. Presentation Layer (App-Specific)
+- **`user_app`**: Implements `SignInPage` with Google, Email, and Phone options.
+- **`admin_app`**: Implements `AdminSignInPage` with Google only.
+- **Shared Widgets (`shared_package`)**: `GoogleSignInButton`, `DeletionWarningDialog`.

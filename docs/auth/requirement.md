@@ -5,9 +5,8 @@ Provide a secure and flexible authentication system for family members and admin
 
 ## Functional Requirements
 - **Authentication Methods**:
-  - Google Sign-In (Primary).
-  - Email/Password (Login & Registration).
-  - Phone Number (using Firebase Phone Number Verification - PNV).
+  - **User App**: Google Sign-In, Email/Password, and Phone Number (Firebase PNV).
+  - **Admin App**: **Google Sign-In ONLY**.
 - **Registration Flow**:
   - **Email Registration**: Users can create an account using email and password.
   - **Verification**: Email verification is required before full access is granted to family features.

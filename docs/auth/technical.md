@@ -8,9 +8,15 @@ sequenceDiagram
     participant Firebase
     participant Postgres
 
+    Note over User, Postgres: Sign Up via Invitation (Admin/Family)
+    User->>App: Clicks Invitation Link (includes ?token=XYZ)
+    App->>Postgres: Validate Token (is active, not expired)
+    Postgres-->>App: Valid/Invalid status
+    
     Note over User, Postgres: Sign Up / Login / Linking Flow
     User->>App: Choose Auth Method (Google/Email)
     App->>Firebase: Authenticate User
+    App->>Postgres: Check/Sync User & Consume Token (is_used=true)
     
     alt Account Conflict (auth/account-exists-with-different-credential)
         Firebase-->>App: Error: Account exists with different provider
@@ -55,10 +61,19 @@ erDiagram
     }
 ```
 
-## Core Service
-- **Provider**: Firebase Authentication.
-- **Plugins**: `firebase_auth`, `google_sign_in`.
 - **Registration**: Use `createUserWithEmailAndPassword` and `sendEmailVerification`.
+
+## App-Specific Presentation
+- **Shared Logic Layer (`shared_package`)**:
+  - `AuthRepository`: Handles the underlying Firebase/Postgres communication.
+  - `AuthProvider`: Manages the global `AuthState` using Riverpod.
+- **`user_app` Sign-In**:
+  - **Aesthetics**: Warm, family-centric design.
+  - **Features**: Social Login (Google), Legacy Login (Email), and Mobile Quick Login (Phone).
+- **`admin_app` Sign-In**:
+  - **Aesthetics**: Professional, high-security dashboard theme.
+  - **Restriction**: Only displays the Google Sign-In interface. 
+  - **Validation**: Enforces that the authenticated user possesses (or has requested) an admin role.
 
 ## Account Linking & Conflict Resolution
 - **Strategy**: Unified Email Identity.
@@ -103,3 +118,17 @@ To support the 30-day deletion requirement:
 - **Avatar Storage**:
   - Upload to Firebase Storage path: `/users/{uid}/avatars/{timestamp}.jpg`.
   - Update `photo_url` in both Firebase Auth and Postgres `users` table.
+
+## Admin Roles & Permissions (Custom Claims)
+- **Claim: `system_role`**:
+  - `null` (User): Standard access to their own families.
+  - `SYSTEM_ADMIN`: Grants access to the **Admin App dashboard**. **Mandatory: Google Sign-In required.**
+  - `SUPPORT_AGENT`: Restricted dashboard access.
+- **Onboarding Status**:
+  - **PENDING**: User has requested admin access via Google but not yet approved.
+  - **APPROVED**: Claim is set, user gains full access to `admin_app`.
+  - **REJECTED**: Request denied; user remains a standard member.
+- **Enforcement**:
+  - **Firebase**: Rules check for `request.auth.token.system_role`.
+  - **Go Backend**: gRPC middleware validates the claim for restricted services.
+  - **Flutter**: Navigation guards prevent loading admin modules if the claim is missing.

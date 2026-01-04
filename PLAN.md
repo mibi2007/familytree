@@ -1,30 +1,37 @@
-# PLAN.md - Family Tree Chat Roadmap
+# Family Tree Chat - Project Roadmap
 
-## Phase 1: Infrastructure & Authentication
-- [x] Initialize Melos workspace in `familytree_flutter`.
-- [x] Configure Dev, Stg, Prod environments with Flutter entry points.
-- [ ] Setup Firebase CLI with 3 project targets (Pending Firebase project creation).
-- [ ] Implement `shared_package` for common themes and basic UI components.
-- [/] Implement Authentication (Email/Google) in both User and Admin apps.
-    - [x] Define Auth Domain Entities and Repositories.
-    - [ ] Implement Firebase Auth Repository.
+## Phase 0: Conceptualization & Design (DONE)
+- [x] **Documentation System**: Established `docs/` for Auth, Family, Chat, AI, Admin, and Data.
+- [x] **Architecture Design**: Defined DDD layers, gRPC communication, and Go microservices.
+- [x] **Technical Solutions**: Documented tree snapshot caching, Vietnamese kinship logic, and AI context injection.
+- [x] **Super Admin Strategy**: Defined privacy-first support flows and concierge onboarding.
 
-## Phase 2: Core Chat Features
-- [ ] Implement 1-on-1 Chat.
-- [ ] Implement Group Chat functionality.
-- [ ] Image upload/sharing using Firebase Storage.
-- [ ] Real-time updates with Firestore.
+## Phase 1: Baseline Infrastructure (CORE DONE)
+- [x] **Flutter Architecture**: Melos workspace initialized with `user_app`, `admin_app`, and `shared_package`.
+- [x] **Firebase Hosting**: Multi-site configuration for `dev`, `stg`, and `prod` with precise app-to-folder mapping.
+- [x] **Deployment Automation**: Unified `deploy.sh` for multi-env builds and gated artifact staging.
+- [x] **Git Remote Integration**: Linked and synced to `github:mibi2007/familytree`.
+- [x] **Exclusion Strategy**: Localized `.gitignore` and `.gitkeep` setup for clean repository management.
+- [ ] **Cloud Connection**: Run `flutterfire configure` for all 3 environments.
 
-## Phase 3: AI Family Assistant (@family)
-- [ ] Integrate Google AI (Gemini) using GenUI.
-- [ ] Implement context-aware prompting for family-related knowledge.
-- [ ] Setup specialized AI chat interface.
+## Phase 2: Backend & Data Foundations (UPCOMING)
+- [ ] **Contract Definition**: Implement `.proto` files in `familytree_go` for core gRPC services.
+- [ ] **Database Setup**: Create Postgres migration scripts (Families, Members, Relationships, Secure Tokens).
+- [ ] **Backend Baseline**: Initialize Go gRPC server with JWT middleware and Audit interceptors.
+- [ ] **Token System**: Implement Secure Token generation and auto-cleanup logic.
 
-## Phase 4: Family Tree Visualization
-- [ ] Design Family Tree data model (Parent-Child relationships).
-- [ ] Create interactive Family Tree visualization component.
-- [ ] Integrate Family Tree with AI (ask AI to "show me the tree").
+## Phase 3: Core Implementation (UPCOMING)
+- [ ] **Authentication**: Implement shared `AuthRepository` with Google/Email/Phone (User) and Google-only (Admin).
+- [ ] **Family Core**: implement Member CRUD, Tree reindexing, and Snapshot caching.
+- [ ] **Social & Chat**: Implement real-time messaging with Interactive Mentions and Rich Media.
+- [ ] **Super Admin Console**: Build the User Directory with accent-neutral search and Approval Dashboard.
 
-## Phase 5: Admin & Management
-- [ ] Admin app: Manage family members, roles, and tree structure.
-- [ ] Dashboard for family activity overview.
+## Phase 4: AI & Advanced UX (UPCOMING)
+- [ ] **AI Assistant**: Integrate Gemini with Snapshot context and Relative Pronunciation awareness.
+- [ ] **GenUI Implementation**: Build the engine for interactive widgets within the Chat UI.
+- [ ] **Timeline & Events**: Automate family milestones and shared calendars.
+
+## Verification & Launch
+- [ ] Integration Testing (Go <> Flutter).
+- [ ] Multi-environment Deployment Validation.
+- [ ] Super Admin Handover.

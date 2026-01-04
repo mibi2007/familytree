@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_package/shared_package.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'core/config/firebase_options_prod.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // TODO: Initialize Firebase with Production Options (Once configured)
-  // await Firebase.initializeApp(options: DefaultFirebaseOptionsProd.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptionsProd.currentPlatform,
+  );
   runApp(const ProviderScope(child: MyApp()));
 }
 
