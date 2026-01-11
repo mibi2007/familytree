@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Open Localhost:8080 (Chrome)",
+            "name": "Open Localhost:8081 (Chrome)",
             "request": "launch",
             "type": "chrome",
-            "url": "http://127.0.0.1:8080",
+            "url": "http://127.0.0.1:8081",
             
         },
         {
@@ -18,8 +18,7 @@
                 "-d",
                 "web-server",
                 "--web-port",
-                "8080",
-                "--web-experimental-hot-reload",
+                "8082",
                 "--debug"
             ]
         },

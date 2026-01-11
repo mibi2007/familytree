@@ -6,6 +6,9 @@ However, we follow DDD within `shared_package` for core logic and within `apps` 
 
 ```
 lib/features/family/
+├── application/
+│   ├── providers/
+│   │   └── family_provider.dart # Riverpod Controllers/Providers
 ├── domain/
 │   ├── member.dart          # Freezed Entity
 │   └── family_repository.dart # Abstract Class (Interface)
@@ -13,8 +16,6 @@ lib/features/family/
 │   └── repositories/
 │       └── grpc_family_repository.dart # Implementation calls gRPC client
 ├── presentation/
-│   ├── providers/
-│   │   └── family_provider.dart # Riverpod Controllers/Providers
 │   ├── widgets/
 │   │   └── family_tree_canvas.dart
 │   └── pages/
@@ -28,12 +29,16 @@ lib/features/family/
 - **Failures**: Use `fpdart`'s `Either<Failure, Success>` return types for Repository methods.
 - **No Flutter Widgets**: Domain files should be pure Dart.
 
-### 2. Infrastructure Layer
+### 2. Application Layer
+- **Providers/Controllers**: Application Logic flows here. Use `Riverpod` providers to connect UI with Domain/Infrastructure.
+- **Orchestration**: Manage state and coordinate Repositories.
+
+### 3. Infrastructure Layer
 - **Repositories**: Implement Domain interfaces.
 - **Data Sources**: Call `grpc_client` providers.
 - **DTOs**: Protobuf generated classes live here (technically imported from `generated/`). Map Protobuf objects to Domain entities immediately.
 
-### 3. Presentation Layer
+### 4. Presentation Layer
 - **Riverpod**:
     - **Providers**: `ref.watch(repositoryProvider)`.
     - **Controllers**: `AsyncNotifier` or `StateNotifier` for managing UI state.
@@ -49,5 +54,5 @@ lib/features/family/
 1.  Define `Entity` in `domain/`.
 2.  Define `Repository` interface in `domain/`.
 3.  Implement `Repository` in `infrastructure/` (calling gRPC).
-4.  Create `Provider` in `presentation/providers/`.
+4.  Create `Provider` in `application/providers/`.
 5.  Build UI.
