@@ -41,7 +41,125 @@ final class AuthStateProvider
   }
 }
 
-String _$authStateHash() => r'04e34f9ca8c1cb39b115743dd141436ea545c792';
+String _$authStateHash() => r'46dda190b08536087a58ddc8fde693973fe947de';
+
+@ProviderFor(adminStatus)
+final adminStatusProvider = AdminStatusProvider._();
+
+final class AdminStatusProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<auth_proto.AuthStatusResponse>,
+          auth_proto.AuthStatusResponse,
+          FutureOr<auth_proto.AuthStatusResponse>
+        >
+    with
+        $FutureModifier<auth_proto.AuthStatusResponse>,
+        $FutureProvider<auth_proto.AuthStatusResponse> {
+  AdminStatusProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'adminStatusProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$adminStatusHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<auth_proto.AuthStatusResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<auth_proto.AuthStatusResponse> create(Ref ref) {
+    return adminStatus(ref);
+  }
+}
+
+String _$adminStatusHash() => r'ec9914493f9ffb30507b8686e7f26fb02b5f5cfe';
+
+@ProviderFor(userProfile)
+final userProfileProvider = UserProfileFamily._();
+
+final class UserProfileProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<common_proto.UserProfile>,
+          common_proto.UserProfile,
+          FutureOr<common_proto.UserProfile>
+        >
+    with
+        $FutureModifier<common_proto.UserProfile>,
+        $FutureProvider<common_proto.UserProfile> {
+  UserProfileProvider._({
+    required UserProfileFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'userProfileProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$userProfileHash();
+
+  @override
+  String toString() {
+    return r'userProfileProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<common_proto.UserProfile> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<common_proto.UserProfile> create(Ref ref) {
+    final argument = this.argument as String;
+    return userProfile(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserProfileProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$userProfileHash() => r'fe35fd9ce373c87acb05b5da7c15f4bd66a61b41';
+
+final class UserProfileFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<common_proto.UserProfile>, String> {
+  UserProfileFamily._()
+    : super(
+        retry: null,
+        name: r'userProfileProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  UserProfileProvider call(String userId) =>
+      UserProfileProvider._(argument: userId, from: this);
+
+  @override
+  String toString() => r'userProfileProvider';
+}
 
 @ProviderFor(AuthController)
 final authControllerProvider = AuthControllerProvider._();

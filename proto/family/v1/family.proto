@@ -14,6 +14,7 @@ service FamilyService {
   rpc GetFamily(GetFamilyRequest) returns (Family);
   rpc UpdateFamilyOwner(UpdateFamilyOwnerRequest) returns (Family);
   rpc LeaveFamily(LeaveFamilyRequest) returns (google.protobuf.Empty);
+  rpc ListMyFamilies(google.protobuf.Empty) returns (ListMyFamiliesResponse);
 
   // Member Management
   rpc AddMember(AddMemberRequest) returns (Member);
@@ -22,6 +23,11 @@ service FamilyService {
   
   // Tree Sync
   rpc GetFamilyTree(GetFamilyTreeRequest) returns (FamilyTree);
+  rpc JoinFamily(JoinFamilyRequest) returns (Family);
+}
+
+message JoinFamilyRequest {
+  string invite_token = 1;
 }
 
 message Family {
@@ -86,4 +92,8 @@ message FamilyTree {
   string version_hash = 2;
   repeated Member members = 3;
   bool not_modified = 4;
+}
+
+message ListMyFamiliesResponse {
+  repeated Family families = 1;
 }

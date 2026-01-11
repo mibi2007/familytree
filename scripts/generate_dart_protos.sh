@@ -12,6 +12,7 @@ protoc --dart_out=grpc:familytree_flutter/packages/shared_package/lib/infrastruc
     proto/common/v1/common.proto \
     proto/auth/v1/auth.proto \
     proto/family/v1/family.proto \
+    proto/chat/v1/chat.proto \
     google/protobuf/timestamp.proto \
     google/protobuf/empty.proto
 

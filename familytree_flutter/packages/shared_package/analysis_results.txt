@@ -1,0 +1,48 @@
+Analyzing shared_package...                                     
+
+   info - Library names are not necessary - lib\domain\domain.dart:1:9 - unnecessary_library_name
+  error - Target of URI doesn't exist: 'package:shared_package/domain/entities/auth_user.freezed.dart' - lib\domain\entities\auth_user.dart:3:6 - uri_does_not_exist
+  error - Target of URI hasn't been generated: 'package:shared_package/domain/entities/auth_user.g.dart' - lib\domain\entities\auth_user.dart:4:6 - uri_has_not_been_generated
+  error - The name '_AuthUser' isn't a type and can't be used in a redirected constructor - lib\domain\entities\auth_user.dart:13:8 - redirect_to_non_class
+  error - The method '_$AuthUserFromJson' isn't defined for the type 'AuthUser' - lib\domain\entities\auth_user.dart:15:59 - undefined_method
+  error - Target of URI hasn't been generated: 'package:shared_package/infrastructure/config/app_config.g.dart' - lib\infrastructure\config\app_config.dart:3:6 - uri_has_not_been_generated
+  error - Target of URI hasn't been generated: 'package:shared_package/infrastructure/grpc/grpc_client.g.dart' - lib\infrastructure\grpc\grpc_client.dart:12:6 - uri_has_not_been_generated
+  error - Undefined name 'appConfigProvider' - lib\infrastructure\grpc\grpc_client.dart:16:28 - undefined_identifier
+  error - Undefined name 'grpcChannelProvider' - lib\infrastructure\grpc\grpc_client.dart:34:29 - undefined_identifier
+  error - Undefined name 'authRepositoryProvider' - lib\infrastructure\grpc\grpc_client.dart:35:30 - undefined_identifier
+  error - Undefined name 'grpcChannelProvider' - lib\infrastructure\grpc\grpc_client.dart:42:29 - undefined_identifier
+  error - Undefined name 'authRepositoryProvider' - lib\infrastructure\grpc\grpc_client.dart:43:30 - undefined_identifier
+   info - Library names are not necessary - lib\infrastructure\infrastructure.dart:1:9 - unnecessary_library_name
+   info - Library names are not necessary - lib\presentation\presentation.dart:1:9 - unnecessary_library_name
+  error - Target of URI hasn't been generated: 'package:shared_package/presentation/providers/auth_provider.g.dart' - lib\presentation\providers\auth_provider.dart:8:6 - uri_has_not_been_generated
+  error - Undefined name 'authRepositoryProvider' - lib\presentation\providers\auth_provider.dart:12:20 - undefined_identifier
+warning - The method doesn't override an inherited method - lib\presentation\providers\auth_provider.dart:18:18 - override_on_non_overriding_member
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:21:5 - undefined_identifier
+  error - Undefined name 'ref' - lib\presentation\providers\auth_provider.dart:22:18 - undefined_identifier
+  error - Undefined name 'authRepositoryProvider' - lib\presentation\providers\auth_provider.dart:22:27 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:26:24 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:32:5 - undefined_identifier
+  error - Undefined name 'ref' - lib\presentation\providers\auth_provider.dart:33:18 - undefined_identifier
+  error - Undefined name 'authRepositoryProvider' - lib\presentation\providers\auth_provider.dart:33:27 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:36:24 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:42:5 - undefined_identifier
+  error - Undefined name 'ref' - lib\presentation\providers\auth_provider.dart:43:18 - undefined_identifier
+  error - Undefined name 'authRepositoryProvider' - lib\presentation\providers\auth_provider.dart:43:27 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:46:24 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:57:5 - undefined_identifier
+  error - Undefined name 'ref' - lib\presentation\providers\auth_provider.dart:58:18 - undefined_identifier
+  error - Undefined name 'authRepositoryProvider' - lib\presentation\providers\auth_provider.dart:58:27 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:65:5 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:69:5 - undefined_identifier
+  error - Undefined name 'ref' - lib\presentation\providers\auth_provider.dart:70:18 - undefined_identifier
+  error - Undefined name 'authRepositoryProvider' - lib\presentation\providers\auth_provider.dart:70:27 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:73:24 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:79:5 - undefined_identifier
+  error - Undefined name 'ref' - lib\presentation\providers\auth_provider.dart:80:11 - undefined_identifier
+  error - Undefined name 'authRepositoryProvider' - lib\presentation\providers\auth_provider.dart:80:20 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:81:5 - undefined_identifier
+  error - Undefined name 'ref' - lib\presentation\providers\auth_provider.dart:86:22 - undefined_identifier
+  error - Undefined name 'authClientProvider' - lib\presentation\providers\auth_provider.dart:86:31 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:90:7 - undefined_identifier
+  error - Undefined name 'state' - lib\presentation\providers\auth_provider.dart:92:7 - undefined_identifier
+

@@ -24,6 +24,14 @@ const UserProfile$json = {
     {'1': 'phone', '3': 3, '4': 1, '5': 9, '10': 'phone'},
     {'1': 'display_name', '3': 4, '4': 1, '5': 9, '10': 'displayName'},
     {'1': 'photo_url', '3': 5, '4': 1, '5': 9, '10': 'photoUrl'},
+    {
+      '1': 'created_at',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'createdAt'
+    },
   ],
 };
 
@@ -31,7 +39,8 @@ const UserProfile$json = {
 final $typed_data.Uint8List userProfileDescriptor = $convert.base64Decode(
     'CgtVc2VyUHJvZmlsZRIOCgJpZBgBIAEoCVICaWQSFAoFZW1haWwYAiABKAlSBWVtYWlsEhQKBX'
     'Bob25lGAMgASgJUgVwaG9uZRIhCgxkaXNwbGF5X25hbWUYBCABKAlSC2Rpc3BsYXlOYW1lEhsK'
-    'CXBob3RvX3VybBgFIAEoCVIIcGhvdG9Vcmw=');
+    'CXBob3RvX3VybBgFIAEoCVIIcGhvdG9VcmwSOQoKY3JlYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS'
+    '5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdA==');
 
 @$core.Deprecated('Use paginatedRequestDescriptor instead')
 const PaginatedRequest$json = {

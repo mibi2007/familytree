@@ -62,6 +62,13 @@ class FamilyServiceClient extends $grpc.Client {
     return $createUnaryCall(_$leaveFamily, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.ListMyFamiliesResponse> listMyFamilies(
+    $1.Empty request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$listMyFamilies, request, options: options);
+  }
+
   /// Member Management
   $grpc.ResponseFuture<$0.Member> addMember(
     $0.AddMemberRequest request, {
@@ -92,6 +99,13 @@ class FamilyServiceClient extends $grpc.Client {
     return $createUnaryCall(_$getFamilyTree, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.Family> joinFamily(
+    $0.JoinFamilyRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$joinFamily, request, options: options);
+  }
+
   // method descriptors
 
   static final _$createFamily =
@@ -113,6 +127,11 @@ class FamilyServiceClient extends $grpc.Client {
           '/family.v1.FamilyService/LeaveFamily',
           ($0.LeaveFamilyRequest value) => value.writeToBuffer(),
           $1.Empty.fromBuffer);
+  static final _$listMyFamilies =
+      $grpc.ClientMethod<$1.Empty, $0.ListMyFamiliesResponse>(
+          '/family.v1.FamilyService/ListMyFamilies',
+          ($1.Empty value) => value.writeToBuffer(),
+          $0.ListMyFamiliesResponse.fromBuffer);
   static final _$addMember = $grpc.ClientMethod<$0.AddMemberRequest, $0.Member>(
       '/family.v1.FamilyService/AddMember',
       ($0.AddMemberRequest value) => value.writeToBuffer(),
@@ -132,6 +151,11 @@ class FamilyServiceClient extends $grpc.Client {
           '/family.v1.FamilyService/GetFamilyTree',
           ($0.GetFamilyTreeRequest value) => value.writeToBuffer(),
           $0.FamilyTree.fromBuffer);
+  static final _$joinFamily =
+      $grpc.ClientMethod<$0.JoinFamilyRequest, $0.Family>(
+          '/family.v1.FamilyService/JoinFamily',
+          ($0.JoinFamilyRequest value) => value.writeToBuffer(),
+          $0.Family.fromBuffer);
 }
 
 @$pb.GrpcServiceName('family.v1.FamilyService')
@@ -170,6 +194,13 @@ abstract class FamilyServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.LeaveFamilyRequest.fromBuffer(value),
         ($1.Empty value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.ListMyFamiliesResponse>(
+        'ListMyFamilies',
+        listMyFamilies_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($0.ListMyFamiliesResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.AddMemberRequest, $0.Member>(
         'AddMember',
         addMember_Pre,
@@ -201,6 +232,13 @@ abstract class FamilyServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.GetFamilyTreeRequest.fromBuffer(value),
         ($0.FamilyTree value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.JoinFamilyRequest, $0.Family>(
+        'JoinFamily',
+        joinFamily_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.JoinFamilyRequest.fromBuffer(value),
+        ($0.Family value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.Family> createFamily_Pre($grpc.ServiceCall $call,
@@ -235,6 +273,14 @@ abstract class FamilyServiceBase extends $grpc.Service {
   $async.Future<$1.Empty> leaveFamily(
       $grpc.ServiceCall call, $0.LeaveFamilyRequest request);
 
+  $async.Future<$0.ListMyFamiliesResponse> listMyFamilies_Pre(
+      $grpc.ServiceCall $call, $async.Future<$1.Empty> $request) async {
+    return listMyFamilies($call, await $request);
+  }
+
+  $async.Future<$0.ListMyFamiliesResponse> listMyFamilies(
+      $grpc.ServiceCall call, $1.Empty request);
+
   $async.Future<$0.Member> addMember_Pre($grpc.ServiceCall $call,
       $async.Future<$0.AddMemberRequest> $request) async {
     return addMember($call, await $request);
@@ -266,4 +312,12 @@ abstract class FamilyServiceBase extends $grpc.Service {
 
   $async.Future<$0.FamilyTree> getFamilyTree(
       $grpc.ServiceCall call, $0.GetFamilyTreeRequest request);
+
+  $async.Future<$0.Family> joinFamily_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.JoinFamilyRequest> $request) async {
+    return joinFamily($call, await $request);
+  }
+
+  $async.Future<$0.Family> joinFamily(
+      $grpc.ServiceCall call, $0.JoinFamilyRequest request);
 }

@@ -15,6 +15,7 @@ import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
+import 'package:protobuf/well_known_types/google/protobuf/empty.pb.dart' as $2;
 
 import '../../common/v1/common.pb.dart' as $1;
 import 'auth.pb.dart' as $0;
@@ -78,6 +79,20 @@ class AuthServiceClient extends $grpc.Client {
     return $createUnaryCall(_$syncUserProfile, request, options: options);
   }
 
+  $grpc.ResponseFuture<$1.UserProfile> getUserProfile(
+    $0.GetUserProfileRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getUserProfile, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.AuthStatusResponse> getAuthStatus(
+    $2.Empty request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getAuthStatus, request, options: options);
+  }
+
   // method descriptors
 
   static final _$generateInviteToken =
@@ -110,6 +125,16 @@ class AuthServiceClient extends $grpc.Client {
           '/auth.v1.AuthService/SyncUserProfile',
           ($0.SyncUserProfileRequest value) => value.writeToBuffer(),
           $1.UserProfile.fromBuffer);
+  static final _$getUserProfile =
+      $grpc.ClientMethod<$0.GetUserProfileRequest, $1.UserProfile>(
+          '/auth.v1.AuthService/GetUserProfile',
+          ($0.GetUserProfileRequest value) => value.writeToBuffer(),
+          $1.UserProfile.fromBuffer);
+  static final _$getAuthStatus =
+      $grpc.ClientMethod<$2.Empty, $0.AuthStatusResponse>(
+          '/auth.v1.AuthService/GetAuthStatus',
+          ($2.Empty value) => value.writeToBuffer(),
+          $0.AuthStatusResponse.fromBuffer);
 }
 
 @$pb.GrpcServiceName('auth.v1.AuthService')
@@ -170,6 +195,21 @@ abstract class AuthServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.SyncUserProfileRequest.fromBuffer(value),
         ($1.UserProfile value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetUserProfileRequest, $1.UserProfile>(
+        'GetUserProfile',
+        getUserProfile_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.GetUserProfileRequest.fromBuffer(value),
+        ($1.UserProfile value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.Empty, $0.AuthStatusResponse>(
+        'GetAuthStatus',
+        getAuthStatus_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.Empty.fromBuffer(value),
+        ($0.AuthStatusResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.InviteToken> generateInviteToken_Pre($grpc.ServiceCall $call,
@@ -223,4 +263,20 @@ abstract class AuthServiceBase extends $grpc.Service {
 
   $async.Future<$1.UserProfile> syncUserProfile(
       $grpc.ServiceCall call, $0.SyncUserProfileRequest request);
+
+  $async.Future<$1.UserProfile> getUserProfile_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.GetUserProfileRequest> $request) async {
+    return getUserProfile($call, await $request);
+  }
+
+  $async.Future<$1.UserProfile> getUserProfile(
+      $grpc.ServiceCall call, $0.GetUserProfileRequest request);
+
+  $async.Future<$0.AuthStatusResponse> getAuthStatus_Pre(
+      $grpc.ServiceCall $call, $async.Future<$2.Empty> $request) async {
+    return getAuthStatus($call, await $request);
+  }
+
+  $async.Future<$0.AuthStatusResponse> getAuthStatus(
+      $grpc.ServiceCall call, $2.Empty request);
 }

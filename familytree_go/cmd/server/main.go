@@ -4,14 +4,24 @@ import (
 	"context"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"github.com/mibi2007/familytree/familytree_go/internal/config"
 	"github.com/mibi2007/familytree/familytree_go/internal/db"
+	authApp "github.com/mibi2007/familytree/familytree_go/internal/features/auth/application"
+	authPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/auth/infrastructure/postgres"
+	authGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/auth/interfaces/grpc"
+	chatApp "github.com/mibi2007/familytree/familytree_go/internal/features/chat/application"
+	chatPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/chat/infrastructure/postgres"
+	chatGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/chat/interfaces/grpc"
+	familyApp "github.com/mibi2007/familytree/familytree_go/internal/features/family/application"
+	familyPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/family/infrastructure/postgres"
+	familyGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/family/interfaces/grpc"
+	systemPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/system/infrastructure/postgres"
 	"github.com/mibi2007/familytree/familytree_go/internal/middleware"
-	"github.com/mibi2007/familytree/familytree_go/internal/repository"
-	"github.com/mibi2007/familytree/familytree_go/internal/services"
 	authv1 "github.com/mibi2007/familytree/familytree_go/proto/auth/v1"
+	chatv1 "github.com/mibi2007/familytree/familytree_go/proto/chat/v1"
 	familyv1 "github.com/mibi2007/familytree/familytree_go/proto/family/v1"
 
 	firebase "firebase.google.com/go/v4"
@@ -31,8 +41,13 @@ func main() {
 	defer dbConn.Close()
 
 	// 2. Firebase Initialization
-	// In local/emulator mode, we don't need a real service account.
-	app, err := firebase.NewApp(context.Background(), nil, option.WithCredentialsFile(""))
+	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
+	if projectID == "" {
+		projectID = "mibi-family-tree-dev"
+	}
+
+	conf := &firebase.Config{ProjectID: projectID}
+	app, err := firebase.NewApp(context.Background(), conf, option.WithCredentialsFile(""))
 	if err != nil {
 		log.Fatalf("error initializing firebase app: %v", err)
 	}
@@ -41,42 +56,56 @@ func main() {
 		log.Fatalf("error getting firebase auth client: %v", err)
 	}
 
-	// 3. Initialize Repositories
-	tokenRepo := repository.NewTokenRepository(dbConn)
-	logRepo := repository.NewLogRepository(dbConn)
-	userRepo := repository.NewUserRepository(dbConn)
+	// 3. Initialize Repositories (Infrastructure Layer)
+	tokenRepo := authPostgres.NewTokenRepository(dbConn)
+	userRepo := authPostgres.NewUserRepository(dbConn)
+	adminRepo := authPostgres.NewSuperAdminRequestRepository(dbConn)
+	familyRepo := familyPostgres.NewFamilyRepository(dbConn)
+	memberRepo := familyPostgres.NewMemberRepository(dbConn)
+	logRepo := systemPostgres.NewLogRepository(dbConn)
+	chatRepo := chatPostgres.NewChatRepository(dbConn)
 
-	// 4. Start Background Jobs
+	// 4. Initialize Services (Application Layer)
+	authService := authApp.NewAuthService(tokenRepo, userRepo, adminRepo)
+	familyService := familyApp.NewFamilyService(familyRepo, memberRepo, tokenRepo)
+	chatPublisher := chatApp.NewMemoryChatPublisher()
+	chatService := chatApp.NewChatService(chatRepo, chatPublisher)
+
+	// 5. Start Background Jobs
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	cleanupJob := services.NewTokenCleanupJob(tokenRepo)
+	cleanupJob := authApp.NewTokenCleanupJob(tokenRepo)
 	go cleanupJob.Start(ctx, 24*time.Hour)
 
-	// 5. Setup Interceptors
+	// 6. Setup Interceptors
 	authInterceptor := middleware.NewAuthInterceptor(authClient)
+
+	// 7. Initialize gRPC Server with Interceptors
+	s := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			authInterceptor.Unary(),
+			middleware.AuditInterceptor(logRepo),
+		),
+		grpc.ChainStreamInterceptor(
+			authInterceptor.Stream(),
+		),
+	)
+
+	// 8. Register Services (Interface Layer)
+	authv1.RegisterAuthServiceServer(s, authGrpc.NewAuthHandler(authService))
+	familyv1.RegisterFamilyServiceServer(s, familyGrpc.NewFamilyHandler(familyService))
+	chatv1.RegisterChatServiceServer(s, chatGrpc.NewChatHandler(chatService))
+
+	// 9. Reflection for Debugging
+	reflection.Register(s)
 
 	lis, err := net.Listen("tcp", ":"+cfg.Port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	// 6. Initialize gRPC Server with Interceptors
-	s := grpc.NewServer(
-		grpc.ChainUnaryInterceptor(
-			authInterceptor.Unary(),
-			middleware.AuditInterceptor(logRepo),
-		),
-	)
-
-	// 7. Register Services
-	authv1.RegisterAuthServiceServer(s, services.NewAuthService(tokenRepo, userRepo))
-	familyv1.RegisterFamilyServiceServer(s, services.NewFamilyService())
-
-	// 8. Reflection for Debugging
-	reflection.Register(s)
-
-	log.Printf("server listening at %v", lis.Addr())
+	log.Printf("Starting gRPC server on port %s", cfg.Port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

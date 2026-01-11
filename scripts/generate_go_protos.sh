@@ -11,6 +11,7 @@ protoc --go_out=familytree_go --go_opt=paths=source_relative \
     -I . \
     proto/common/v1/common.proto \
     proto/auth/v1/auth.proto \
-    proto/family/v1/family.proto
+    proto/family/v1/family.proto \
+    proto/chat/v1/chat.proto
 
 echo "Go gRPC code generated in familytree_go/proto/"

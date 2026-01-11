@@ -6,7 +6,6 @@
 # IDEs
 .idea/
 *.iml
-.vscode/
 
 # Build & Metadata
 .firebase/

@@ -18,6 +18,60 @@ import 'package:protobuf/well_known_types/google/protobuf/timestamp.pb.dart'
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
+class JoinFamilyRequest extends $pb.GeneratedMessage {
+  factory JoinFamilyRequest({
+    $core.String? inviteToken,
+  }) {
+    final result = create();
+    if (inviteToken != null) result.inviteToken = inviteToken;
+    return result;
+  }
+
+  JoinFamilyRequest._();
+
+  factory JoinFamilyRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory JoinFamilyRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'JoinFamilyRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'family.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'inviteToken')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  JoinFamilyRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  JoinFamilyRequest copyWith(void Function(JoinFamilyRequest) updates) =>
+      super.copyWith((message) => updates(message as JoinFamilyRequest))
+          as JoinFamilyRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static JoinFamilyRequest create() => JoinFamilyRequest._();
+  @$core.override
+  JoinFamilyRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static JoinFamilyRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<JoinFamilyRequest>(create);
+  static JoinFamilyRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get inviteToken => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set inviteToken($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasInviteToken() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearInviteToken() => $_clearField(1);
+}
+
 class Family extends $pb.GeneratedMessage {
   factory Family({
     $core.String? id,
@@ -849,6 +903,56 @@ class FamilyTree extends $pb.GeneratedMessage {
   $core.bool hasNotModified() => $_has(3);
   @$pb.TagNumber(4)
   void clearNotModified() => $_clearField(4);
+}
+
+class ListMyFamiliesResponse extends $pb.GeneratedMessage {
+  factory ListMyFamiliesResponse({
+    $core.Iterable<Family>? families,
+  }) {
+    final result = create();
+    if (families != null) result.families.addAll(families);
+    return result;
+  }
+
+  ListMyFamiliesResponse._();
+
+  factory ListMyFamiliesResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ListMyFamiliesResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ListMyFamiliesResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'family.v1'),
+      createEmptyInstance: create)
+    ..pPM<Family>(1, _omitFieldNames ? '' : 'families',
+        subBuilder: Family.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListMyFamiliesResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListMyFamiliesResponse copyWith(
+          void Function(ListMyFamiliesResponse) updates) =>
+      super.copyWith((message) => updates(message as ListMyFamiliesResponse))
+          as ListMyFamiliesResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListMyFamiliesResponse create() => ListMyFamiliesResponse._();
+  @$core.override
+  ListMyFamiliesResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ListMyFamiliesResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListMyFamiliesResponse>(create);
+  static ListMyFamiliesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<Family> get families => $_getList(0);
 }
 
 const $core.bool _omitFieldNames =

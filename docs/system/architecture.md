@@ -18,7 +18,9 @@ graph LR
     - **Protocol**: gRPC (Google Remote Procedure Call) with Protocol Buffers.
     - **Interceptors**: 
       - Client-side: `FirebaseAuthInterceptor` (attaches Bearer token).
-      - Server-side: `AuthInterceptor` (verifies token with Firebase Admin SDK).
+      - Server-side: 
+        - `AuthInterceptor` (verifies token with Firebase Admin SDK).
+        - `AuditInterceptor` (logs sensitive actions).
 2.  **Real-time Messaging**:
     - Handled via **Firebase RTDB** for low-latency delivery.
     - Go server acts as a listener for certain triggers (mentions, events) using the Firebase Go SDK.

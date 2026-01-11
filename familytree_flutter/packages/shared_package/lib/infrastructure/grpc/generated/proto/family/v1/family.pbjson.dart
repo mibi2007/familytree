@@ -15,6 +15,18 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use joinFamilyRequestDescriptor instead')
+const JoinFamilyRequest$json = {
+  '1': 'JoinFamilyRequest',
+  '2': [
+    {'1': 'invite_token', '3': 1, '4': 1, '5': 9, '10': 'inviteToken'},
+  ],
+};
+
+/// Descriptor for `JoinFamilyRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List joinFamilyRequestDescriptor = $convert.base64Decode(
+    'ChFKb2luRmFtaWx5UmVxdWVzdBIhCgxpbnZpdGVfdG9rZW4YASABKAlSC2ludml0ZVRva2Vu');
+
 @$core.Deprecated('Use familyDescriptor instead')
 const Family$json = {
   '1': 'Family',
@@ -210,3 +222,24 @@ final $typed_data.Uint8List familyTreeDescriptor = $convert.base64Decode(
     'CgpGYW1pbHlUcmVlEhsKCWZhbWlseV9pZBgBIAEoCVIIZmFtaWx5SWQSIQoMdmVyc2lvbl9oYX'
     'NoGAIgASgJUgt2ZXJzaW9uSGFzaBIrCgdtZW1iZXJzGAMgAygLMhEuZmFtaWx5LnYxLk1lbWJl'
     'clIHbWVtYmVycxIhCgxub3RfbW9kaWZpZWQYBCABKAhSC25vdE1vZGlmaWVk');
+
+@$core.Deprecated('Use listMyFamiliesResponseDescriptor instead')
+const ListMyFamiliesResponse$json = {
+  '1': 'ListMyFamiliesResponse',
+  '2': [
+    {
+      '1': 'families',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.family.v1.Family',
+      '10': 'families'
+    },
+  ],
+};
+
+/// Descriptor for `ListMyFamiliesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listMyFamiliesResponseDescriptor =
+    $convert.base64Decode(
+        'ChZMaXN0TXlGYW1pbGllc1Jlc3BvbnNlEi0KCGZhbWlsaWVzGAEgAygLMhEuZmFtaWx5LnYxLk'
+        'ZhbWlseVIIZmFtaWxpZXM=');

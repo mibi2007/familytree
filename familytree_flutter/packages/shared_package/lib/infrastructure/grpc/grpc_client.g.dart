@@ -48,7 +48,7 @@ final class GrpcChannelProvider
   }
 }
 
-String _$grpcChannelHash() => r'cefb7040a5e44a361674902612c8df8a6273ba21';
+String _$grpcChannelHash() => r'efd29d7679515a7bf1f6286a85fff009ba3687a3';
 
 @ProviderFor(authClient)
 final authClientProvider = AuthClientProvider._();
@@ -95,7 +95,7 @@ final class AuthClientProvider
   }
 }
 
-String _$authClientHash() => r'edae531efc8af325ca7c1ca190df51004b4e6f6f';
+String _$authClientHash() => r'4609901e5bddd2a4e2d7915e65d69675b5baf025';
 
 @ProviderFor(familyClient)
 final familyClientProvider = FamilyClientProvider._();
@@ -142,4 +142,51 @@ final class FamilyClientProvider
   }
 }
 
-String _$familyClientHash() => r'18a12001c91d15526785d0fb5255e372b5f7fe56';
+String _$familyClientHash() => r'c417317238fa406508d8360c754e8139cc59fe25';
+
+@ProviderFor(chatClient)
+final chatClientProvider = ChatClientProvider._();
+
+final class ChatClientProvider
+    extends
+        $FunctionalProvider<
+          ChatServiceClient,
+          ChatServiceClient,
+          ChatServiceClient
+        >
+    with $Provider<ChatServiceClient> {
+  ChatClientProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'chatClientProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$chatClientHash();
+
+  @$internal
+  @override
+  $ProviderElement<ChatServiceClient> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ChatServiceClient create(Ref ref) {
+    return chatClient(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ChatServiceClient value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ChatServiceClient>(value),
+    );
+  }
+}
+
+String _$chatClientHash() => r'5028e5ed07807a8ac9767aa00b48de0fb933b672';

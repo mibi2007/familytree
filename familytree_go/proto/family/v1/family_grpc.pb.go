@@ -24,10 +24,12 @@ const (
 	FamilyService_GetFamily_FullMethodName         = "/family.v1.FamilyService/GetFamily"
 	FamilyService_UpdateFamilyOwner_FullMethodName = "/family.v1.FamilyService/UpdateFamilyOwner"
 	FamilyService_LeaveFamily_FullMethodName       = "/family.v1.FamilyService/LeaveFamily"
+	FamilyService_ListMyFamilies_FullMethodName    = "/family.v1.FamilyService/ListMyFamilies"
 	FamilyService_AddMember_FullMethodName         = "/family.v1.FamilyService/AddMember"
 	FamilyService_UpdateMember_FullMethodName      = "/family.v1.FamilyService/UpdateMember"
 	FamilyService_DeleteMember_FullMethodName      = "/family.v1.FamilyService/DeleteMember"
 	FamilyService_GetFamilyTree_FullMethodName     = "/family.v1.FamilyService/GetFamilyTree"
+	FamilyService_JoinFamily_FullMethodName        = "/family.v1.FamilyService/JoinFamily"
 )
 
 // FamilyServiceClient is the client API for FamilyService service.
@@ -39,12 +41,14 @@ type FamilyServiceClient interface {
 	GetFamily(ctx context.Context, in *GetFamilyRequest, opts ...grpc.CallOption) (*Family, error)
 	UpdateFamilyOwner(ctx context.Context, in *UpdateFamilyOwnerRequest, opts ...grpc.CallOption) (*Family, error)
 	LeaveFamily(ctx context.Context, in *LeaveFamilyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListMyFamilies(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListMyFamiliesResponse, error)
 	// Member Management
 	AddMember(ctx context.Context, in *AddMemberRequest, opts ...grpc.CallOption) (*Member, error)
 	UpdateMember(ctx context.Context, in *UpdateMemberRequest, opts ...grpc.CallOption) (*Member, error)
 	DeleteMember(ctx context.Context, in *DeleteMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Tree Sync
 	GetFamilyTree(ctx context.Context, in *GetFamilyTreeRequest, opts ...grpc.CallOption) (*FamilyTree, error)
+	JoinFamily(ctx context.Context, in *JoinFamilyRequest, opts ...grpc.CallOption) (*Family, error)
 }
 
 type familyServiceClient struct {
@@ -95,6 +99,16 @@ func (c *familyServiceClient) LeaveFamily(ctx context.Context, in *LeaveFamilyRe
 	return out, nil
 }
 
+func (c *familyServiceClient) ListMyFamilies(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListMyFamiliesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyFamiliesResponse)
+	err := c.cc.Invoke(ctx, FamilyService_ListMyFamilies_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *familyServiceClient) AddMember(ctx context.Context, in *AddMemberRequest, opts ...grpc.CallOption) (*Member, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Member)
@@ -135,6 +149,16 @@ func (c *familyServiceClient) GetFamilyTree(ctx context.Context, in *GetFamilyTr
 	return out, nil
 }
 
+func (c *familyServiceClient) JoinFamily(ctx context.Context, in *JoinFamilyRequest, opts ...grpc.CallOption) (*Family, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Family)
+	err := c.cc.Invoke(ctx, FamilyService_JoinFamily_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FamilyServiceServer is the server API for FamilyService service.
 // All implementations must embed UnimplementedFamilyServiceServer
 // for forward compatibility.
@@ -144,12 +168,14 @@ type FamilyServiceServer interface {
 	GetFamily(context.Context, *GetFamilyRequest) (*Family, error)
 	UpdateFamilyOwner(context.Context, *UpdateFamilyOwnerRequest) (*Family, error)
 	LeaveFamily(context.Context, *LeaveFamilyRequest) (*emptypb.Empty, error)
+	ListMyFamilies(context.Context, *emptypb.Empty) (*ListMyFamiliesResponse, error)
 	// Member Management
 	AddMember(context.Context, *AddMemberRequest) (*Member, error)
 	UpdateMember(context.Context, *UpdateMemberRequest) (*Member, error)
 	DeleteMember(context.Context, *DeleteMemberRequest) (*emptypb.Empty, error)
 	// Tree Sync
 	GetFamilyTree(context.Context, *GetFamilyTreeRequest) (*FamilyTree, error)
+	JoinFamily(context.Context, *JoinFamilyRequest) (*Family, error)
 	mustEmbedUnimplementedFamilyServiceServer()
 }
 
@@ -172,6 +198,9 @@ func (UnimplementedFamilyServiceServer) UpdateFamilyOwner(context.Context, *Upda
 func (UnimplementedFamilyServiceServer) LeaveFamily(context.Context, *LeaveFamilyRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method LeaveFamily not implemented")
 }
+func (UnimplementedFamilyServiceServer) ListMyFamilies(context.Context, *emptypb.Empty) (*ListMyFamiliesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyFamilies not implemented")
+}
 func (UnimplementedFamilyServiceServer) AddMember(context.Context, *AddMemberRequest) (*Member, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddMember not implemented")
 }
@@ -183,6 +212,9 @@ func (UnimplementedFamilyServiceServer) DeleteMember(context.Context, *DeleteMem
 }
 func (UnimplementedFamilyServiceServer) GetFamilyTree(context.Context, *GetFamilyTreeRequest) (*FamilyTree, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetFamilyTree not implemented")
+}
+func (UnimplementedFamilyServiceServer) JoinFamily(context.Context, *JoinFamilyRequest) (*Family, error) {
+	return nil, status.Error(codes.Unimplemented, "method JoinFamily not implemented")
 }
 func (UnimplementedFamilyServiceServer) mustEmbedUnimplementedFamilyServiceServer() {}
 func (UnimplementedFamilyServiceServer) testEmbeddedByValue()                       {}
@@ -277,6 +309,24 @@ func _FamilyService_LeaveFamily_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FamilyService_ListMyFamilies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FamilyServiceServer).ListMyFamilies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FamilyService_ListMyFamilies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FamilyServiceServer).ListMyFamilies(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FamilyService_AddMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddMemberRequest)
 	if err := dec(in); err != nil {
@@ -349,6 +399,24 @@ func _FamilyService_GetFamilyTree_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FamilyService_JoinFamily_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JoinFamilyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FamilyServiceServer).JoinFamily(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FamilyService_JoinFamily_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FamilyServiceServer).JoinFamily(ctx, req.(*JoinFamilyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FamilyService_ServiceDesc is the grpc.ServiceDesc for FamilyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -373,6 +441,10 @@ var FamilyService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FamilyService_LeaveFamily_Handler,
 		},
 		{
+			MethodName: "ListMyFamilies",
+			Handler:    _FamilyService_ListMyFamilies_Handler,
+		},
+		{
 			MethodName: "AddMember",
 			Handler:    _FamilyService_AddMember_Handler,
 		},
@@ -387,6 +459,10 @@ var FamilyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFamilyTree",
 			Handler:    _FamilyService_GetFamilyTree_Handler,
+		},
+		{
+			MethodName: "JoinFamily",
+			Handler:    _FamilyService_JoinFamily_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

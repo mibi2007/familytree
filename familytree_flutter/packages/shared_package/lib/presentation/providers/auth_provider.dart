@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:protobuf/well_known_types/google/protobuf/empty.pb.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../infrastructure/grpc/generated/proto/auth/v1/auth.pbgrpc.dart' as auth_proto;
+import '../../infrastructure/grpc/generated/proto/common/v1/common.pb.dart' as common_proto;
 import '../../infrastructure/grpc/grpc_client.dart';
 import '../../infrastructure/repositories/firebase_auth_repository.dart';
 
@@ -10,6 +12,23 @@ part 'auth_provider.g.dart';
 @riverpod
 Stream<fb.User?> authState(Ref ref) {
   return ref.watch(authRepositoryProvider).authStateChanges;
+}
+
+@riverpod
+Future<auth_proto.AuthStatusResponse> adminStatus(Ref ref) async {
+  final user = await ref.watch(authStateProvider.future);
+  if (user == null) {
+    throw Exception('User not authenticated');
+  }
+
+  final client = ref.read(authClientProvider);
+  return client.getAuthStatus(Empty());
+}
+
+@riverpod
+Future<common_proto.UserProfile> userProfile(Ref ref, String userId) async {
+  final client = ref.read(authClientProvider);
+  return client.getUserProfile(auth_proto.GetUserProfileRequest(userId: userId));
 }
 
 @riverpod

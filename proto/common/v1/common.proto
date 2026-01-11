@@ -12,6 +12,7 @@ message UserProfile {
   string phone = 3;
   string display_name = 4;
   string photo_url = 5;
+  google.protobuf.Timestamp created_at = 6;
 }
 
 message PaginatedRequest {

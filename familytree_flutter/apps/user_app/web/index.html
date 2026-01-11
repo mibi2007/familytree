@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <!--
+  <head>
+    <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
 
@@ -14,25 +14,159 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="$FLUTTER_BASE_HREF">
+    <base href="$FLUTTER_BASE_HREF" />
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    <!-- Cache Control Meta Tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="user_app">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <!-- Zalo Verification -->
+    <meta name="zalo-platform-site-verification" content="Fl6w8lVZ7YKr_RWSzVaF1XpekZZmdcjlCpGv" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="description" content="PicklePulse App" />
 
-  <title>user_app</title>
-  <link rel="manifest" href="manifest.json">
-</head>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
-</body>
+    <!-- PWA meta tags -->
+    <meta name="theme-color" content="#91d884" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1c19" media="(prefers-color-scheme: dark)" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="PicklePulse" />
+    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <title>PicklePulse</title>
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap" rel="stylesheet" />
+
+    <!-- Version meta tag only -->
+    <meta name="app-version" content="{{APP_VERSION}}" />
+    <style>
+      .flutter-loader {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Lexend', sans-serif;
+        font-optical-sizing: auto;
+        font-weight: normal;
+        font-style: normal;
+        background-color: #fcfdf6; /* Light theme default */
+      }
+
+      /* Dark mode styles */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #1a1c19; /* Dark theme */
+        }
+
+        #loading {
+          background-color: #1a1c19 !important;
+          color: #ffffff !important;
+        }
+      }
+
+      /* Light mode styles (explicit) */
+      @media (prefers-color-scheme: light) {
+        body {
+          background-color: #fcfdf6; /* Light theme */
+        }
+
+        #loading {
+          background-color: #fcfdf6 !important;
+          color: #1a1c19 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading indicator -->
+    <div
+      id="loading"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fcfdf6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        font-family: 'Lexend', sans-serif;
+        color: #1a1c19;
+      "
+    >
+      <div style="text-align: center">
+        <img src="logo.svg" alt="" />
+        <div
+          style="
+            width: 40px;
+            height: 40px;
+            border: 4px solid #333;
+            border-top: 4px solid #91d884;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto 16px;
+          "
+        ></div>
+        <div>Loading PicklePulse...</div>
+      </div>
+    </div>
+    <style>
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <!-- <script src="flutter_bootstrap.js" async></script> -->
+    <script>
+      // prettier-ignore
+      {{flutter_js}} //
+      // prettier-ignore
+      {{flutter_build_config}}
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then(function (registration) {
+              console.log('ServiceWorker registration successful');
+            })
+            .catch(function (err) {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+      }
+
+      _flutter.loader.load({
+        onEntrypointLoaded: async function (engineInitializer) {
+          const loading = document.getElementById('loading');
+          loading.textContent = 'Initializing engine...';
+          const appRunner = await engineInitializer.initializeEngine();
+
+          loading.textContent = 'Running app...';
+          await appRunner.runApp();
+          if (loading) {
+            loading.remove();
+          }
+        },
+      });
+    </script>
+  </body>
 </html>

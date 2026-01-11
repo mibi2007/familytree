@@ -12,6 +12,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -26,6 +27,8 @@ const (
 	AuthService_ListAdminRequests_FullMethodName   = "/auth.v1.AuthService/ListAdminRequests"
 	AuthService_ReviewAdminRequest_FullMethodName  = "/auth.v1.AuthService/ReviewAdminRequest"
 	AuthService_SyncUserProfile_FullMethodName     = "/auth.v1.AuthService/SyncUserProfile"
+	AuthService_GetUserProfile_FullMethodName      = "/auth.v1.AuthService/GetUserProfile"
+	AuthService_GetAuthStatus_FullMethodName       = "/auth.v1.AuthService/GetAuthStatus"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -41,6 +44,8 @@ type AuthServiceClient interface {
 	ReviewAdminRequest(ctx context.Context, in *ReviewAdminRequestRequest, opts ...grpc.CallOption) (*AdminAccessRequest, error)
 	// Profile Management
 	SyncUserProfile(ctx context.Context, in *SyncUserProfileRequest, opts ...grpc.CallOption) (*v1.UserProfile, error)
+	GetUserProfile(ctx context.Context, in *GetUserProfileRequest, opts ...grpc.CallOption) (*v1.UserProfile, error)
+	GetAuthStatus(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AuthStatusResponse, error)
 }
 
 type authServiceClient struct {
@@ -111,6 +116,26 @@ func (c *authServiceClient) SyncUserProfile(ctx context.Context, in *SyncUserPro
 	return out, nil
 }
 
+func (c *authServiceClient) GetUserProfile(ctx context.Context, in *GetUserProfileRequest, opts ...grpc.CallOption) (*v1.UserProfile, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(v1.UserProfile)
+	err := c.cc.Invoke(ctx, AuthService_GetUserProfile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) GetAuthStatus(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AuthStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AuthStatusResponse)
+	err := c.cc.Invoke(ctx, AuthService_GetAuthStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
@@ -124,6 +149,8 @@ type AuthServiceServer interface {
 	ReviewAdminRequest(context.Context, *ReviewAdminRequestRequest) (*AdminAccessRequest, error)
 	// Profile Management
 	SyncUserProfile(context.Context, *SyncUserProfileRequest) (*v1.UserProfile, error)
+	GetUserProfile(context.Context, *GetUserProfileRequest) (*v1.UserProfile, error)
+	GetAuthStatus(context.Context, *emptypb.Empty) (*AuthStatusResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -151,6 +178,12 @@ func (UnimplementedAuthServiceServer) ReviewAdminRequest(context.Context, *Revie
 }
 func (UnimplementedAuthServiceServer) SyncUserProfile(context.Context, *SyncUserProfileRequest) (*v1.UserProfile, error) {
 	return nil, status.Error(codes.Unimplemented, "method SyncUserProfile not implemented")
+}
+func (UnimplementedAuthServiceServer) GetUserProfile(context.Context, *GetUserProfileRequest) (*v1.UserProfile, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUserProfile not implemented")
+}
+func (UnimplementedAuthServiceServer) GetAuthStatus(context.Context, *emptypb.Empty) (*AuthStatusResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAuthStatus not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
@@ -281,6 +314,42 @@ func _AuthService_SyncUserProfile_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_GetUserProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetUserProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetUserProfile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetUserProfile(ctx, req.(*GetUserProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_GetAuthStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetAuthStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetAuthStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetAuthStatus(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -311,6 +380,14 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SyncUserProfile",
 			Handler:    _AuthService_SyncUserProfile_Handler,
+		},
+		{
+			MethodName: "GetUserProfile",
+			Handler:    _AuthService_GetUserProfile_Handler,
+		},
+		{
+			MethodName: "GetAuthStatus",
+			Handler:    _AuthService_GetAuthStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

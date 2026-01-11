@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/mibi2007/familytree/familytree_go/internal/repository"
+	"github.com/mibi2007/familytree/familytree_go/internal/features/system/domain"
 	"google.golang.org/grpc"
 )
 
-func AuditInterceptor(repo *repository.LogRepository) grpc.UnaryServerInterceptor {
+func AuditInterceptor(repo domain.LogRepository) grpc.UnaryServerInterceptor {
 	return func(
 		ctx context.Context,
 		req interface{},
@@ -24,7 +24,7 @@ func AuditInterceptor(repo *repository.LogRepository) grpc.UnaryServerIntercepto
 			user := GetUser(ctx)
 			if user != nil {
 				// Base audit log
-				audit := &repository.AuditLog{
+				audit := &domain.AuditLog{
 					AdminID:   user.UID,
 					Action:    info.FullMethod,
 					CreatedAt: time.Now(),

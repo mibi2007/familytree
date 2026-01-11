@@ -9,7 +9,7 @@ package v1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -29,6 +29,7 @@ type UserProfile struct {
 	Phone         string                 `protobuf:"bytes,3,opt,name=phone,proto3" json:"phone,omitempty"`
 	DisplayName   string                 `protobuf:"bytes,4,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	PhotoUrl      string                 `protobuf:"bytes,5,opt,name=photo_url,json=photoUrl,proto3" json:"photo_url,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -96,6 +97,13 @@ func (x *UserProfile) GetPhotoUrl() string {
 		return x.PhotoUrl
 	}
 	return ""
+}
+
+func (x *UserProfile) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
 }
 
 type PaginatedRequest struct {
@@ -198,13 +206,15 @@ var File_proto_common_v1_common_proto protoreflect.FileDescriptor
 
 const file_proto_common_v1_common_proto_rawDesc = "" +
 	"\n" +
-	"\x1cproto/common/v1/common.proto\x12\tcommon.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x89\x01\n" +
+	"\x1cproto/common/v1/common.proto\x12\tcommon.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc4\x01\n" +
 	"\vUserProfile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x14\n" +
 	"\x05phone\x18\x03 \x01(\tR\x05phone\x12!\n" +
 	"\fdisplay_name\x18\x04 \x01(\tR\vdisplayName\x12\x1b\n" +
-	"\tphoto_url\x18\x05 \x01(\tR\bphotoUrl\"N\n" +
+	"\tphoto_url\x18\x05 \x01(\tR\bphotoUrl\x129\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"N\n" +
 	"\x10PaginatedRequest\x12\x1b\n" +
 	"\tpage_size\x18\x01 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
@@ -226,16 +236,18 @@ func file_proto_common_v1_common_proto_rawDescGZIP() []byte {
 
 var file_proto_common_v1_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_proto_common_v1_common_proto_goTypes = []any{
-	(*UserProfile)(nil),       // 0: common.v1.UserProfile
-	(*PaginatedRequest)(nil),  // 1: common.v1.PaginatedRequest
-	(*PaginatedResponse)(nil), // 2: common.v1.PaginatedResponse
+	(*UserProfile)(nil),           // 0: common.v1.UserProfile
+	(*PaginatedRequest)(nil),      // 1: common.v1.PaginatedRequest
+	(*PaginatedResponse)(nil),     // 2: common.v1.PaginatedResponse
+	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
 }
 var file_proto_common_v1_common_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	3, // 0: common.v1.UserProfile.created_at:type_name -> google.protobuf.Timestamp
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_proto_common_v1_common_proto_init() }

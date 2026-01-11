@@ -13,6 +13,8 @@
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
+import 'package:protobuf/well_known_types/google/protobuf/timestamp.pb.dart'
+    as $0;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
@@ -23,6 +25,7 @@ class UserProfile extends $pb.GeneratedMessage {
     $core.String? phone,
     $core.String? displayName,
     $core.String? photoUrl,
+    $0.Timestamp? createdAt,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -30,6 +33,7 @@ class UserProfile extends $pb.GeneratedMessage {
     if (phone != null) result.phone = phone;
     if (displayName != null) result.displayName = displayName;
     if (photoUrl != null) result.photoUrl = photoUrl;
+    if (createdAt != null) result.createdAt = createdAt;
     return result;
   }
 
@@ -51,6 +55,8 @@ class UserProfile extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'phone')
     ..aOS(4, _omitFieldNames ? '' : 'displayName')
     ..aOS(5, _omitFieldNames ? '' : 'photoUrl')
+    ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -116,6 +122,17 @@ class UserProfile extends $pb.GeneratedMessage {
   $core.bool hasPhotoUrl() => $_has(4);
   @$pb.TagNumber(5)
   void clearPhotoUrl() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $0.Timestamp get createdAt => $_getN(5);
+  @$pb.TagNumber(6)
+  set createdAt($0.Timestamp value) => $_setField(6, value);
+  @$pb.TagNumber(6)
+  $core.bool hasCreatedAt() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCreatedAt() => $_clearField(6);
+  @$pb.TagNumber(6)
+  $0.Timestamp ensureCreatedAt() => $_ensure(5);
 }
 
 class PaginatedRequest extends $pb.GeneratedMessage {

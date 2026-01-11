@@ -10,6 +10,7 @@ import (
 	v1 "github.com/mibi2007/familytree/familytree_go/proto/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -127,6 +128,50 @@ func (RequestStatus) EnumDescriptor() ([]byte, []int) {
 	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{1}
 }
 
+type GetUserProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserProfileRequest) Reset() {
+	*x = GetUserProfileRequest{}
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserProfileRequest) ProtoMessage() {}
+
+func (x *GetUserProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserProfileRequest.ProtoReflect.Descriptor instead.
+func (*GetUserProfileRequest) Descriptor() ([]byte, []int) {
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *GetUserProfileRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
 type InviteToken struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
@@ -140,7 +185,7 @@ type InviteToken struct {
 
 func (x *InviteToken) Reset() {
 	*x = InviteToken{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[0]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -152,7 +197,7 @@ func (x *InviteToken) String() string {
 func (*InviteToken) ProtoMessage() {}
 
 func (x *InviteToken) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[0]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -165,7 +210,7 @@ func (x *InviteToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InviteToken.ProtoReflect.Descriptor instead.
 func (*InviteToken) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{0}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *InviteToken) GetToken() string {
@@ -215,7 +260,7 @@ type GenerateInviteTokenRequest struct {
 
 func (x *GenerateInviteTokenRequest) Reset() {
 	*x = GenerateInviteTokenRequest{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[1]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -227,7 +272,7 @@ func (x *GenerateInviteTokenRequest) String() string {
 func (*GenerateInviteTokenRequest) ProtoMessage() {}
 
 func (x *GenerateInviteTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[1]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -240,7 +285,7 @@ func (x *GenerateInviteTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateInviteTokenRequest.ProtoReflect.Descriptor instead.
 func (*GenerateInviteTokenRequest) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{1}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GenerateInviteTokenRequest) GetPurpose() TokenPurpose {
@@ -273,7 +318,7 @@ type ValidateInviteTokenRequest struct {
 
 func (x *ValidateInviteTokenRequest) Reset() {
 	*x = ValidateInviteTokenRequest{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[2]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -285,7 +330,7 @@ func (x *ValidateInviteTokenRequest) String() string {
 func (*ValidateInviteTokenRequest) ProtoMessage() {}
 
 func (x *ValidateInviteTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[2]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -298,7 +343,7 @@ func (x *ValidateInviteTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateInviteTokenRequest.ProtoReflect.Descriptor instead.
 func (*ValidateInviteTokenRequest) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{2}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ValidateInviteTokenRequest) GetToken() string {
@@ -319,7 +364,7 @@ type ValidateInviteTokenResponse struct {
 
 func (x *ValidateInviteTokenResponse) Reset() {
 	*x = ValidateInviteTokenResponse{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[3]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -331,7 +376,7 @@ func (x *ValidateInviteTokenResponse) String() string {
 func (*ValidateInviteTokenResponse) ProtoMessage() {}
 
 func (x *ValidateInviteTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[3]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -344,7 +389,7 @@ func (x *ValidateInviteTokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateInviteTokenResponse.ProtoReflect.Descriptor instead.
 func (*ValidateInviteTokenResponse) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{3}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ValidateInviteTokenResponse) GetIsValid() bool {
@@ -371,7 +416,7 @@ func (x *ValidateInviteTokenResponse) GetAssociatedId() string {
 type RequestAdminAccessRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	InvitationToken string                 `protobuf:"bytes,1,opt,name=invitation_token,json=invitationToken,proto3" json:"invitation_token,omitempty"`
-	RequestedRole   string                 `protobuf:"bytes,2,opt,name=requested_role,json=requestedRole,proto3" json:"requested_role,omitempty"` // e.g., "SYSTEM_ADMIN"
+	RequestedRole   string                 `protobuf:"bytes,2,opt,name=requested_role,json=requestedRole,proto3" json:"requested_role,omitempty"` // e.g., "SUPER_ADMIN"
 	Reason          string                 `protobuf:"bytes,3,opt,name=reason,proto3" json:"reason,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -379,7 +424,7 @@ type RequestAdminAccessRequest struct {
 
 func (x *RequestAdminAccessRequest) Reset() {
 	*x = RequestAdminAccessRequest{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[4]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -391,7 +436,7 @@ func (x *RequestAdminAccessRequest) String() string {
 func (*RequestAdminAccessRequest) ProtoMessage() {}
 
 func (x *RequestAdminAccessRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[4]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -404,7 +449,7 @@ func (x *RequestAdminAccessRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RequestAdminAccessRequest.ProtoReflect.Descriptor instead.
 func (*RequestAdminAccessRequest) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{4}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *RequestAdminAccessRequest) GetInvitationToken() string {
@@ -444,7 +489,7 @@ type AdminAccessRequest struct {
 
 func (x *AdminAccessRequest) Reset() {
 	*x = AdminAccessRequest{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[5]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -456,7 +501,7 @@ func (x *AdminAccessRequest) String() string {
 func (*AdminAccessRequest) ProtoMessage() {}
 
 func (x *AdminAccessRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[5]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -469,7 +514,7 @@ func (x *AdminAccessRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminAccessRequest.ProtoReflect.Descriptor instead.
 func (*AdminAccessRequest) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{5}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *AdminAccessRequest) GetId() string {
@@ -538,7 +583,7 @@ type ListAdminRequestsRequest struct {
 
 func (x *ListAdminRequestsRequest) Reset() {
 	*x = ListAdminRequestsRequest{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[6]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -550,7 +595,7 @@ func (x *ListAdminRequestsRequest) String() string {
 func (*ListAdminRequestsRequest) ProtoMessage() {}
 
 func (x *ListAdminRequestsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[6]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -563,7 +608,7 @@ func (x *ListAdminRequestsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAdminRequestsRequest.ProtoReflect.Descriptor instead.
 func (*ListAdminRequestsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{6}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListAdminRequestsRequest) GetFilterStatus() RequestStatus {
@@ -590,7 +635,7 @@ type ListAdminRequestsResponse struct {
 
 func (x *ListAdminRequestsResponse) Reset() {
 	*x = ListAdminRequestsResponse{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[7]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -602,7 +647,7 @@ func (x *ListAdminRequestsResponse) String() string {
 func (*ListAdminRequestsResponse) ProtoMessage() {}
 
 func (x *ListAdminRequestsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[7]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -615,7 +660,7 @@ func (x *ListAdminRequestsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAdminRequestsResponse.ProtoReflect.Descriptor instead.
 func (*ListAdminRequestsResponse) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{7}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ListAdminRequestsResponse) GetRequests() []*AdminAccessRequest {
@@ -642,7 +687,7 @@ type ReviewAdminRequestRequest struct {
 
 func (x *ReviewAdminRequestRequest) Reset() {
 	*x = ReviewAdminRequestRequest{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[8]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -654,7 +699,7 @@ func (x *ReviewAdminRequestRequest) String() string {
 func (*ReviewAdminRequestRequest) ProtoMessage() {}
 
 func (x *ReviewAdminRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[8]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -667,7 +712,7 @@ func (x *ReviewAdminRequestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReviewAdminRequestRequest.ProtoReflect.Descriptor instead.
 func (*ReviewAdminRequestRequest) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{8}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ReviewAdminRequestRequest) GetRequestId() string {
@@ -695,7 +740,7 @@ type SyncUserProfileRequest struct {
 
 func (x *SyncUserProfileRequest) Reset() {
 	*x = SyncUserProfileRequest{}
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[9]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -707,7 +752,7 @@ func (x *SyncUserProfileRequest) String() string {
 func (*SyncUserProfileRequest) ProtoMessage() {}
 
 func (x *SyncUserProfileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_auth_v1_auth_proto_msgTypes[9]
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -720,7 +765,7 @@ func (x *SyncUserProfileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncUserProfileRequest.ProtoReflect.Descriptor instead.
 func (*SyncUserProfileRequest) Descriptor() ([]byte, []int) {
-	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{9}
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *SyncUserProfileRequest) GetDisplayName() string {
@@ -737,11 +782,65 @@ func (x *SyncUserProfileRequest) GetPhotoUrl() string {
 	return ""
 }
 
+type AuthStatusResponse struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	IsSuperAdmin         bool                   `protobuf:"varint,1,opt,name=is_super_admin,json=isSuperAdmin,proto3" json:"is_super_admin,omitempty"`
+	PendingRequestStatus RequestStatus          `protobuf:"varint,2,opt,name=pending_request_status,json=pendingRequestStatus,proto3,enum=auth.v1.RequestStatus" json:"pending_request_status,omitempty"` // UNSPECIFIED if none
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *AuthStatusResponse) Reset() {
+	*x = AuthStatusResponse{}
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthStatusResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthStatusResponse) ProtoMessage() {}
+
+func (x *AuthStatusResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthStatusResponse.ProtoReflect.Descriptor instead.
+func (*AuthStatusResponse) Descriptor() ([]byte, []int) {
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *AuthStatusResponse) GetIsSuperAdmin() bool {
+	if x != nil {
+		return x.IsSuperAdmin
+	}
+	return false
+}
+
+func (x *AuthStatusResponse) GetPendingRequestStatus() RequestStatus {
+	if x != nil {
+		return x.PendingRequestStatus
+	}
+	return RequestStatus_REQUEST_STATUS_UNSPECIFIED
+}
+
 var File_proto_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_proto_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x18proto/auth/v1/auth.proto\x12\aauth.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cproto/common/v1/common.proto\"\xcd\x01\n" +
+	"\x18proto/auth/v1/auth.proto\x12\aauth.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cproto/common/v1/common.proto\"0\n" +
+	"\x15GetUserProfileRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"\xcd\x01\n" +
 	"\vInviteToken\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12/\n" +
 	"\apurpose\x18\x02 \x01(\x0e2\x15.auth.v1.TokenPurposeR\apurpose\x12#\n" +
@@ -790,7 +889,10 @@ const file_proto_auth_v1_auth_proto_rawDesc = "" +
 	"\bdecision\x18\x02 \x01(\x0e2\x16.auth.v1.RequestStatusR\bdecision\"X\n" +
 	"\x16SyncUserProfileRequest\x12!\n" +
 	"\fdisplay_name\x18\x01 \x01(\tR\vdisplayName\x12\x1b\n" +
-	"\tphoto_url\x18\x02 \x01(\tR\bphotoUrl*\x93\x01\n" +
+	"\tphoto_url\x18\x02 \x01(\tR\bphotoUrl\"\x88\x01\n" +
+	"\x12AuthStatusResponse\x12$\n" +
+	"\x0eis_super_admin\x18\x01 \x01(\bR\fisSuperAdmin\x12L\n" +
+	"\x16pending_request_status\x18\x02 \x01(\x0e2\x16.auth.v1.RequestStatusR\x14pendingRequestStatus*\x93\x01\n" +
 	"\fTokenPurpose\x12\x1d\n" +
 	"\x19TOKEN_PURPOSE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eTOKEN_PURPOSE_ADMIN_ONBOARDING\x10\x01\x12\x1f\n" +
@@ -800,14 +902,16 @@ const file_proto_auth_v1_auth_proto_rawDesc = "" +
 	"\x1aREQUEST_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16REQUEST_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17REQUEST_STATUS_APPROVED\x10\x02\x12\x1b\n" +
-	"\x17REQUEST_STATUS_REJECTED\x10\x032\x97\x04\n" +
+	"\x17REQUEST_STATUS_REJECTED\x10\x032\xa7\x05\n" +
 	"\vAuthService\x12P\n" +
 	"\x13GenerateInviteToken\x12#.auth.v1.GenerateInviteTokenRequest\x1a\x14.auth.v1.InviteToken\x12`\n" +
 	"\x13ValidateInviteToken\x12#.auth.v1.ValidateInviteTokenRequest\x1a$.auth.v1.ValidateInviteTokenResponse\x12U\n" +
 	"\x12RequestAdminAccess\x12\".auth.v1.RequestAdminAccessRequest\x1a\x1b.auth.v1.AdminAccessRequest\x12Z\n" +
 	"\x11ListAdminRequests\x12!.auth.v1.ListAdminRequestsRequest\x1a\".auth.v1.ListAdminRequestsResponse\x12U\n" +
 	"\x12ReviewAdminRequest\x12\".auth.v1.ReviewAdminRequestRequest\x1a\x1b.auth.v1.AdminAccessRequest\x12J\n" +
-	"\x0fSyncUserProfile\x12\x1f.auth.v1.SyncUserProfileRequest\x1a\x16.common.v1.UserProfileB<Z:github.com/mibi2007/familytree/familytree_go/proto/auth/v1b\x06proto3"
+	"\x0fSyncUserProfile\x12\x1f.auth.v1.SyncUserProfileRequest\x1a\x16.common.v1.UserProfile\x12H\n" +
+	"\x0eGetUserProfile\x12\x1e.auth.v1.GetUserProfileRequest\x1a\x16.common.v1.UserProfile\x12D\n" +
+	"\rGetAuthStatus\x12\x16.google.protobuf.Empty\x1a\x1b.auth.v1.AuthStatusResponseB<Z:github.com/mibi2007/familytree/familytree_go/proto/auth/v1b\x06proto3"
 
 var (
 	file_proto_auth_v1_auth_proto_rawDescOnce sync.Once
@@ -822,55 +926,63 @@ func file_proto_auth_v1_auth_proto_rawDescGZIP() []byte {
 }
 
 var file_proto_auth_v1_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_proto_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_proto_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_proto_auth_v1_auth_proto_goTypes = []any{
 	(TokenPurpose)(0),                   // 0: auth.v1.TokenPurpose
 	(RequestStatus)(0),                  // 1: auth.v1.RequestStatus
-	(*InviteToken)(nil),                 // 2: auth.v1.InviteToken
-	(*GenerateInviteTokenRequest)(nil),  // 3: auth.v1.GenerateInviteTokenRequest
-	(*ValidateInviteTokenRequest)(nil),  // 4: auth.v1.ValidateInviteTokenRequest
-	(*ValidateInviteTokenResponse)(nil), // 5: auth.v1.ValidateInviteTokenResponse
-	(*RequestAdminAccessRequest)(nil),   // 6: auth.v1.RequestAdminAccessRequest
-	(*AdminAccessRequest)(nil),          // 7: auth.v1.AdminAccessRequest
-	(*ListAdminRequestsRequest)(nil),    // 8: auth.v1.ListAdminRequestsRequest
-	(*ListAdminRequestsResponse)(nil),   // 9: auth.v1.ListAdminRequestsResponse
-	(*ReviewAdminRequestRequest)(nil),   // 10: auth.v1.ReviewAdminRequestRequest
-	(*SyncUserProfileRequest)(nil),      // 11: auth.v1.SyncUserProfileRequest
-	(*timestamppb.Timestamp)(nil),       // 12: google.protobuf.Timestamp
-	(*v1.UserProfile)(nil),              // 13: common.v1.UserProfile
-	(*v1.PaginatedRequest)(nil),         // 14: common.v1.PaginatedRequest
-	(*v1.PaginatedResponse)(nil),        // 15: common.v1.PaginatedResponse
+	(*GetUserProfileRequest)(nil),       // 2: auth.v1.GetUserProfileRequest
+	(*InviteToken)(nil),                 // 3: auth.v1.InviteToken
+	(*GenerateInviteTokenRequest)(nil),  // 4: auth.v1.GenerateInviteTokenRequest
+	(*ValidateInviteTokenRequest)(nil),  // 5: auth.v1.ValidateInviteTokenRequest
+	(*ValidateInviteTokenResponse)(nil), // 6: auth.v1.ValidateInviteTokenResponse
+	(*RequestAdminAccessRequest)(nil),   // 7: auth.v1.RequestAdminAccessRequest
+	(*AdminAccessRequest)(nil),          // 8: auth.v1.AdminAccessRequest
+	(*ListAdminRequestsRequest)(nil),    // 9: auth.v1.ListAdminRequestsRequest
+	(*ListAdminRequestsResponse)(nil),   // 10: auth.v1.ListAdminRequestsResponse
+	(*ReviewAdminRequestRequest)(nil),   // 11: auth.v1.ReviewAdminRequestRequest
+	(*SyncUserProfileRequest)(nil),      // 12: auth.v1.SyncUserProfileRequest
+	(*AuthStatusResponse)(nil),          // 13: auth.v1.AuthStatusResponse
+	(*timestamppb.Timestamp)(nil),       // 14: google.protobuf.Timestamp
+	(*v1.UserProfile)(nil),              // 15: common.v1.UserProfile
+	(*v1.PaginatedRequest)(nil),         // 16: common.v1.PaginatedRequest
+	(*v1.PaginatedResponse)(nil),        // 17: common.v1.PaginatedResponse
+	(*emptypb.Empty)(nil),               // 18: google.protobuf.Empty
 }
 var file_proto_auth_v1_auth_proto_depIdxs = []int32{
 	0,  // 0: auth.v1.InviteToken.purpose:type_name -> auth.v1.TokenPurpose
-	12, // 1: auth.v1.InviteToken.expires_at:type_name -> google.protobuf.Timestamp
+	14, // 1: auth.v1.InviteToken.expires_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: auth.v1.GenerateInviteTokenRequest.purpose:type_name -> auth.v1.TokenPurpose
 	0,  // 3: auth.v1.ValidateInviteTokenResponse.purpose:type_name -> auth.v1.TokenPurpose
 	1,  // 4: auth.v1.AdminAccessRequest.status:type_name -> auth.v1.RequestStatus
-	12, // 5: auth.v1.AdminAccessRequest.updated_at:type_name -> google.protobuf.Timestamp
-	13, // 6: auth.v1.AdminAccessRequest.user_profile:type_name -> common.v1.UserProfile
+	14, // 5: auth.v1.AdminAccessRequest.updated_at:type_name -> google.protobuf.Timestamp
+	15, // 6: auth.v1.AdminAccessRequest.user_profile:type_name -> common.v1.UserProfile
 	1,  // 7: auth.v1.ListAdminRequestsRequest.filter_status:type_name -> auth.v1.RequestStatus
-	14, // 8: auth.v1.ListAdminRequestsRequest.pagination:type_name -> common.v1.PaginatedRequest
-	7,  // 9: auth.v1.ListAdminRequestsResponse.requests:type_name -> auth.v1.AdminAccessRequest
-	15, // 10: auth.v1.ListAdminRequestsResponse.pagination:type_name -> common.v1.PaginatedResponse
+	16, // 8: auth.v1.ListAdminRequestsRequest.pagination:type_name -> common.v1.PaginatedRequest
+	8,  // 9: auth.v1.ListAdminRequestsResponse.requests:type_name -> auth.v1.AdminAccessRequest
+	17, // 10: auth.v1.ListAdminRequestsResponse.pagination:type_name -> common.v1.PaginatedResponse
 	1,  // 11: auth.v1.ReviewAdminRequestRequest.decision:type_name -> auth.v1.RequestStatus
-	3,  // 12: auth.v1.AuthService.GenerateInviteToken:input_type -> auth.v1.GenerateInviteTokenRequest
-	4,  // 13: auth.v1.AuthService.ValidateInviteToken:input_type -> auth.v1.ValidateInviteTokenRequest
-	6,  // 14: auth.v1.AuthService.RequestAdminAccess:input_type -> auth.v1.RequestAdminAccessRequest
-	8,  // 15: auth.v1.AuthService.ListAdminRequests:input_type -> auth.v1.ListAdminRequestsRequest
-	10, // 16: auth.v1.AuthService.ReviewAdminRequest:input_type -> auth.v1.ReviewAdminRequestRequest
-	11, // 17: auth.v1.AuthService.SyncUserProfile:input_type -> auth.v1.SyncUserProfileRequest
-	2,  // 18: auth.v1.AuthService.GenerateInviteToken:output_type -> auth.v1.InviteToken
-	5,  // 19: auth.v1.AuthService.ValidateInviteToken:output_type -> auth.v1.ValidateInviteTokenResponse
-	7,  // 20: auth.v1.AuthService.RequestAdminAccess:output_type -> auth.v1.AdminAccessRequest
-	9,  // 21: auth.v1.AuthService.ListAdminRequests:output_type -> auth.v1.ListAdminRequestsResponse
-	7,  // 22: auth.v1.AuthService.ReviewAdminRequest:output_type -> auth.v1.AdminAccessRequest
-	13, // 23: auth.v1.AuthService.SyncUserProfile:output_type -> common.v1.UserProfile
-	18, // [18:24] is the sub-list for method output_type
-	12, // [12:18] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	1,  // 12: auth.v1.AuthStatusResponse.pending_request_status:type_name -> auth.v1.RequestStatus
+	4,  // 13: auth.v1.AuthService.GenerateInviteToken:input_type -> auth.v1.GenerateInviteTokenRequest
+	5,  // 14: auth.v1.AuthService.ValidateInviteToken:input_type -> auth.v1.ValidateInviteTokenRequest
+	7,  // 15: auth.v1.AuthService.RequestAdminAccess:input_type -> auth.v1.RequestAdminAccessRequest
+	9,  // 16: auth.v1.AuthService.ListAdminRequests:input_type -> auth.v1.ListAdminRequestsRequest
+	11, // 17: auth.v1.AuthService.ReviewAdminRequest:input_type -> auth.v1.ReviewAdminRequestRequest
+	12, // 18: auth.v1.AuthService.SyncUserProfile:input_type -> auth.v1.SyncUserProfileRequest
+	2,  // 19: auth.v1.AuthService.GetUserProfile:input_type -> auth.v1.GetUserProfileRequest
+	18, // 20: auth.v1.AuthService.GetAuthStatus:input_type -> google.protobuf.Empty
+	3,  // 21: auth.v1.AuthService.GenerateInviteToken:output_type -> auth.v1.InviteToken
+	6,  // 22: auth.v1.AuthService.ValidateInviteToken:output_type -> auth.v1.ValidateInviteTokenResponse
+	8,  // 23: auth.v1.AuthService.RequestAdminAccess:output_type -> auth.v1.AdminAccessRequest
+	10, // 24: auth.v1.AuthService.ListAdminRequests:output_type -> auth.v1.ListAdminRequestsResponse
+	8,  // 25: auth.v1.AuthService.ReviewAdminRequest:output_type -> auth.v1.AdminAccessRequest
+	15, // 26: auth.v1.AuthService.SyncUserProfile:output_type -> common.v1.UserProfile
+	15, // 27: auth.v1.AuthService.GetUserProfile:output_type -> common.v1.UserProfile
+	13, // 28: auth.v1.AuthService.GetAuthStatus:output_type -> auth.v1.AuthStatusResponse
+	21, // [21:29] is the sub-list for method output_type
+	13, // [13:21] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_proto_auth_v1_auth_proto_init() }
@@ -884,7 +996,7 @@ func file_proto_auth_v1_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_auth_v1_auth_proto_rawDesc), len(file_proto_auth_v1_auth_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

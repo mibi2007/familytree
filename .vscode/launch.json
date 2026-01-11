@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Open Localhost:8080 (Chrome)",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://127.0.0.1:8080",
+            
+        },
+        {
+            "name": "User App (Local - Web Server)",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "familytree_flutter/apps/user_app",
+            "program": "lib/main_local.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port",
+                "8080",
+                "--web-experimental-hot-reload",
+                "--debug"
+            ]
+        },
+        {
+            "name": "Admin App (Local - Web Server)",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "familytree_flutter/apps/admin_app",
+            "program": "lib/main_local.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port",
+                "8081"
+            ]
+        }
+    ],
+    "compounds": []
+}

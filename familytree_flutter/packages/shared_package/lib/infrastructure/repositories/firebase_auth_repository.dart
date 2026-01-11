@@ -10,6 +10,11 @@ part 'firebase_auth_repository.g.dart';
 
 final scopes = ['email', 'profile'];
 
+@riverpod
+AuthRepository authRepository(Ref ref) {
+  return FirebaseAuthRepository(FirebaseAuth.instance, GoogleSignIn.instance);
+}
+
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
@@ -136,7 +141,22 @@ class FirebaseAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
+    // Clear any local state for Web Phone Auth
+    _webConfirmationResult = null;
+
+    final user = _auth.currentUser;
+    if (user != null) {
+      final isGoogleLinked = user.providerData.any((userInfo) => userInfo.providerId == 'google.com');
+      if (isGoogleLinked) {
+        try {
+          await _googleSignIn.signOut();
+        } catch (_) {
+          // Ignore errors if Google Sign In was not initialized
+        }
+      }
+    }
+
+    // This handles Email/Password, Phone, and the Firebase session for Google
     await _auth.signOut();
   }
 
@@ -144,9 +164,4 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<String?> getIdToken() async {
     return await _auth.currentUser?.getIdToken();
   }
-}
-
-@riverpod
-AuthRepository authRepository(Ref ref) {
-  return FirebaseAuthRepository(FirebaseAuth.instance, GoogleSignIn.instance);
 }

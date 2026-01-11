@@ -15,7 +15,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:protobuf/well_known_types/google/protobuf/timestamp.pb.dart'
-    as $2;
+    as $3;
 
 import '../../common/v1/common.pb.dart' as $1;
 import 'auth.pbenum.dart';
@@ -24,12 +24,67 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 export 'auth.pbenum.dart';
 
+class GetUserProfileRequest extends $pb.GeneratedMessage {
+  factory GetUserProfileRequest({
+    $core.String? userId,
+  }) {
+    final result = create();
+    if (userId != null) result.userId = userId;
+    return result;
+  }
+
+  GetUserProfileRequest._();
+
+  factory GetUserProfileRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetUserProfileRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserProfileRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'auth.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserProfileRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserProfileRequest copyWith(
+          void Function(GetUserProfileRequest) updates) =>
+      super.copyWith((message) => updates(message as GetUserProfileRequest))
+          as GetUserProfileRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetUserProfileRequest create() => GetUserProfileRequest._();
+  @$core.override
+  GetUserProfileRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static GetUserProfileRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserProfileRequest>(create);
+  static GetUserProfileRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+}
+
 class InviteToken extends $pb.GeneratedMessage {
   factory InviteToken({
     $core.String? token,
     TokenPurpose? purpose,
     $core.String? associatedId,
-    $2.Timestamp? expiresAt,
+    $3.Timestamp? expiresAt,
     $core.bool? isUsed,
   }) {
     final result = create();
@@ -58,8 +113,8 @@ class InviteToken extends $pb.GeneratedMessage {
     ..aE<TokenPurpose>(2, _omitFieldNames ? '' : 'purpose',
         enumValues: TokenPurpose.values)
     ..aOS(3, _omitFieldNames ? '' : 'associatedId')
-    ..aOM<$2.Timestamp>(4, _omitFieldNames ? '' : 'expiresAt',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$3.Timestamp>(4, _omitFieldNames ? '' : 'expiresAt',
+        subBuilder: $3.Timestamp.create)
     ..aOB(5, _omitFieldNames ? '' : 'isUsed')
     ..hasRequiredFields = false;
 
@@ -110,15 +165,15 @@ class InviteToken extends $pb.GeneratedMessage {
   void clearAssociatedId() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $2.Timestamp get expiresAt => $_getN(3);
+  $3.Timestamp get expiresAt => $_getN(3);
   @$pb.TagNumber(4)
-  set expiresAt($2.Timestamp value) => $_setField(4, value);
+  set expiresAt($3.Timestamp value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasExpiresAt() => $_has(3);
   @$pb.TagNumber(4)
   void clearExpiresAt() => $_clearField(4);
   @$pb.TagNumber(4)
-  $2.Timestamp ensureExpiresAt() => $_ensure(3);
+  $3.Timestamp ensureExpiresAt() => $_ensure(3);
 
   @$pb.TagNumber(5)
   $core.bool get isUsed => $_getBF(4);
@@ -437,7 +492,7 @@ class AdminAccessRequest extends $pb.GeneratedMessage {
     RequestStatus? status,
     $core.String? reason,
     $core.String? reviewedBy,
-    $2.Timestamp? updatedAt,
+    $3.Timestamp? updatedAt,
     $1.UserProfile? userProfile,
   }) {
     final result = create();
@@ -472,8 +527,8 @@ class AdminAccessRequest extends $pb.GeneratedMessage {
         enumValues: RequestStatus.values)
     ..aOS(5, _omitFieldNames ? '' : 'reason')
     ..aOS(6, _omitFieldNames ? '' : 'reviewedBy')
-    ..aOM<$2.Timestamp>(7, _omitFieldNames ? '' : 'updatedAt',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$3.Timestamp>(7, _omitFieldNames ? '' : 'updatedAt',
+        subBuilder: $3.Timestamp.create)
     ..aOM<$1.UserProfile>(8, _omitFieldNames ? '' : 'userProfile',
         subBuilder: $1.UserProfile.create)
     ..hasRequiredFields = false;
@@ -552,15 +607,15 @@ class AdminAccessRequest extends $pb.GeneratedMessage {
   void clearReviewedBy() => $_clearField(6);
 
   @$pb.TagNumber(7)
-  $2.Timestamp get updatedAt => $_getN(6);
+  $3.Timestamp get updatedAt => $_getN(6);
   @$pb.TagNumber(7)
-  set updatedAt($2.Timestamp value) => $_setField(7, value);
+  set updatedAt($3.Timestamp value) => $_setField(7, value);
   @$pb.TagNumber(7)
   $core.bool hasUpdatedAt() => $_has(6);
   @$pb.TagNumber(7)
   void clearUpdatedAt() => $_clearField(7);
   @$pb.TagNumber(7)
-  $2.Timestamp ensureUpdatedAt() => $_ensure(6);
+  $3.Timestamp ensureUpdatedAt() => $_ensure(6);
 
   @$pb.TagNumber(8)
   $1.UserProfile get userProfile => $_getN(7);
@@ -844,6 +899,74 @@ class SyncUserProfileRequest extends $pb.GeneratedMessage {
   $core.bool hasPhotoUrl() => $_has(1);
   @$pb.TagNumber(2)
   void clearPhotoUrl() => $_clearField(2);
+}
+
+class AuthStatusResponse extends $pb.GeneratedMessage {
+  factory AuthStatusResponse({
+    $core.bool? isSuperAdmin,
+    RequestStatus? pendingRequestStatus,
+  }) {
+    final result = create();
+    if (isSuperAdmin != null) result.isSuperAdmin = isSuperAdmin;
+    if (pendingRequestStatus != null)
+      result.pendingRequestStatus = pendingRequestStatus;
+    return result;
+  }
+
+  AuthStatusResponse._();
+
+  factory AuthStatusResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AuthStatusResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AuthStatusResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'auth.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'isSuperAdmin')
+    ..aE<RequestStatus>(2, _omitFieldNames ? '' : 'pendingRequestStatus',
+        enumValues: RequestStatus.values)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AuthStatusResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AuthStatusResponse copyWith(void Function(AuthStatusResponse) updates) =>
+      super.copyWith((message) => updates(message as AuthStatusResponse))
+          as AuthStatusResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AuthStatusResponse create() => AuthStatusResponse._();
+  @$core.override
+  AuthStatusResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static AuthStatusResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AuthStatusResponse>(create);
+  static AuthStatusResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get isSuperAdmin => $_getBF(0);
+  @$pb.TagNumber(1)
+  set isSuperAdmin($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasIsSuperAdmin() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIsSuperAdmin() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  RequestStatus get pendingRequestStatus => $_getN(1);
+  @$pb.TagNumber(2)
+  set pendingRequestStatus(RequestStatus value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPendingRequestStatus() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPendingRequestStatus() => $_clearField(2);
 }
 
 const $core.bool _omitFieldNames =

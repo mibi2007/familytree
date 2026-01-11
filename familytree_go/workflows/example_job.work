@@ -1,0 +1,5 @@
+work: "example-schedule"
+schedule: "* * * * *" # Runs every minute
+steps:
+  - name: "Run Worker"
+    run: "go run ./cmd/worker/main.go"

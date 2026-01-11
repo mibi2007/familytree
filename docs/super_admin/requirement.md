@@ -54,3 +54,4 @@ The Super Admin application (`admin_app`) is the centralized command center for 
 ## Security & Privacy
 - **Role-Based Access Control (RBAC)**: Enforced via custom Firebase Claims.
 - **Data Privacy**: Super Admins cannot view private family content (chats, photos, tree nodes) unless the family owner has explicitly granted "Admin Access".
+- **Audit Logging**: All critical administrative actions (approvals, role changes, ownership transfers) are immutably logged for accountability. See [System Audit](../system/audit.md) for details.

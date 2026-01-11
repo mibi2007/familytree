@@ -49,6 +49,19 @@ final $typed_data.Uint8List requestStatusDescriptor = $convert.base64Decode(
     'VTVF9TVEFUVVNfUEVORElORxABEhsKF1JFUVVFU1RfU1RBVFVTX0FQUFJPVkVEEAISGwoXUkVR'
     'VUVTVF9TVEFUVVNfUkVKRUNURUQQAw==');
 
+@$core.Deprecated('Use getUserProfileRequestDescriptor instead')
+const GetUserProfileRequest$json = {
+  '1': 'GetUserProfileRequest',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+  ],
+};
+
+/// Descriptor for `GetUserProfileRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserProfileRequestDescriptor =
+    $convert.base64Decode(
+        'ChVHZXRVc2VyUHJvZmlsZVJlcXVlc3QSFwoHdXNlcl9pZBgBIAEoCVIGdXNlcklk');
+
 @$core.Deprecated('Use inviteTokenDescriptor instead')
 const InviteToken$json = {
   '1': 'InviteToken',
@@ -297,3 +310,25 @@ final $typed_data.Uint8List syncUserProfileRequestDescriptor =
     $convert.base64Decode(
         'ChZTeW5jVXNlclByb2ZpbGVSZXF1ZXN0EiEKDGRpc3BsYXlfbmFtZRgBIAEoCVILZGlzcGxheU'
         '5hbWUSGwoJcGhvdG9fdXJsGAIgASgJUghwaG90b1VybA==');
+
+@$core.Deprecated('Use authStatusResponseDescriptor instead')
+const AuthStatusResponse$json = {
+  '1': 'AuthStatusResponse',
+  '2': [
+    {'1': 'is_super_admin', '3': 1, '4': 1, '5': 8, '10': 'isSuperAdmin'},
+    {
+      '1': 'pending_request_status',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.auth.v1.RequestStatus',
+      '10': 'pendingRequestStatus'
+    },
+  ],
+};
+
+/// Descriptor for `AuthStatusResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List authStatusResponseDescriptor = $convert.base64Decode(
+    'ChJBdXRoU3RhdHVzUmVzcG9uc2USJAoOaXNfc3VwZXJfYWRtaW4YASABKAhSDGlzU3VwZXJBZG'
+    '1pbhJMChZwZW5kaW5nX3JlcXVlc3Rfc3RhdHVzGAIgASgOMhYuYXV0aC52MS5SZXF1ZXN0U3Rh'
+    'dHVzUhRwZW5kaW5nUmVxdWVzdFN0YXR1cw==');

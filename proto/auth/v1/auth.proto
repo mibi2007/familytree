@@ -5,6 +5,7 @@ package auth.v1;
 option go_package = "github.com/mibi2007/familytree/familytree_go/proto/auth/v1";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 import "proto/common/v1/common.proto";
 
 service AuthService {
@@ -19,6 +20,12 @@ service AuthService {
 
   // Profile Management
   rpc SyncUserProfile(SyncUserProfileRequest) returns (common.v1.UserProfile);
+  rpc GetUserProfile(GetUserProfileRequest) returns (common.v1.UserProfile);
+  rpc GetAuthStatus(google.protobuf.Empty) returns (AuthStatusResponse);
+}
+
+message GetUserProfileRequest {
+  string user_id = 1;
 }
 
 enum TokenPurpose {
@@ -62,7 +69,7 @@ message ValidateInviteTokenResponse {
 
 message RequestAdminAccessRequest {
   string invitation_token = 1;
-  string requested_role = 2; // e.g., "SYSTEM_ADMIN"
+  string requested_role = 2; // e.g., "SUPER_ADMIN"
   string reason = 3;
 }
 
@@ -96,4 +103,9 @@ message SyncUserProfileRequest {
   // Data from Firebase JWT
   string display_name = 1;
   string photo_url = 2;
+}
+
+message AuthStatusResponse {
+  bool is_super_admin = 1;
+  RequestStatus pending_request_status = 2; // UNSPECIFIED if none
 }

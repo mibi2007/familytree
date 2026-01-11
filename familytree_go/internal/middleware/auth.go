@@ -46,6 +46,36 @@ func (i *AuthInterceptor) Unary() grpc.UnaryServerInterceptor {
 	}
 }
 
+func (i *AuthInterceptor) Stream() grpc.StreamServerInterceptor {
+	return func(
+		srv interface{},
+		ss grpc.ServerStream,
+		info *grpc.StreamServerInfo,
+		handler grpc.StreamHandler,
+	) error {
+		if isPublicMethod(info.FullMethod) {
+			return handler(srv, ss)
+		}
+
+		newCtx, err := i.authenticate(ss.Context())
+		if err != nil {
+			return err
+		}
+
+		wrapped := &wrappedStream{ss, newCtx}
+		return handler(srv, wrapped)
+	}
+}
+
+type wrappedStream struct {
+	grpc.ServerStream
+	ctx context.Context
+}
+
+func (w *wrappedStream) Context() context.Context {
+	return w.ctx
+}
+
 func (i *AuthInterceptor) authenticate(ctx context.Context) (context.Context, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
