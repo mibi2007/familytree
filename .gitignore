@@ -6,9 +6,17 @@
 # IDEs
 .idea/
 *.iml
+.vscode/chrome/
+.vscode/*.pma
+.vscode/*.tmp
 
 # Build & Metadata
 .firebase/
+**/server.exe
+*.exe
+*.dll
+*.so
+*.dylib
 
 # Env
 .env*
