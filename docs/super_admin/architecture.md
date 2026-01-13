@@ -6,18 +6,18 @@
 - **Entities**: `AdminUser`, `SystemStats`, `FamilyAccessGrant`.
 - **Interfaces**: `ISystemRepository`, `IAdminManagementService`.
 
-### 2. Infrastructure Layer
+### 2. Data Layer
 - **Implementation**: `GoSuperAdminRepository`.
 - **Service**: `SuperAdminService` (gRPC).
 - **Interceptors**: `AuthInterceptor` (JWT validation).
 
-### 3. Application Layer
+### 3. App Layer
 - **Providers**: 
   - `systemStatsProvider`: Stream of real-time dashboard data.
   - `userManagementProvider`: Handles search and status updates for the user directory.
 - **Flows**: `FamilySupportJoinFlow` (Accepting family invites).
 
-### 4. Presentation Layer
+### 4. View Layer
 - **Components**:
   - `AdminDashboard`: Grid of key performance indicators.
   - `UserActionMenu`: Contextual controls for managing user accounts.
@@ -27,8 +27,8 @@
 ## Core Logic Reuse
 - The `admin_app` and `user_app` both utilize the same `shared_package` for:
   - **Domain Entities**: (Member, Event, Timeline).
-  - **Infrastructure**: gRPC client implementations for `FamilyService`, `TimelineService`, etc.
-  - **Application Logic**: State management for tree manipulation and data validation.
+  - **Data**: gRPC client implementations for `FamilyService`, `TimelineService`, etc.
+  - **App Logic**: State management for tree manipulation and data validation.
 
 ## Integration Diagram
 ```mermaid

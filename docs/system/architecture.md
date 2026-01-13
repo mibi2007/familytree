@@ -58,6 +58,6 @@ The Go backend returns standard HTTP status codes with a JSON error payload:
 | :--- | :--- |
 | **Auth Verification** | Go (via Firebase JWT) |
 | **Tree Logic / LCA** | Go (Pre-calculated / Heavy traversal) |
-| **Relational Metadata** | Go (PostgreSQL) |
+| **Relational Metadata** | Go (PostgreSQL on VM managed by Caddy) |
 | **Media Hosting** | Firebase Storage (Client Upload) |
 | **Notification Triggers** | Go (Cloud Tasks / Cron) |

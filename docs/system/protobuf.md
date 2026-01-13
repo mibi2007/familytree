@@ -12,7 +12,7 @@ This document outlines the standard process for generating gRPC and Protocol Buf
 
 - **Proto Source**: `proto/` (top-level directory).
 - **Go Output**: `familytree_go/proto/`.
-- **Dart Output**: `familytree_flutter/packages/shared_package/lib/infrastructure/grpc/generated/`.
+- **Dart Output**: `familytree_flutter/packages/shared_package/lib/data/grpc/generated/`.
 
 ## Generation for Go
 
@@ -45,10 +45,10 @@ Or manually:
 
 ```bash
 # Create the output directory if it doesn't exist
-mkdir -p familytree_flutter/packages/shared_package/lib/infrastructure/grpc/generated
+mkdir -p familytree_flutter/packages/shared_package/lib/data/grpc/generated
 
 # Protoc generation for Dart
-protoc --dart_out=grpc:familytree_flutter/packages/shared_package/lib/infrastructure/grpc/generated \
+protoc --dart_out=grpc:familytree_flutter/packages/shared_package/lib/data/grpc/generated \
     -I . \
     proto/common/v1/common.proto \
     proto/auth/v1/auth.proto \

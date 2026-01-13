@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_package/shared_package.dart';
 
-import 'features/auth/presentation/admin_login_page.dart';
-import 'features/auth/presentation/admin_onboarding_page.dart';
-import 'features/dashboard/presentation/admin_dashboard_page.dart';
+import 'features/auth/view/admin_login_page.dart';
+import 'features/auth/view/admin_onboarding_page.dart';
+import 'features/dashboard/view/admin_dashboard_page.dart';
 
 class AdminApp extends StatelessWidget {
   final String title;

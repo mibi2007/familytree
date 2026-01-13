@@ -1,0 +1,71 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task: help
+
+  help:
+    desc: Show available commands
+    cmds:
+      - echo "Available commands:"
+      - echo "  task proto      - Generate both Go and Flutter Protobufs & Swagger"
+      - echo "  task proto-go   - Generate Go Protobufs & Swagger"
+      - echo "  task proto-dart - Generate Flutter Protobufs"
+      - echo "  task run-be     - Run the Go Backend (Dev Env)"
+      - echo "  task run-fe-user  - Run User App (Dev)"
+      - echo "  task run-fe-admin - Run Admin App (Dev)"
+    silent: true
+
+  proto:
+    desc: Generate all protos
+    deps: [proto-go, proto-dart]
+
+  proto-go:
+    desc: Generate Go codes and Swagger
+    cmds:
+      - echo "Generating Go Protos..."
+      - protoc --go_out=familytree_go --go_opt=paths=source_relative --go-grpc_out=familytree_go --go-grpc_opt=paths=source_relative -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto
+      - echo "Generating Swagger definitions..."
+      # Create directory (ignore error if exists)
+      - cmd: powershell -Command "New-Item -ItemType Directory -Force -Path 'familytree_flutter/apps/admin_app/web/swagger' | Out-Null"
+        platforms: [windows]
+      - cmd: mkdir -p familytree_flutter/apps/admin_app/web/swagger
+        platforms: [linux, darwin]
+      - protoc --openapiv2_out=json_names_for_fields=false:familytree_flutter/apps/admin_app/web/swagger --openapiv2_opt=allow_merge=true,merge_file_name=api -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto
+
+  proto-dart:
+    desc: Generate Dart codes
+    cmds:
+      - echo "Generating Dart Protos..."
+      # Create directory
+      - cmd: powershell -Command "New-Item -ItemType Directory -Force -Path 'familytree_flutter/packages/shared_package/lib/data/grpc/generated' | Out-Null"
+        platforms: [windows]
+      - cmd: mkdir -p familytree_flutter/packages/shared_package/lib/data/grpc/generated
+        platforms: [linux, darwin]
+      - protoc --dart_out=grpc:familytree_flutter/packages/shared_package/lib/data/grpc/generated -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto google/protobuf/timestamp.proto google/protobuf/empty.proto
+
+  run-be:
+    desc: Run Backend
+    dir: familytree_go
+    cmds:
+      - go run cmd/server/main.go
+    env:
+      APP_ENV: dev
+
+  run-proxy:
+    desc: Run grpc-web proxy
+    cmds:
+      - grpcwebproxy --backend_addr=localhost:50051 --run_tls_server=false --allow_all_origins --server_http_debug_port=9090
+
+  run-fe-user:
+    desc: Run User App
+    dir: familytree_flutter/apps/user_app
+    cmds:
+      - flutter run -d chrome --target lib/main_dev.dart --web-port 8082
+
+  run-fe-admin:
+    desc: Run Admin App
+    dir: familytree_flutter/apps/admin_app
+    cmds:
+      - flutter run -d chrome --target lib/main_dev.dart --web-port 8081

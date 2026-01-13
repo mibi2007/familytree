@@ -7,15 +7,15 @@
 - **Value Objects**: `PostContent`, `EventDate`.
 - **Interfaces**: `ITimelineRepository`.
 
-### 2. Infrastructure Layer
+### 2. Data Layer
 - **Implementation**: `PostgresTimelineRepository`.
 - **Data Source**: PostgreSQL API.
 
-### 3. Application Layer
+### 3. App Layer
 - **Providers**: `timelineProvider(familyId)`, `memoriesProvider`.
 - **Use Cases**: `CreatePostUseCase`, `GetMemoriesUseCase`, `TagMemberUseCase`.
 
-### 4. Presentation Layer
+### 4. View Layer
 - **Widgets**: 
   - `TimelineList`: Chronological list of posts.
   - `MemoryCard`: "On This Day" highlight widget.

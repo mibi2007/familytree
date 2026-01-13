@@ -8,8 +8,9 @@ abstract class AuthRepository {
   Future<Either<String, User>> signInWithEmail(String email, String password);
   Future<Either<String, User>> signUpWithEmail(String email, String password);
   Future<Either<String, User>> signInWithGoogle();
-  
-  /// Initiates phone verification. 
+  Future<Either<String, User>> signInWithGoogleIdToken(String idToken);
+
+  /// Initiates phone verification.
   /// For Native: Uses verifyPhoneNumber.
   /// For Web: Uses signInWithPhoneNumber with RecaptchaVerifier.
   Future<Either<String, Unit>> signInWithPhone({

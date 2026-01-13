@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 
-	"github.com/mibi2007/familytree/familytree_go/internal/features/auth/application"
+	"github.com/mibi2007/familytree/familytree_go/internal/features/auth/app"
 	"github.com/mibi2007/familytree/familytree_go/internal/features/auth/domain"
 	"github.com/mibi2007/familytree/familytree_go/internal/middleware"
 	authv1 "github.com/mibi2007/familytree/familytree_go/proto/auth/v1"
@@ -16,10 +16,10 @@ import (
 
 type AuthHandler struct {
 	authv1.UnimplementedAuthServiceServer
-	appService *application.AuthService
+	appService *app.AuthService
 }
 
-func NewAuthHandler(appService *application.AuthService) *AuthHandler {
+func NewAuthHandler(appService *app.AuthService) *AuthHandler {
 	return &AuthHandler{
 		appService: appService,
 	}

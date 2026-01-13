@@ -15,7 +15,8 @@ func Connect(connStr string) (*sql.DB, error) {
 	}
 
 	if err := db.Ping(); err != nil {
-		return nil, fmt.Errorf("failed to ping database: %w", err)
+		log.Printf("Warning: failed to ping database: %v", err)
+		return db, fmt.Errorf("failed to ping database: %w", err)
 	}
 
 	log.Println("Connected to PostgreSQL successfully")

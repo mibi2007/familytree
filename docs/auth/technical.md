@@ -63,7 +63,7 @@ erDiagram
 
 - **Registration**: Use `createUserWithEmailAndPassword` and `sendEmailVerification`.
 
-## App-Specific Presentation
+## App-Specific View
 - **Shared Logic Layer (`shared_package`)**:
   - `AuthRepository`: Handles the underlying Firebase/Postgres communication.
   - `AuthProvider`: Manages the global `AuthState` using Riverpod.

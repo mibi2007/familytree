@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package system.v1;
+
+option go_package = "github.com/mibi2007/familytree/familytree_go/proto/system/v1";
+
+import "google/protobuf/timestamp.proto";
+
+service SystemService {
+  rpc GetHealthStatus(HealthCheckRequest) returns (HealthCheckResponse);
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  string overall_status = 1; // HEALTHY, DEGRADED, UNHEALTHY
+  google.protobuf.Timestamp checked_at = 2;
+  ComponentStatus server = 3;
+  ComponentStatus database = 4;
+  ComponentStatus storage = 5;
+}
+
+message ComponentStatus {
+  string name = 1;
+  string status = 2; // OK, ERROR, UNAVAILABLE
+  string message = 3;
+  int64 response_time_ms = 4;
+}

@@ -26,16 +26,16 @@ Future<void> bootstrap({
       authDomain: firebaseOptions.authDomain,
       storageBucket: firebaseOptions.storageBucket,
       measurementId: firebaseOptions.measurementId,
-      databaseURL: 'http://127.0.0.1:9000/?ns=${firebaseOptions.projectId}',
+      // databaseURL: 'http://127.0.0.1:9000/?ns=${firebaseOptions.projectId}',
     );
 
     await Firebase.initializeApp(options: localOptions);
 
     // Connect to Firebase Emulators
-    const host = '127.0.0.1';
-    await FirebaseAuth.instance.useAuthEmulator(host, 9099);
-    FirebaseDatabase.instance.useDatabaseEmulator(host, 9000);
-    await FirebaseStorage.instance.useStorageEmulator(host, 9199);
+    // const host = '127.0.0.1';
+    // await FirebaseAuth.instance.useAuthEmulator(host, 9099);
+    // FirebaseDatabase.instance.useDatabaseEmulator(host, 9000);
+    // await FirebaseStorage.instance.useStorageEmulator(host, 9199);
   } else {
     await Firebase.initializeApp(options: firebaseOptions);
   }

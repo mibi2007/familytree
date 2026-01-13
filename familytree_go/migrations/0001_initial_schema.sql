@@ -1,3 +1,4 @@
+-- +goose Up
 -- Enable unaccent extension for search
 CREATE EXTENSION IF NOT EXISTS unaccent;
 

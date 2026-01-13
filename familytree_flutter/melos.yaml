@@ -6,8 +6,10 @@ packages:
 
 scripts:
   bootstrap:
-    exec: flutter pub get
-    description: Run 'flutter pub get' in all packages.
+    description: Bootstrap all packages.
+    steps:
+      - melos exec --scope="shared_package" -- "flutter pub get"
+      - melos exec --ignore="shared_package" -- "flutter pub get"
   
   clean:
     exec: flutter clean

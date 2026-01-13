@@ -5,8 +5,8 @@ Analyzing shared_package...
   error - Target of URI hasn't been generated: 'package:shared_package/domain/entities/auth_user.g.dart' - lib\domain\entities\auth_user.dart:4:6 - uri_has_not_been_generated
   error - The name '_AuthUser' isn't a type and can't be used in a redirected constructor - lib\domain\entities\auth_user.dart:13:8 - redirect_to_non_class
   error - The method '_$AuthUserFromJson' isn't defined for the type 'AuthUser' - lib\domain\entities\auth_user.dart:15:59 - undefined_method
-  error - Target of URI hasn't been generated: 'package:shared_package/infrastructure/config/app_config.g.dart' - lib\infrastructure\config\app_config.dart:3:6 - uri_has_not_been_generated
-  error - Target of URI hasn't been generated: 'package:shared_package/infrastructure/grpc/grpc_client.g.dart' - lib\infrastructure\grpc\grpc_client.dart:12:6 - uri_has_not_been_generated
+  error - Target of URI hasn't been generated: 'package:shared_package/data/config/app_config.g.dart' - lib\infrastructure\config\app_config.dart:3:6 - uri_has_not_been_generated
+  error - Target of URI hasn't been generated: 'package:shared_package/data/grpc/grpc_client.g.dart' - lib\infrastructure\grpc\grpc_client.dart:12:6 - uri_has_not_been_generated
   error - Undefined name 'appConfigProvider' - lib\infrastructure\grpc\grpc_client.dart:16:28 - undefined_identifier
   error - Undefined name 'grpcChannelProvider' - lib\infrastructure\grpc\grpc_client.dart:34:29 - undefined_identifier
   error - Undefined name 'authRepositoryProvider' - lib\infrastructure\grpc\grpc_client.dart:35:30 - undefined_identifier

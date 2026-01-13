@@ -9,24 +9,31 @@ import (
 
 	"github.com/mibi2007/familytree/familytree_go/internal/config"
 	"github.com/mibi2007/familytree/familytree_go/internal/db"
-	authApp "github.com/mibi2007/familytree/familytree_go/internal/features/auth/application"
-	authPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/auth/infrastructure/postgres"
+	authApp "github.com/mibi2007/familytree/familytree_go/internal/features/auth/app"
+	authPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/auth/data/postgres"
 	authGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/auth/interfaces/grpc"
-	chatApp "github.com/mibi2007/familytree/familytree_go/internal/features/chat/application"
-	chatPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/chat/infrastructure/postgres"
+	chatApp "github.com/mibi2007/familytree/familytree_go/internal/features/chat/app"
+	chatPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/chat/data/postgres"
 	chatGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/chat/interfaces/grpc"
-	familyApp "github.com/mibi2007/familytree/familytree_go/internal/features/family/application"
-	familyPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/family/infrastructure/postgres"
+	familyApp "github.com/mibi2007/familytree/familytree_go/internal/features/family/app"
+	familyPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/family/data/postgres"
 	familyGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/family/interfaces/grpc"
-	systemPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/system/infrastructure/postgres"
+	systemApp "github.com/mibi2007/familytree/familytree_go/internal/features/system/app"
+	systemPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/system/data/postgres"
+	systemGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/system/interfaces/grpc"
 	"github.com/mibi2007/familytree/familytree_go/internal/middleware"
 	authv1 "github.com/mibi2007/familytree/familytree_go/proto/auth/v1"
 	chatv1 "github.com/mibi2007/familytree/familytree_go/proto/chat/v1"
 	familyv1 "github.com/mibi2007/familytree/familytree_go/proto/family/v1"
+	systemv1 "github.com/mibi2007/familytree/familytree_go/proto/system/v1"
+
+	"cloud.google.com/go/storage"
 
 	firebase "firebase.google.com/go/v4"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -36,9 +43,24 @@ func main() {
 	// 1. Database Connection
 	dbConn, err := db.Connect(cfg.DBConn)
 	if err != nil {
-		log.Fatalf("failed to connect to db: %v", err)
+		log.Printf("STARTUP WARNING: failed to connect to db: %v", err)
 	}
-	defer dbConn.Close()
+	defer func() {
+		if dbConn != nil {
+			dbConn.Close()
+		}
+	}()
+
+	// GCS Client Initialization
+	var gcsClient *storage.Client
+	gcsCtx := context.Background()
+	gcsClient, err = storage.NewClient(gcsCtx)
+	if err != nil {
+		log.Printf("WARNING: Failed to create GCS client: %v", err)
+	}
+	if gcsClient != nil {
+		defer gcsClient.Close()
+	}
 
 	// 2. Firebase Initialization
 	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
@@ -70,6 +92,7 @@ func main() {
 	familyService := familyApp.NewFamilyService(familyRepo, memberRepo, tokenRepo)
 	chatPublisher := chatApp.NewMemoryChatPublisher()
 	chatService := chatApp.NewChatService(chatRepo, chatPublisher)
+	systemService := systemApp.NewSystemService(dbConn, gcsClient)
 
 	// 5. Start Background Jobs
 	ctx, cancel := context.WithCancel(context.Background())
@@ -96,9 +119,36 @@ func main() {
 	authv1.RegisterAuthServiceServer(s, authGrpc.NewAuthHandler(authService))
 	familyv1.RegisterFamilyServiceServer(s, familyGrpc.NewFamilyHandler(familyService))
 	chatv1.RegisterChatServiceServer(s, chatGrpc.NewChatHandler(chatService))
+	systemv1.RegisterSystemServiceServer(s, systemGrpc.NewSystemHandler(systemService))
 
 	// 9. Reflection for Debugging
 	reflection.Register(s)
+
+	// 10. Health Check Service
+	healthServer := health.NewServer()
+	healthpb.RegisterHealthServer(s, healthServer)
+
+	// Background DB Monitor
+	go func() {
+		// Set initial status
+		healthServer.SetServingStatus("", healthpb.HealthCheckResponse_SERVING)
+		healthServer.SetServingStatus("database", healthpb.HealthCheckResponse_SERVING)
+
+		ticker := time.NewTicker(10 * time.Second)
+		defer ticker.Stop()
+
+		for range ticker.C {
+			status := healthpb.HealthCheckResponse_SERVING
+			if err := dbConn.Ping(); err != nil {
+				status = healthpb.HealthCheckResponse_NOT_SERVING
+				log.Printf("Health Monitor: Database unreachable: %v", err)
+			}
+			// Update Main Server Status
+			healthServer.SetServingStatus("", status)
+			// Update Database Component Status
+			healthServer.SetServingStatus("database", status)
+		}
+	}()
 
 	lis, err := net.Listen("tcp", ":"+cfg.Port)
 	if err != nil {

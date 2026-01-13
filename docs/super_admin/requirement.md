@@ -16,11 +16,22 @@ The Super Admin application (`admin_app`) is the centralized command center for 
   - Approval instantly elevates the user's role to `SYSTEM_ADMIN` or `SUPPORT_AGENT`.
 
 ### 1. Dashboard & Monitoring
-- **Real-time Statistics**:
+- **System Health Status**:
+  - **Backend Status**: Real-time health check of the Go gRPC server with overall status (HEALTHY, DEGRADED, UNHEALTHY).
+  - **Component Monitoring**:
+    - **Server**: Service uptime and availability.
+    - **PostgreSQL Database**: Connection status, response time in milliseconds, and error reporting.
+    - **Google Cloud Storage**: Connectivity check with response time tracking.
+  - **Visual Indicators**: Color-coded status badges (green/orange/red) for quick assessment.
+  - **Response Time Metrics**: Display latency for each component to identify performance bottlenecks.
+  - **Last Check Timestamp**: Shows when the health status was last updated.
+  - **Auto-Refresh**: Health status automatically refreshes to provide real-time monitoring.
+- **Real-time Statistics** (Future):
   - Total registered users.
   - Total active families.
   - New users/families in the last 24 hours.
-- **System Health**: Overview of backend service status (link to monitoring).
+- **API Documentation**: Integrated Swagger UI for exploring and testing API endpoints.
+
 
 ### 2. User Management
 - **Directory Search**: Search users by Email, Phone, or Name.

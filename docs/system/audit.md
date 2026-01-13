@@ -1,7 +1,7 @@
 # System Audit & Compliance
 
 ## Overview
-The Audit System provides a centralized mechanism for tracking sensitive actions performed within the application. Unlike Access Control (authentication/authorization) which *prevents* actions, the Audit System *records* actions after they occur for accountability and historical analysis.
+The Audit System provides a centralized mechanism for tracking sensitive actions performed within the app. Unlike Access Control (authentication/authorization) which *prevents* actions, the Audit System *records* actions after they occur for accountability and historical analysis.
 
 ## Architecture
 
@@ -10,7 +10,7 @@ The audit system is implemented as a **gRPC Interceptor** in the Go backend. Thi
 ### Data Flow
 1.  **Request**: Client sends a gRPC request (e.g., `ReviewAdminRequest`).
 2.  **Auth Layer**: Verifies identity and permissions.
-3.  **Application Logic**: Executes the business rule (e.g., updates database).
+3.  **App Logic**: Executes the business rule (e.g., updates database).
 4.  **Audit Interceptor**:
     *   Checks if the method is flagged for auditing.
     *   If successful, creates an `AuditLog` entry.

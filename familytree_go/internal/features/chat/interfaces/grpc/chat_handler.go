@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 
-	"github.com/mibi2007/familytree/familytree_go/internal/features/chat/application"
+	"github.com/mibi2007/familytree/familytree_go/internal/features/chat/app"
 	"github.com/mibi2007/familytree/familytree_go/internal/features/chat/domain"
 	chatv1 "github.com/mibi2007/familytree/familytree_go/proto/chat/v1"
 	"google.golang.org/grpc/codes"
@@ -13,10 +13,10 @@ import (
 
 type ChatHandler struct {
 	chatv1.UnimplementedChatServiceServer
-	appService *application.ChatService
+	appService *app.ChatService
 }
 
-func NewChatHandler(appService *application.ChatService) *ChatHandler {
+func NewChatHandler(appService *app.ChatService) *ChatHandler {
 	return &ChatHandler{appService: appService}
 }
 

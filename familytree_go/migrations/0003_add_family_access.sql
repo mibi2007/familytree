@@ -1,3 +1,4 @@
+-- +goose Up
 -- Add family_access table for many-to-many relationship between users and families
 CREATE TABLE IF NOT EXISTS family_access (
     family_id UUID NOT NULL REFERENCES families(id) ON DELETE CASCADE,

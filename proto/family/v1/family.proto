@@ -6,7 +6,7 @@ option go_package = "github.com/mibi2007/familytree/familytree_go/proto/family/v
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
-import "proto/common/v1/common.proto";
+
 
 service FamilyService {
   // Family Management

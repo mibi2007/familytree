@@ -61,7 +61,7 @@ erDiagram
 
 - **Uniqueness Check**:
   - PostgreSQL level: Upsert logic or composite unique index on `(family_id, member_id, title, event_date)`.
-  - Application level: Check for existing events of the same type/date/member before allowing manual creation.
+  - App level: Check for existing events of the same type/date/member before allowing manual creation.
 - **Timeline Connection**:
   - Added `event_id` (Foreign Key) to `timeline_posts` table.
 

@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 
-	"github.com/mibi2007/familytree/familytree_go/internal/features/family/application"
+	"github.com/mibi2007/familytree/familytree_go/internal/features/family/app"
 	"github.com/mibi2007/familytree/familytree_go/internal/features/family/domain"
 	familyv1 "github.com/mibi2007/familytree/familytree_go/proto/family/v1"
 	"google.golang.org/grpc/codes"
@@ -14,10 +14,10 @@ import (
 
 type FamilyHandler struct {
 	familyv1.UnimplementedFamilyServiceServer
-	appService *application.FamilyService
+	appService *app.FamilyService
 }
 
-func NewFamilyHandler(appService *application.FamilyService) *FamilyHandler {
+func NewFamilyHandler(appService *app.FamilyService) *FamilyHandler {
 	return &FamilyHandler{
 		appService: appService,
 	}

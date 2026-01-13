@@ -6,7 +6,7 @@
 - **Value Objects**: `AddressingTitle`, `RelationshipType`, `MarkdownProfile`.
 - **Interfaces**: `IFamilyRepository`.
 
-### 2. Infrastructure Layer
+### 2. Data Layer
 - **Implementation**: `PostgresFamilyRepository` (Client calling Go API).
 - **Data Sources**:
   - `RemoteDataSource`: gRPC calls to Go backend.
@@ -21,11 +21,11 @@
   - `ActAsMember(ActRequest) returns (MemberResponse)`: Links current user to a member node.
 - **Protobuf**: `family_core.proto`
 
-### 3. Application Layer
+### 3. App Layer
 - **Services**: `FamilyTreeManager`, `InvitationCoordinator`, `KinshipTitleGenerator`.
 - **Providers**: `activeFamilyProvider`, `familyMembersProvider`.
 
-### 4. Presentation Layer
+### 4. View Layer
 - **Components**: 
   - `FamilyTreeCanvas`: Interactive graph.
   - `MemberProfileEditor`: Rich Markdown editor for the "Acting" node.

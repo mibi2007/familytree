@@ -20,6 +20,7 @@ sequenceDiagram
 
 ## Integration
 - **Engine**: Google Generative AI (Gemini).
+- **Framework**: Genkit Go for AI Agent orchestration and tool calling.
 - **Tooling**: GenUI for Flutter (rendering interactive widgets based on AI responses).
 
 - **Context Injection**: 
@@ -53,4 +54,4 @@ sequenceDiagram
   - `GenUIWidgetFactory`: Intercepts `genui` types to render interactive tree/photo/event widgets.
 
 ## Group Chat Logic
-- Mention detection: Cloud Function listens to group messages -> if contains `@family` -> Invoke Gemini API -> Post reply as a bot member.
+- Mention detection: Cloud Function listens to group messages -> if contains `@family` -> Invoke Genkit Service -> Post reply as a bot member.

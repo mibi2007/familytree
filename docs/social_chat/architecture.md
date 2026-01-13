@@ -7,7 +7,7 @@
 - **Value Objects**: `MessageContent`, `StorageQuota`.
 - **Interfaces**: `IChatRepository`, `IFriendRepository`, `ICallService`.
 
-### 2. Infrastructure Layer
+### 2. Data Layer
 - **Implementations**:
   - `PostgresFriendRepository`: Manages requests and friend lists.
   - `RTDBChatRepository`: Handles active message delivery.
@@ -22,11 +22,11 @@
   - `GetChatHistory(HistoryRequest) returns (HistoryResponse)`: Unary or Server Streaming for loading archives.
 - **Protobuf**: `chat.proto`
 
-### 3. Application Layer
+### 3. App Layer
 - **Services**: `ChatManager`, `CallController`.
 - **Providers**: `activeConversationProvider`, `messageListProvider`.
 
-### 4. Presentation Layer
+### 4. View Layer
 - **Components**:
   - `SearchUserScreen`: Search by Email/ID.
   - `FriendRequestList`: Manage incoming/outgoing requests.

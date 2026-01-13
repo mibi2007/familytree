@@ -101,6 +101,9 @@ func isPublicMethod(fullMethod string) bool {
 	// Actually most things will be behind login except maybe ValidateInviteToken
 	publicMethods := []string{
 		"/auth.v1.AuthService/ValidateInviteToken",
+		"/grpc.health.v1.Health/Check",
+		"/grpc.health.v1.Health/Watch",
+		"/system.v1.SystemService/GetHealthStatus",
 	}
 	for _, m := range publicMethods {
 		if m == fullMethod {

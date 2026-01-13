@@ -10,10 +10,10 @@ export 'package:hooks_riverpod/hooks_riverpod.dart';
 export 'package:riverpod_annotation/riverpod_annotation.dart' show riverpod;
 
 // Export Application Layer
-export 'application/application.dart';
+export 'app/app.dart';
+// Export Infrastructure Layer
+export 'data/data.dart';
 // Export Domain Layer
 export 'domain/domain.dart';
-// Export Infrastructure Layer
-export 'infrastructure/infrastructure.dart';
 // Export Presentation Layer
-export 'presentation/presentation.dart';
+export 'view/view.dart';

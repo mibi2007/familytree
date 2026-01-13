@@ -7,7 +7,6 @@
 package v1
 
 import (
-	_ "github.com/mibi2007/familytree/familytree_go/proto/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -760,7 +759,7 @@ var File_proto_family_v1_family_proto protoreflect.FileDescriptor
 
 const file_proto_family_v1_family_proto_rawDesc = "" +
 	"\n" +
-	"\x1cproto/family/v1/family.proto\x12\tfamily.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cproto/common/v1/common.proto\"6\n" +
+	"\x1cproto/family/v1/family.proto\x12\tfamily.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"6\n" +
 	"\x11JoinFamilyRequest\x12!\n" +
 	"\finvite_token\x18\x01 \x01(\tR\vinviteToken\"\xbc\x01\n" +
 	"\x06Family\x12\x0e\n" +

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_package/shared_package.dart';
 
-import 'features/auth/presentation/login_page.dart';
-import 'features/home/presentation/home_page.dart';
+import 'features/auth/view/login_page.dart';
+import 'features/home/view/home_page.dart';
 
 class UserApp extends StatelessWidget {
   final String title;

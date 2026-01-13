@@ -1,3 +1,4 @@
+-- +goose Up
 -- Chat Messages Table
 CREATE TABLE IF NOT EXISTS chat_messages (
     id TEXT PRIMARY KEY,

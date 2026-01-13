@@ -8,15 +8,15 @@
 - **Value Objects**: `EventType`, `EventSchedule`.
 - **Interfaces**: `IEventRepository`.
 
-### 2. Infrastructure Layer
+### 2. Data Layer
 - **Implementation**: `PostgresEventRepository`.
 - **Data Source**: PostgreSQL API.
 
-### 3. Application Layer
+### 3. App Layer
 - **Providers**: `familyEventsProvider(familyId)`, `eventTimelineProvider(eventId)`.
 - **Use Cases**: `CreateEventUseCase`, `LinkTimelineToEventUseCase`.
 
-### 4. Presentation Layer
+### 4. View Layer
 - **Widgets**: 
   - `EventCalendarView`: Monthly/List view of family events.
   - `EventDetailSheet`: Shows event info + linked timeline history.

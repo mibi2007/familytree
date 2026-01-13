@@ -34,6 +34,60 @@
                 "--web-port",
                 "8081"
             ]
+        },
+        // --- Dev Environment ---
+        {
+            "name": "User App (Dev - Web Server)",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "familytree_flutter/apps/user_app",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port",
+                "8082"
+            ]
+        },
+        {
+            "name": "Admin App (Dev - Web Server)",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "familytree_flutter/apps/admin_app",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port",
+                "8081"
+            ]
+        },
+        // --- Prod Environment ---
+        {
+            "name": "User App (Prod - Web Server)",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "familytree_flutter/apps/user_app",
+            "program": "lib/main_prod.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port",
+                "8082"
+            ]
+        },
+        {
+            "name": "Admin App (Prod - Web Server)",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "familytree_flutter/apps/admin_app",
+            "program": "lib/main_prod.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port",
+                "8081"
+            ]
         }
     ],
     "compounds": []

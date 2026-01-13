@@ -7,17 +7,17 @@
 - **Value Objects**: `NotificationType`, `DeliveryChannel`.
 - **Interfaces**: `INotificationService`.
 
-### 2. Infrastructure Layer
+### 2. Data Layer
 - **Implementations**:
   - `FCMNotificationService`.
   - `EmailNotificationService`.
 - **Repository**: `ReminderRepository` (Postgres).
 
-### 3. Application Layer
+### 3. App Layer
 - **Providers**: `notificationSettingsProvider`.
 - **Use Cases**: `ConfigureReminderUseCase`, `UpdatePushTokenUseCase`.
 
-### 4. Presentation Layer
+### 4. View Layer
 - **UI**:
   - `ReminderShortcutSwitch`: In member detail view.
   - `NotificationSettingsSection`: In settings page.

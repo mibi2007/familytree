@@ -6,19 +6,19 @@
 - **Entities**: `AIPrompt`, `AIRecommendation`, `FamilyContext`.
 - **Interfaces**: `IAIAgentService` (generateStream, stopGeneration).
 
-### 2. Infrastructure Layer
-- **Implementation**: `GeminiGenUIService`.
+### 2. Data Layer
+- **Implementation**: `GenkitService` (Go backend using Genkit).
 - **Context Builders**: 
   - `FamilyTreeContextBuilder`: Extracts structural text from the latest `family_tree_snapshots` blob.
   - `PronunciationContextService`: Generates relative titles-to-IDs map based on acting position.
 
-### 3. Application Layer
+### 3. App Layer
 - **Providers**: 
   - `aiChatProvider` (auto-disposable state).
   - `aiFocusOptionProvider`: Stores the current session's knowledge boundary (Families/Users).
 - **Handlers**: `MentionResponder` (Background service for group @mentions).
 
-### 4. Presentation Layer
+### 4. View Layer
 - **Components**:
   - `GenUIWidgetFactory`: Maps AI intents to Flutter widgets.
   - `ThinkingIndicator`: Visual feedback during streaming.
