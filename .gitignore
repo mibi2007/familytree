@@ -33,3 +33,5 @@ lib/core/config/firebase_options*.dart
 .pub-cache/
 .pub/
 build/
+build_old/
+*build*/
