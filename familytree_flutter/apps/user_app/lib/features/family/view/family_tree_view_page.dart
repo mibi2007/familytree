@@ -132,7 +132,7 @@ class _AddMemberDialogState extends State<_AddMemberDialog> {
         Consumer(
           builder: (context, ref, _) {
             return ElevatedButton(
-              onPressed: _isLoading ? null : () => _handleAdd(context, ref),
+              onPressed: _isLoading ? null : () => _handleAdd(ref),
               child: _isLoading
                   ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
                   : const Text('Add'),
@@ -143,18 +143,18 @@ class _AddMemberDialogState extends State<_AddMemberDialog> {
     );
   }
 
-  Future<void> _handleAdd(BuildContext context, WidgetRef ref) async {
+  Future<void> _handleAdd(WidgetRef ref) async {
     final name = _nameController.text.trim();
     if (name.isEmpty) return;
 
     setState(() => _isLoading = true);
     try {
       await ref.read(familyControllerProvider.notifier).addMember(familyId: widget.familyId, displayName: name);
-      if (mounted) Navigator.pop(context);
+      if (!mounted) return;
+      Navigator.pop(context);
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

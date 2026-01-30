@@ -6,7 +6,7 @@ import 'user_app.dart';
 Future<void> bootstrap({
   required FirebaseOptions firebaseOptions,
   AppEnvironment environment = AppEnvironment.prod,
-  String grpcHost = 'localhost',
+  String grpcHost = '127.0.0.1',
   int grpcPort = 50051,
   bool useSecureGrpc = true,
   String appTitle = 'Family Chat',

@@ -12,6 +12,12 @@
         ],
         "admin_prod": [
           "mibi-family-tree-admin"
+        ],
+        "user_dev": [
+          "mibi-family-tree-dev"
+        ],
+        "admin_dev": [
+          "mibi-family-tree-admin-dev"
         ]
       }
     },
@@ -22,6 +28,12 @@
         ],
         "admin_dev": [
           "mibi-family-tree-admin-dev"
+        ],
+        "user_prod": [
+          "mibi-family-tree"
+        ],
+        "admin_prod": [
+          "mibi-family-tree-admin"
         ]
       }
     }

@@ -213,6 +213,18 @@ func (s *AuthService) GetLatestAdminRequest(ctx context.Context, userID string) 
 	return s.adminRepo.GetLatestByUserID(ctx, userID)
 }
 
+func (s *AuthService) GetAuthStatus(ctx context.Context, userID string) (isSuperAdmin bool, latestRequest *domain.SuperAdminRequest, err error) {
+	user, err := s.userRepo.GetUserByID(ctx, userID)
+	if err != nil {
+		return false, nil, err
+	}
+
+	isSuperAdmin = user != nil && user.Role == domain.SystemRoleSuperAdmin
+
+	latestRequest, err = s.adminRepo.GetLatestByUserID(ctx, userID)
+	return isSuperAdmin, latestRequest, err
+}
+
 // ReviewAdminRequest processing (Approve/Reject)
 func (s *AuthService) ReviewAdminRequest(ctx context.Context, requestID string, decision domain.RequestStatus, reviewerID string) error {
 	// 1. Fetch the request to know user and role

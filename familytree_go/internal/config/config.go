@@ -33,7 +33,7 @@ func Load() *Config {
 	return &Config{
 		Env:      env,
 		Port:     getEnv("PORT", "50051"),
-		DBConn:   getEnv("DB_CONN", "postgres://postgres:postgres@localhost:5432/familytree?sslmode=disable"),
+		DBConn:   getEnv("DB_CONN", "postgres://postgres:postgres@127.0.0.1:5432/familytree?sslmode=disable"),
 		LogLevel: getEnv("LOG_LEVEL", "info"),
 	}
 }

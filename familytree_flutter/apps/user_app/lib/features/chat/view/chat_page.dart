@@ -124,7 +124,7 @@ class _MessageItem extends ConsumerWidget {
                 child: p.photoUrl.isEmpty ? Text(p.displayName.isNotEmpty ? p.displayName[0] : '?') : null,
               ),
               loading: () => const CircleAvatar(child: CircularProgressIndicator()),
-              error: (_, __) => const CircleAvatar(child: Icon(Icons.error)),
+              error: (_, _) => const CircleAvatar(child: Icon(Icons.error)),
             ),
           const SizedBox(width: 8),
           Flexible(
@@ -135,7 +135,7 @@ class _MessageItem extends ConsumerWidget {
                   profileAsync.when(
                     data: (p) => Text(p.displayName, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                     loading: () => const Text('...', style: TextStyle(fontSize: 12)),
-                    error: (_, __) => const Text('Unknown', style: TextStyle(fontSize: 12)),
+                    error: (_, _) => const Text('Unknown', style: TextStyle(fontSize: 12)),
                   ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -162,7 +162,7 @@ class _MessageItem extends ConsumerWidget {
                     child: (u?.photoURL ?? '').isEmpty ? Text(u?.displayName?[0] ?? '?') : null,
                   ),
                   loading: () => const CircleAvatar(child: CircularProgressIndicator()),
-                  error: (_, __) => const CircleAvatar(child: Icon(Icons.error)),
+                  error: (_, _) => const CircleAvatar(child: Icon(Icons.error)),
                 ),
         ],
       ),

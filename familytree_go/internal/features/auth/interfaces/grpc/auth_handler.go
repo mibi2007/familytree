@@ -31,21 +31,19 @@ func (s *AuthHandler) GetAuthStatus(ctx context.Context, _ *emptypb.Empty) (*aut
 		return nil, status.Error(codes.Unauthenticated, "not authenticated")
 	}
 
-	req, err := s.appService.GetLatestAdminRequest(ctx, user.UID)
+	isSuperAdmin, req, err := s.appService.GetAuthStatus(ctx, user.UID)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get admin request: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get auth status: %v", err)
 	}
 
 	resp := &authv1.AuthStatusResponse{
-		IsSuperAdmin:         false,
+		IsSuperAdmin:         isSuperAdmin,
 		PendingRequestStatus: authv1.RequestStatus_REQUEST_STATUS_UNSPECIFIED,
 	}
 
 	if req != nil {
-		if req.Status == domain.RequestStatusApproved && req.RequestedRole == domain.SystemRoleSuperAdmin {
-			resp.IsSuperAdmin = true
-		}
-
+		// If they already have SUPER_ADMIN role, we don't necessarily need to rely on the request entry
+		// but we still report the latest request status if it exists.
 		if v, ok := authv1.RequestStatus_value[string(req.Status)]; ok {
 			resp.PendingRequestStatus = authv1.RequestStatus(v)
 		}

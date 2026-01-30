@@ -8,37 +8,35 @@ class AdminDashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.blueGrey[900],
-        foregroundColor: Colors.white,
-        title: const Text('Admin Dashboard'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
-            onPressed: () => ref.read(authControllerProvider.notifier).signOut(),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'System Health',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              IconButton(onPressed: () => ref.invalidate(healthStatusProvider), icon: const Icon(Icons.refresh)),
+            ],
           ),
+          const SMaterialSizedBox(height: 24),
+          const _HealthCheckWidget(),
         ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'System Health',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 24),
-            const _HealthCheckWidget(),
-          ],
-        ),
       ),
     );
   }
+}
+
+// Helper to avoid naming conflicts if necessary
+class SMaterialSizedBox extends StatelessWidget {
+  final double? height;
+  const SMaterialSizedBox({super.key, this.height});
+  @override
+  Widget build(BuildContext context) => SizedBox(height: height);
 }
 
 class _HealthCheckWidget extends ConsumerWidget {

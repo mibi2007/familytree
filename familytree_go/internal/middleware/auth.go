@@ -99,6 +99,10 @@ func (i *AuthInterceptor) authenticate(ctx context.Context) (context.Context, er
 func isPublicMethod(fullMethod string) bool {
 	// Add public methods here, for now GenerateInviteToken might be public if used without login (unlikely)
 	// Actually most things will be behind login except maybe ValidateInviteToken
+	if strings.HasPrefix(fullMethod, "/grpc.reflection.v1") {
+		return true
+	}
+
 	publicMethods := []string{
 		"/auth.v1.AuthService/ValidateInviteToken",
 		"/grpc.health.v1.Health/Check",

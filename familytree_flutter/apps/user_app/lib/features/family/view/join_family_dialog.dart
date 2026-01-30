@@ -26,7 +26,7 @@ class _JoinFamilyDialogState extends State<JoinFamilyDialog> {
         Consumer(
           builder: (context, ref, _) {
             return ElevatedButton(
-              onPressed: _isLoading ? null : () => _handleJoin(context, ref),
+              onPressed: _isLoading ? null : () => _handleJoin(ref),
               child: _isLoading
                   ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
                   : const Text('Join'),
@@ -37,21 +37,20 @@ class _JoinFamilyDialogState extends State<JoinFamilyDialog> {
     );
   }
 
-  Future<void> _handleJoin(BuildContext context, WidgetRef ref) async {
+  Future<void> _handleJoin(WidgetRef ref) async {
     final token = _tokenController.text.trim();
     if (token.isEmpty) return;
 
     setState(() => _isLoading = true);
     try {
       await ref.read(familyControllerProvider.notifier).joinFamily(token);
-      if (mounted) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Successfully joined family!')));
-      }
+      if (!mounted) return;
+
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Successfully joined family!')));
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to join: $e')));
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to join: $e')));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

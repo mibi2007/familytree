@@ -7,7 +7,7 @@ void main() async {
   await bootstrap(
     firebaseOptions: DefaultFirebaseOptionsDev.currentPlatform,
     environment: AppEnvironment.local,
-    grpcHost: 'localhost',
+    grpcHost: '127.0.0.1',
     grpcPort: 50051,
     useSecureGrpc: false,
     appTitle: 'Admin App (LOCAL)',

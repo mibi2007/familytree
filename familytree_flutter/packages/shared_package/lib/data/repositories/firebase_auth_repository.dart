@@ -66,14 +66,10 @@ class FirebaseAuthRepository implements AuthRepository {
       }
 
       // v7: Use authenticate() for Mobile (signIn is removed/legacy)
-      final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate();
-
-      if (googleUser == null) {
-        return left('Sign in cancelled by user');
-      }
+      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
       // Create a new credential
       // v7: accessToken is no longer available directly on GoogleSignInAuthentication

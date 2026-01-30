@@ -56,7 +56,7 @@ tasks:
   run-proxy:
     desc: Run grpc-web proxy
     cmds:
-      - grpcwebproxy --backend_addr=localhost:50051 --run_tls_server=false --allow_all_origins --server_http_debug_port=9090
+      - grpcwebproxy --backend_addr=127.0.0.1:50051 --run_tls_server=false --allow_all_origins --server_http_debug_port=9090
 
   run-fe-user:
     desc: Run User App

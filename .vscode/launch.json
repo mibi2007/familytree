@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Open Localhost:8081 (Chrome)",
+            "name": "Open 127.0.0.1:8081 (Chrome)",
             "request": "launch",
             "type": "chrome",
             "url": "http://127.0.0.1:8081",
@@ -45,7 +45,7 @@
             "args": [
                 "-d",
                 "web-server",
-                "--web-port",
+                "--web-port", 
                 "8082"
             ]
         },

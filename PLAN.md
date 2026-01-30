@@ -25,8 +25,9 @@
     - [x] **Testing**: Unit tests for Service & Repository layers.
 - [x] **Feature: System (Observability)**:
     - [x] **Audit**: Middleware for logging critical admin actions (`AuditInterceptor`).
+    - [x] **Health**: `GetHealthStatus` RPC for system components (Server, DB, GSC).
     - [x] **Repo**: `LogRepository` (Postgres).
-    - [x] **Testing**: Middleware unit tests.
+    - [x] **Testing**: Middleware & Health Service unit tests.
 - [x] **Feature: Family (Core Logic)**:
     - [x] **Service**: `CreateFamily`, `GetFamily`, `UpdateMember`, `GetTree`, `JoinFamily`.
     - [x] **Schema**: Many-to-many access via `family_access`.
@@ -39,12 +40,12 @@
     - [x] **Auth Repository**: `FirebaseAuthRepository` (Google, Email, Phone).
     - [x] **State Management**: Riverpod providers (`authRepositoryProvider`, `authClientProvider`).
     - [x] **Testing**: Unit tests for Auth Repository (using `mocktail`).
-- [ ] **Admin App (`admin_app`)**:
-    - [x] **Screens**: Login, Admin Onboarding.
-    - [x] **Logic**: Auth Status Check, Routing, Submit Admin Request.
-    - [x] **Screens**: Dashboard, Admin Request List.
+- [x] **Admin App (`admin_app`)**:
+    - [x] **Screens**: Login, Admin Onboarding, Dashboard (Health Monitor), Admin Request List.
+    - [x] **Logic**: Auth Status Check (Role-based), Routing, Submit Admin Request.
     - [x] **Logic**: Approve/Reject requests.
-    - [x] **Logic**: Invite Users.
+    - [x] **Logic**: Invite Users (Token Generation).
+    - [x] **Health**: Integrated real-time health monitoring of backend components.
 - [x] **User App (`user_app`)**:
     - [x] **Screens**: Login, Profile, Family Tree View.
     - [x] **Logic**: Join/Create Family, Update Profile.
@@ -67,9 +68,10 @@
 - [x] frontend: `flutter test` in `apps/user_app` (PASS - Smoke Test)
 - [x] frontend: `flutter analyze` (PASS)
 - [x] backend: Role promotion logic and migrations (PASS)
-- [ ] Integration: End-to-end flow (Login -> Sync -> Data Persistence).
-- [ ] Phase 4: Integration & Features
-    - [x] Super Admin Onboarding integration.
+- [x] Integration: End-to-end flow (Login -> Sync -> Role Persistence) (PASS).
+- [x] Phase 4: Integration & Features
+    - [x] Super Admin Onboarding & Manual Bootstrapping (Verified).
     - [x] Admin Approval Flow (Promote User to Admin).
     - [ ] Family Management: Visual Tree Builder in Flutter + Graph logic in Go.
     - [x] Real-time Chat: gRPC Streams + Flutter UI (User App).
+    - [x] System Health Monitoring in Admin Dashboard.

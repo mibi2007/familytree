@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration for Local Development with Firebase Emulators
-export FIREBASE_AUTH_EMULATOR_HOST="localhost:9099"
+export FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:9099"
 export GOOGLE_CLOUD_PROJECT="mibi-family-tree-dev"
 export GCLOUD_PROJECT="mibi-family-tree-dev"
 
