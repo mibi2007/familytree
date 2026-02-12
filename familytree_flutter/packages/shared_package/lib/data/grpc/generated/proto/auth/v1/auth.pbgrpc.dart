@@ -15,9 +15,9 @@ import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
-import 'package:protobuf/well_known_types/google/protobuf/empty.pb.dart' as $2;
+import 'package:protobuf/well_known_types/google/protobuf/empty.pb.dart' as $1;
 
-import '../../common/v1/common.pb.dart' as $1;
+import '../../common/v1/common.pb.dart' as $2;
 import 'auth.pb.dart' as $0;
 
 export 'auth.pb.dart';
@@ -71,15 +71,30 @@ class AuthServiceClient extends $grpc.Client {
     return $createUnaryCall(_$reviewAdminRequest, request, options: options);
   }
 
+  /// Admin Management
+  $grpc.ResponseFuture<$0.ListAdminsResponse> listAdmins(
+    $0.ListAdminsRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$listAdmins, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Empty> revokeAdminRole(
+    $0.RevokeAdminRoleRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$revokeAdminRole, request, options: options);
+  }
+
   /// Profile Management
-  $grpc.ResponseFuture<$1.UserProfile> syncUserProfile(
+  $grpc.ResponseFuture<$2.UserProfile> syncUserProfile(
     $0.SyncUserProfileRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$syncUserProfile, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.UserProfile> getUserProfile(
+  $grpc.ResponseFuture<$2.UserProfile> getUserProfile(
     $0.GetUserProfileRequest request, {
     $grpc.CallOptions? options,
   }) {
@@ -87,10 +102,18 @@ class AuthServiceClient extends $grpc.Client {
   }
 
   $grpc.ResponseFuture<$0.AuthStatusResponse> getAuthStatus(
-    $2.Empty request, {
+    $1.Empty request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$getAuthStatus, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Empty> requestAccountDeletion(
+    $0.RequestAccountDeletionRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$requestAccountDeletion, request,
+        options: options);
   }
 
   // method descriptors
@@ -120,21 +143,36 @@ class AuthServiceClient extends $grpc.Client {
           '/auth.v1.AuthService/ReviewAdminRequest',
           ($0.ReviewAdminRequestRequest value) => value.writeToBuffer(),
           $0.AdminAccessRequest.fromBuffer);
+  static final _$listAdmins =
+      $grpc.ClientMethod<$0.ListAdminsRequest, $0.ListAdminsResponse>(
+          '/auth.v1.AuthService/ListAdmins',
+          ($0.ListAdminsRequest value) => value.writeToBuffer(),
+          $0.ListAdminsResponse.fromBuffer);
+  static final _$revokeAdminRole =
+      $grpc.ClientMethod<$0.RevokeAdminRoleRequest, $1.Empty>(
+          '/auth.v1.AuthService/RevokeAdminRole',
+          ($0.RevokeAdminRoleRequest value) => value.writeToBuffer(),
+          $1.Empty.fromBuffer);
   static final _$syncUserProfile =
-      $grpc.ClientMethod<$0.SyncUserProfileRequest, $1.UserProfile>(
+      $grpc.ClientMethod<$0.SyncUserProfileRequest, $2.UserProfile>(
           '/auth.v1.AuthService/SyncUserProfile',
           ($0.SyncUserProfileRequest value) => value.writeToBuffer(),
-          $1.UserProfile.fromBuffer);
+          $2.UserProfile.fromBuffer);
   static final _$getUserProfile =
-      $grpc.ClientMethod<$0.GetUserProfileRequest, $1.UserProfile>(
+      $grpc.ClientMethod<$0.GetUserProfileRequest, $2.UserProfile>(
           '/auth.v1.AuthService/GetUserProfile',
           ($0.GetUserProfileRequest value) => value.writeToBuffer(),
-          $1.UserProfile.fromBuffer);
+          $2.UserProfile.fromBuffer);
   static final _$getAuthStatus =
-      $grpc.ClientMethod<$2.Empty, $0.AuthStatusResponse>(
+      $grpc.ClientMethod<$1.Empty, $0.AuthStatusResponse>(
           '/auth.v1.AuthService/GetAuthStatus',
-          ($2.Empty value) => value.writeToBuffer(),
+          ($1.Empty value) => value.writeToBuffer(),
           $0.AuthStatusResponse.fromBuffer);
+  static final _$requestAccountDeletion =
+      $grpc.ClientMethod<$0.RequestAccountDeletionRequest, $1.Empty>(
+          '/auth.v1.AuthService/RequestAccountDeletion',
+          ($0.RequestAccountDeletionRequest value) => value.writeToBuffer(),
+          $1.Empty.fromBuffer);
 }
 
 @$pb.GrpcServiceName('auth.v1.AuthService')
@@ -187,29 +225,52 @@ abstract class AuthServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.ReviewAdminRequestRequest.fromBuffer(value),
         ($0.AdminAccessRequest value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.SyncUserProfileRequest, $1.UserProfile>(
+    $addMethod($grpc.ServiceMethod<$0.ListAdminsRequest, $0.ListAdminsResponse>(
+        'ListAdmins',
+        listAdmins_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.ListAdminsRequest.fromBuffer(value),
+        ($0.ListAdminsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RevokeAdminRoleRequest, $1.Empty>(
+        'RevokeAdminRole',
+        revokeAdminRole_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.RevokeAdminRoleRequest.fromBuffer(value),
+        ($1.Empty value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.SyncUserProfileRequest, $2.UserProfile>(
         'SyncUserProfile',
         syncUserProfile_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
             $0.SyncUserProfileRequest.fromBuffer(value),
-        ($1.UserProfile value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.GetUserProfileRequest, $1.UserProfile>(
+        ($2.UserProfile value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetUserProfileRequest, $2.UserProfile>(
         'GetUserProfile',
         getUserProfile_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
             $0.GetUserProfileRequest.fromBuffer(value),
-        ($1.UserProfile value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.Empty, $0.AuthStatusResponse>(
+        ($2.UserProfile value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.AuthStatusResponse>(
         'GetAuthStatus',
         getAuthStatus_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $2.Empty.fromBuffer(value),
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($0.AuthStatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RequestAccountDeletionRequest, $1.Empty>(
+        'RequestAccountDeletion',
+        requestAccountDeletion_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.RequestAccountDeletionRequest.fromBuffer(value),
+        ($1.Empty value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.InviteToken> generateInviteToken_Pre($grpc.ServiceCall $call,
@@ -256,27 +317,51 @@ abstract class AuthServiceBase extends $grpc.Service {
   $async.Future<$0.AdminAccessRequest> reviewAdminRequest(
       $grpc.ServiceCall call, $0.ReviewAdminRequestRequest request);
 
-  $async.Future<$1.UserProfile> syncUserProfile_Pre($grpc.ServiceCall $call,
+  $async.Future<$0.ListAdminsResponse> listAdmins_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.ListAdminsRequest> $request) async {
+    return listAdmins($call, await $request);
+  }
+
+  $async.Future<$0.ListAdminsResponse> listAdmins(
+      $grpc.ServiceCall call, $0.ListAdminsRequest request);
+
+  $async.Future<$1.Empty> revokeAdminRole_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.RevokeAdminRoleRequest> $request) async {
+    return revokeAdminRole($call, await $request);
+  }
+
+  $async.Future<$1.Empty> revokeAdminRole(
+      $grpc.ServiceCall call, $0.RevokeAdminRoleRequest request);
+
+  $async.Future<$2.UserProfile> syncUserProfile_Pre($grpc.ServiceCall $call,
       $async.Future<$0.SyncUserProfileRequest> $request) async {
     return syncUserProfile($call, await $request);
   }
 
-  $async.Future<$1.UserProfile> syncUserProfile(
+  $async.Future<$2.UserProfile> syncUserProfile(
       $grpc.ServiceCall call, $0.SyncUserProfileRequest request);
 
-  $async.Future<$1.UserProfile> getUserProfile_Pre($grpc.ServiceCall $call,
+  $async.Future<$2.UserProfile> getUserProfile_Pre($grpc.ServiceCall $call,
       $async.Future<$0.GetUserProfileRequest> $request) async {
     return getUserProfile($call, await $request);
   }
 
-  $async.Future<$1.UserProfile> getUserProfile(
+  $async.Future<$2.UserProfile> getUserProfile(
       $grpc.ServiceCall call, $0.GetUserProfileRequest request);
 
   $async.Future<$0.AuthStatusResponse> getAuthStatus_Pre(
-      $grpc.ServiceCall $call, $async.Future<$2.Empty> $request) async {
+      $grpc.ServiceCall $call, $async.Future<$1.Empty> $request) async {
     return getAuthStatus($call, await $request);
   }
 
   $async.Future<$0.AuthStatusResponse> getAuthStatus(
-      $grpc.ServiceCall call, $2.Empty request);
+      $grpc.ServiceCall call, $1.Empty request);
+
+  $async.Future<$1.Empty> requestAccountDeletion_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.RequestAccountDeletionRequest> $request) async {
+    return requestAccountDeletion($call, await $request);
+  }
+
+  $async.Future<$1.Empty> requestAccountDeletion(
+      $grpc.ServiceCall call, $0.RequestAccountDeletionRequest request);
 }

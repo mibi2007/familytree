@@ -122,6 +122,18 @@ func (s *FamilyHandler) JoinFamily(ctx context.Context, req *familyv1.JoinFamily
 	return mapFamilyToProto(family), nil
 }
 
+func (s *FamilyHandler) CreateInviteToken(ctx context.Context, req *familyv1.CreateInviteTokenRequest) (*familyv1.CreateInviteTokenResponse, error) {
+	token, expiresAt, err := s.appService.CreateInviteToken(ctx, req.FamilyId)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create invite token: %v", err)
+	}
+
+	return &familyv1.CreateInviteTokenResponse{
+		InviteToken: token,
+		ExpiresAt:   timestamppb.New(expiresAt),
+	}, nil
+}
+
 func mapFamilyToProto(f *domain.Family) *familyv1.Family {
 	return &familyv1.Family{
 		Id:                     f.ID,

@@ -2,73 +2,68 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_package/shared_package.dart';
 
-class Sidebar extends ConsumerWidget {
+class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
-    final user = ref.watch(authStateProvider).value;
 
-    return Container(
-      width: 280,
-      color: Colors.blueGrey[900],
-      child: Column(
-        children: [
-          _buildHeader(user),
-          const Divider(color: Colors.white24, height: 1),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              children: [
-                _SidebarItem(
-                  icon: Icons.dashboard_outlined,
-                  label: 'Dashboard',
-                  isSelected: location == '/',
-                  onTap: () {
-                    context.go('/');
-                    if (Scaffold.of(context).hasDrawer) Navigator.of(context).pop();
-                  },
-                ),
-                _SidebarItem(
-                  icon: Icons.people_outline,
-                  label: 'Admin Requests',
-                  isSelected: location == '/requests',
-                  onTap: () {
-                    context.go('/requests');
-                    if (Scaffold.of(context).hasDrawer) Navigator.of(context).pop();
-                  },
-                ),
-                _SidebarItem(
-                  icon: Icons.history,
-                  label: 'Audit Logs',
-                  isSelected: location == '/logs',
-                  onTap: () {
-                    // TODO: context.go('/logs');
-                  },
-                ),
-                _SidebarItem(
-                  icon: Icons.settings_outlined,
-                  label: 'Settings',
-                  isSelected: location == '/settings',
-                  onTap: () {
-                    // TODO: context.go('/settings');
-                  },
-                ),
-              ],
+    return Watch((context) {
+      final user = authUserSignal.value.map(data: (u) => u, loading: () => null, error: (_, _) => null);
+
+      return Container(
+        width: 280,
+        color: Colors.blueGrey[900],
+        child: Column(
+          children: [
+            _buildHeader(user),
+            const Divider(color: Colors.white24, height: 1),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                children: [
+                  _SidebarItem(
+                    icon: Icons.dashboard_outlined,
+                    label: 'Dashboard',
+                    isSelected: location == '/',
+                    onTap: () => context.go('/'),
+                  ),
+                  _SidebarItem(
+                    icon: Icons.people_outline,
+                    label: 'Admin Requests',
+                    isSelected: location == '/requests',
+                    onTap: () => context.go('/requests'),
+                  ),
+                  _SidebarItem(
+                    icon: Icons.history,
+                    label: 'Audit Logs',
+                    isSelected: location == '/logs',
+                    onTap: () {
+                      // TODO: context.go('/logs');
+                    },
+                  ),
+                  _SidebarItem(
+                    icon: Icons.settings_outlined,
+                    label: 'Settings',
+                    isSelected: location == '/settings',
+                    onTap: () => context.go('/settings'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Divider(color: Colors.white24, height: 1),
-          _SidebarItem(
-            icon: Icons.logout,
-            label: 'Logout',
-            isSelected: false,
-            onTap: () => ref.read(authControllerProvider.notifier).signOut(),
-          ),
-          const SizedBox(height: 16),
-        ],
-      ),
-    );
+            const Divider(color: Colors.white24, height: 1),
+            _SidebarItem(
+              icon: Icons.logout,
+              label: 'Logout',
+              isSelected: false,
+              onTap: () => authSignalsController.signOut(),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildHeader(User? user) {

@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package settings.v1;
+
+option go_package = "github.com/mibi2007/familytree/familytree_go/internal/features/settings/gen/proto/settings/v1;settingsv1";
+
+import "google/protobuf/timestamp.proto";
+
+// Theme mode enum
+enum ThemeMode {
+  THEME_MODE_UNSPECIFIED = 0;
+  THEME_MODE_LIGHT = 1;
+  THEME_MODE_DARK = 2;
+  THEME_MODE_SYSTEM = 3;
+}
+
+// Language enum
+enum Language {
+  LANGUAGE_UNSPECIFIED = 0;
+  LANGUAGE_VI = 1;  // Vietnamese
+  LANGUAGE_EN = 2;  // English
+}
+
+// User settings message
+message UserSettings {
+  string user_id = 1;
+  ThemeMode theme_mode = 2;
+  Language language = 3;
+  bool email_notifications_enabled = 4;
+  bool push_notifications_enabled = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+// Request/Response messages
+message GetUserSettingsRequest {
+  string user_id = 1;
+}
+
+message GetUserSettingsResponse {
+  UserSettings settings = 1;
+}
+
+message UpdateUserSettingsRequest {
+  UserSettings settings = 1;
+}
+
+message UpdateUserSettingsResponse {
+  UserSettings settings = 1;
+}
+
+// Settings service
+service SettingsService {
+  rpc GetUserSettings(GetUserSettingsRequest) returns (GetUserSettingsResponse);
+  rpc UpdateUserSettings(UpdateUserSettingsRequest) returns (UpdateUserSettingsResponse);
+}

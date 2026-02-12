@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:shared_package/data/grpc/generated/proto/family/v1/family.pbgrpc.dart' as family_proto;
 import 'package:shared_package/shared_package.dart';
+import 'package:user_app/l10n/app_localizations.dart';
 
 import '../../family/view/create_family_dialog.dart';
 import '../../family/view/family_tree_view_page.dart';
 import '../../family/view/join_family_dialog.dart';
+import '../../settings/view/settings_page.dart';
 
-class HomePage extends ConsumerStatefulWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
@@ -21,10 +23,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Future<void> _syncUser() async {
-    final user = ref.read(authStateProvider).value;
+    // Current user from signal
+    final user = authUserSignal.value.value;
+
     if (user != null) {
       try {
-        final client = ref.read(authClientProvider);
+        final client = authClientSignal.value;
         await client.syncUserProfile(
           SyncUserProfileRequest()
             ..displayName = user.displayName ?? ''
@@ -38,20 +42,47 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authStateProvider).value;
-    final familiesAsync = ref.watch(myFamiliesProvider);
+    // Watch signals
+    final userAsync = authUserSignal.watch(context);
+    final user = userAsync.value;
+    final l10n = AppLocalizations.of(context)!;
+
+    final familiesAsync = myFamiliesSignal.watch(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Family Tree Chat'),
-        actions: [
-          IconButton(
-            onPressed: () => ref.read(authControllerProvider.notifier).signOut(),
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+        title: Text(l10n.appTitle),
+        actions: [IconButton(onPressed: () => authSignalsController.signOut(), icon: const Icon(Icons.logout))],
       ),
-      body: familiesAsync.when(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text(user?.displayName ?? 'User'),
+              accountEmail: Text(user?.email ?? ''),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: user?.photoURL != null ? NetworkImage(user!.photoURL!) : null,
+                child: user?.photoURL == null ? const Icon(Icons.person) : null,
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: Text(l10n.settings),
+              onTap: () {
+                Navigator.pop(context); // Close drawer
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () => authSignalsController.signOut(),
+            ),
+          ],
+        ),
+      ),
+      body: familiesAsync.map(
         data: (families) {
           if (families.isEmpty) {
             return _EmptyState(user: user);

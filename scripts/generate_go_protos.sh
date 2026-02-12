@@ -13,7 +13,8 @@ protoc --go_out=familytree_go --go_opt=paths=source_relative \
     proto/auth/v1/auth.proto \
     proto/family/v1/family.proto \
     proto/chat/v1/chat.proto \
-    proto/system/v1/system.proto
+    proto/system/v1/system.proto \
+    proto/settings/v1/settings.proto
 
 # Generate Swagger/OpenAPI v2
 # We output to the Admin App's web directory so it can be served statically.
@@ -24,7 +25,8 @@ protoc --openapiv2_out=json_names_for_fields=false:familytree_flutter/apps/admin
     proto/common/v1/common.proto \
     proto/auth/v1/auth.proto \
     proto/family/v1/family.proto \
-   proto/chat/v1/chat.proto \
-    proto/system/v1/system.proto
+    proto/chat/v1/chat.proto \
+    proto/system/v1/system.proto \
+    proto/settings/v1/settings.proto
 
 echo "Go gRPC code generated in familytree_go/proto/"

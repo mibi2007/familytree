@@ -67,6 +67,102 @@ func (x *JoinFamilyRequest) GetInviteToken() string {
 	return ""
 }
 
+type CreateInviteTokenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FamilyId      string                 `protobuf:"bytes,1,opt,name=family_id,json=familyId,proto3" json:"family_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateInviteTokenRequest) Reset() {
+	*x = CreateInviteTokenRequest{}
+	mi := &file_proto_family_v1_family_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateInviteTokenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateInviteTokenRequest) ProtoMessage() {}
+
+func (x *CreateInviteTokenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_family_v1_family_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateInviteTokenRequest.ProtoReflect.Descriptor instead.
+func (*CreateInviteTokenRequest) Descriptor() ([]byte, []int) {
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateInviteTokenRequest) GetFamilyId() string {
+	if x != nil {
+		return x.FamilyId
+	}
+	return ""
+}
+
+type CreateInviteTokenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	InviteToken   string                 `protobuf:"bytes,1,opt,name=invite_token,json=inviteToken,proto3" json:"invite_token,omitempty"`
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateInviteTokenResponse) Reset() {
+	*x = CreateInviteTokenResponse{}
+	mi := &file_proto_family_v1_family_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateInviteTokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateInviteTokenResponse) ProtoMessage() {}
+
+func (x *CreateInviteTokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_family_v1_family_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateInviteTokenResponse.ProtoReflect.Descriptor instead.
+func (*CreateInviteTokenResponse) Descriptor() ([]byte, []int) {
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CreateInviteTokenResponse) GetInviteToken() string {
+	if x != nil {
+		return x.InviteToken
+	}
+	return ""
+}
+
+func (x *CreateInviteTokenResponse) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
 type Family struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
 	Id                     string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -80,7 +176,7 @@ type Family struct {
 
 func (x *Family) Reset() {
 	*x = Family{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[1]
+	mi := &file_proto_family_v1_family_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -92,7 +188,7 @@ func (x *Family) String() string {
 func (*Family) ProtoMessage() {}
 
 func (x *Family) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[1]
+	mi := &file_proto_family_v1_family_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,7 +201,7 @@ func (x *Family) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Family.ProtoReflect.Descriptor instead.
 func (*Family) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{1}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Family) GetId() string {
@@ -160,7 +256,7 @@ type Member struct {
 
 func (x *Member) Reset() {
 	*x = Member{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[2]
+	mi := &file_proto_family_v1_family_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -172,7 +268,7 @@ func (x *Member) String() string {
 func (*Member) ProtoMessage() {}
 
 func (x *Member) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[2]
+	mi := &file_proto_family_v1_family_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -185,7 +281,7 @@ func (x *Member) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Member.ProtoReflect.Descriptor instead.
 func (*Member) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{2}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Member) GetId() string {
@@ -260,7 +356,7 @@ type CreateFamilyRequest struct {
 
 func (x *CreateFamilyRequest) Reset() {
 	*x = CreateFamilyRequest{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[3]
+	mi := &file_proto_family_v1_family_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -272,7 +368,7 @@ func (x *CreateFamilyRequest) String() string {
 func (*CreateFamilyRequest) ProtoMessage() {}
 
 func (x *CreateFamilyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[3]
+	mi := &file_proto_family_v1_family_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -285,7 +381,7 @@ func (x *CreateFamilyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateFamilyRequest.ProtoReflect.Descriptor instead.
 func (*CreateFamilyRequest) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{3}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CreateFamilyRequest) GetName() string {
@@ -304,7 +400,7 @@ type GetFamilyRequest struct {
 
 func (x *GetFamilyRequest) Reset() {
 	*x = GetFamilyRequest{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[4]
+	mi := &file_proto_family_v1_family_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -316,7 +412,7 @@ func (x *GetFamilyRequest) String() string {
 func (*GetFamilyRequest) ProtoMessage() {}
 
 func (x *GetFamilyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[4]
+	mi := &file_proto_family_v1_family_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +425,7 @@ func (x *GetFamilyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFamilyRequest.ProtoReflect.Descriptor instead.
 func (*GetFamilyRequest) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{4}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *GetFamilyRequest) GetId() string {
@@ -349,7 +445,7 @@ type UpdateFamilyOwnerRequest struct {
 
 func (x *UpdateFamilyOwnerRequest) Reset() {
 	*x = UpdateFamilyOwnerRequest{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[5]
+	mi := &file_proto_family_v1_family_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -361,7 +457,7 @@ func (x *UpdateFamilyOwnerRequest) String() string {
 func (*UpdateFamilyOwnerRequest) ProtoMessage() {}
 
 func (x *UpdateFamilyOwnerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[5]
+	mi := &file_proto_family_v1_family_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -374,7 +470,7 @@ func (x *UpdateFamilyOwnerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateFamilyOwnerRequest.ProtoReflect.Descriptor instead.
 func (*UpdateFamilyOwnerRequest) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{5}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateFamilyOwnerRequest) GetFamilyId() string {
@@ -400,7 +496,7 @@ type LeaveFamilyRequest struct {
 
 func (x *LeaveFamilyRequest) Reset() {
 	*x = LeaveFamilyRequest{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[6]
+	mi := &file_proto_family_v1_family_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -412,7 +508,7 @@ func (x *LeaveFamilyRequest) String() string {
 func (*LeaveFamilyRequest) ProtoMessage() {}
 
 func (x *LeaveFamilyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[6]
+	mi := &file_proto_family_v1_family_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -425,7 +521,7 @@ func (x *LeaveFamilyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LeaveFamilyRequest.ProtoReflect.Descriptor instead.
 func (*LeaveFamilyRequest) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{6}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *LeaveFamilyRequest) GetFamilyId() string {
@@ -447,7 +543,7 @@ type AddMemberRequest struct {
 
 func (x *AddMemberRequest) Reset() {
 	*x = AddMemberRequest{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[7]
+	mi := &file_proto_family_v1_family_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -459,7 +555,7 @@ func (x *AddMemberRequest) String() string {
 func (*AddMemberRequest) ProtoMessage() {}
 
 func (x *AddMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[7]
+	mi := &file_proto_family_v1_family_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -472,7 +568,7 @@ func (x *AddMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddMemberRequest.ProtoReflect.Descriptor instead.
 func (*AddMemberRequest) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{7}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *AddMemberRequest) GetFamilyId() string {
@@ -512,7 +608,7 @@ type UpdateMemberRequest struct {
 
 func (x *UpdateMemberRequest) Reset() {
 	*x = UpdateMemberRequest{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[8]
+	mi := &file_proto_family_v1_family_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -524,7 +620,7 @@ func (x *UpdateMemberRequest) String() string {
 func (*UpdateMemberRequest) ProtoMessage() {}
 
 func (x *UpdateMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[8]
+	mi := &file_proto_family_v1_family_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -537,7 +633,7 @@ func (x *UpdateMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMemberRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMemberRequest) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{8}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpdateMemberRequest) GetMember() *Member {
@@ -556,7 +652,7 @@ type DeleteMemberRequest struct {
 
 func (x *DeleteMemberRequest) Reset() {
 	*x = DeleteMemberRequest{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[9]
+	mi := &file_proto_family_v1_family_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -568,7 +664,7 @@ func (x *DeleteMemberRequest) String() string {
 func (*DeleteMemberRequest) ProtoMessage() {}
 
 func (x *DeleteMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[9]
+	mi := &file_proto_family_v1_family_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -581,7 +677,7 @@ func (x *DeleteMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMemberRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMemberRequest) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{9}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *DeleteMemberRequest) GetMemberId() string {
@@ -601,7 +697,7 @@ type GetFamilyTreeRequest struct {
 
 func (x *GetFamilyTreeRequest) Reset() {
 	*x = GetFamilyTreeRequest{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[10]
+	mi := &file_proto_family_v1_family_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -613,7 +709,7 @@ func (x *GetFamilyTreeRequest) String() string {
 func (*GetFamilyTreeRequest) ProtoMessage() {}
 
 func (x *GetFamilyTreeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[10]
+	mi := &file_proto_family_v1_family_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -626,7 +722,7 @@ func (x *GetFamilyTreeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFamilyTreeRequest.ProtoReflect.Descriptor instead.
 func (*GetFamilyTreeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{10}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetFamilyTreeRequest) GetFamilyId() string {
@@ -655,7 +751,7 @@ type FamilyTree struct {
 
 func (x *FamilyTree) Reset() {
 	*x = FamilyTree{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[11]
+	mi := &file_proto_family_v1_family_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -667,7 +763,7 @@ func (x *FamilyTree) String() string {
 func (*FamilyTree) ProtoMessage() {}
 
 func (x *FamilyTree) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[11]
+	mi := &file_proto_family_v1_family_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -680,7 +776,7 @@ func (x *FamilyTree) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FamilyTree.ProtoReflect.Descriptor instead.
 func (*FamilyTree) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{11}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *FamilyTree) GetFamilyId() string {
@@ -720,7 +816,7 @@ type ListMyFamiliesResponse struct {
 
 func (x *ListMyFamiliesResponse) Reset() {
 	*x = ListMyFamiliesResponse{}
-	mi := &file_proto_family_v1_family_proto_msgTypes[12]
+	mi := &file_proto_family_v1_family_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -732,7 +828,7 @@ func (x *ListMyFamiliesResponse) String() string {
 func (*ListMyFamiliesResponse) ProtoMessage() {}
 
 func (x *ListMyFamiliesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_family_v1_family_proto_msgTypes[12]
+	mi := &file_proto_family_v1_family_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -745,7 +841,7 @@ func (x *ListMyFamiliesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyFamiliesResponse.ProtoReflect.Descriptor instead.
 func (*ListMyFamiliesResponse) Descriptor() ([]byte, []int) {
-	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{12}
+	return file_proto_family_v1_family_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListMyFamiliesResponse) GetFamilies() []*Family {
@@ -761,7 +857,13 @@ const file_proto_family_v1_family_proto_rawDesc = "" +
 	"\n" +
 	"\x1cproto/family/v1/family.proto\x12\tfamily.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"6\n" +
 	"\x11JoinFamilyRequest\x12!\n" +
-	"\finvite_token\x18\x01 \x01(\tR\vinviteToken\"\xbc\x01\n" +
+	"\finvite_token\x18\x01 \x01(\tR\vinviteToken\"7\n" +
+	"\x18CreateInviteTokenRequest\x12\x1b\n" +
+	"\tfamily_id\x18\x01 \x01(\tR\bfamilyId\"y\n" +
+	"\x19CreateInviteTokenResponse\x12!\n" +
+	"\finvite_token\x18\x01 \x01(\tR\vinviteToken\x129\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\"\xbc\x01\n" +
 	"\x06Family\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x19\n" +
@@ -809,7 +911,7 @@ const file_proto_family_v1_family_proto_rawDesc = "" +
 	"\amembers\x18\x03 \x03(\v2\x11.family.v1.MemberR\amembers\x12!\n" +
 	"\fnot_modified\x18\x04 \x01(\bR\vnotModified\"G\n" +
 	"\x16ListMyFamiliesResponse\x12-\n" +
-	"\bfamilies\x18\x01 \x03(\v2\x11.family.v1.FamilyR\bfamilies2\xbf\x05\n" +
+	"\bfamilies\x18\x01 \x03(\v2\x11.family.v1.FamilyR\bfamilies2\x9f\x06\n" +
 	"\rFamilyService\x12A\n" +
 	"\fCreateFamily\x12\x1e.family.v1.CreateFamilyRequest\x1a\x11.family.v1.Family\x12;\n" +
 	"\tGetFamily\x12\x1b.family.v1.GetFamilyRequest\x1a\x11.family.v1.Family\x12K\n" +
@@ -819,7 +921,8 @@ const file_proto_family_v1_family_proto_rawDesc = "" +
 	"\tAddMember\x12\x1b.family.v1.AddMemberRequest\x1a\x11.family.v1.Member\x12A\n" +
 	"\fUpdateMember\x12\x1e.family.v1.UpdateMemberRequest\x1a\x11.family.v1.Member\x12F\n" +
 	"\fDeleteMember\x12\x1e.family.v1.DeleteMemberRequest\x1a\x16.google.protobuf.Empty\x12G\n" +
-	"\rGetFamilyTree\x12\x1f.family.v1.GetFamilyTreeRequest\x1a\x15.family.v1.FamilyTree\x12=\n" +
+	"\rGetFamilyTree\x12\x1f.family.v1.GetFamilyTreeRequest\x1a\x15.family.v1.FamilyTree\x12^\n" +
+	"\x11CreateInviteToken\x12#.family.v1.CreateInviteTokenRequest\x1a$.family.v1.CreateInviteTokenResponse\x12=\n" +
 	"\n" +
 	"JoinFamily\x12\x1c.family.v1.JoinFamilyRequest\x1a\x11.family.v1.FamilyB>Z<github.com/mibi2007/familytree/familytree_go/proto/family/v1b\x06proto3"
 
@@ -835,54 +938,59 @@ func file_proto_family_v1_family_proto_rawDescGZIP() []byte {
 	return file_proto_family_v1_family_proto_rawDescData
 }
 
-var file_proto_family_v1_family_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_proto_family_v1_family_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_proto_family_v1_family_proto_goTypes = []any{
-	(*JoinFamilyRequest)(nil),        // 0: family.v1.JoinFamilyRequest
-	(*Family)(nil),                   // 1: family.v1.Family
-	(*Member)(nil),                   // 2: family.v1.Member
-	(*CreateFamilyRequest)(nil),      // 3: family.v1.CreateFamilyRequest
-	(*GetFamilyRequest)(nil),         // 4: family.v1.GetFamilyRequest
-	(*UpdateFamilyOwnerRequest)(nil), // 5: family.v1.UpdateFamilyOwnerRequest
-	(*LeaveFamilyRequest)(nil),       // 6: family.v1.LeaveFamilyRequest
-	(*AddMemberRequest)(nil),         // 7: family.v1.AddMemberRequest
-	(*UpdateMemberRequest)(nil),      // 8: family.v1.UpdateMemberRequest
-	(*DeleteMemberRequest)(nil),      // 9: family.v1.DeleteMemberRequest
-	(*GetFamilyTreeRequest)(nil),     // 10: family.v1.GetFamilyTreeRequest
-	(*FamilyTree)(nil),               // 11: family.v1.FamilyTree
-	(*ListMyFamiliesResponse)(nil),   // 12: family.v1.ListMyFamiliesResponse
-	(*timestamppb.Timestamp)(nil),    // 13: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),            // 14: google.protobuf.Empty
+	(*JoinFamilyRequest)(nil),         // 0: family.v1.JoinFamilyRequest
+	(*CreateInviteTokenRequest)(nil),  // 1: family.v1.CreateInviteTokenRequest
+	(*CreateInviteTokenResponse)(nil), // 2: family.v1.CreateInviteTokenResponse
+	(*Family)(nil),                    // 3: family.v1.Family
+	(*Member)(nil),                    // 4: family.v1.Member
+	(*CreateFamilyRequest)(nil),       // 5: family.v1.CreateFamilyRequest
+	(*GetFamilyRequest)(nil),          // 6: family.v1.GetFamilyRequest
+	(*UpdateFamilyOwnerRequest)(nil),  // 7: family.v1.UpdateFamilyOwnerRequest
+	(*LeaveFamilyRequest)(nil),        // 8: family.v1.LeaveFamilyRequest
+	(*AddMemberRequest)(nil),          // 9: family.v1.AddMemberRequest
+	(*UpdateMemberRequest)(nil),       // 10: family.v1.UpdateMemberRequest
+	(*DeleteMemberRequest)(nil),       // 11: family.v1.DeleteMemberRequest
+	(*GetFamilyTreeRequest)(nil),      // 12: family.v1.GetFamilyTreeRequest
+	(*FamilyTree)(nil),                // 13: family.v1.FamilyTree
+	(*ListMyFamiliesResponse)(nil),    // 14: family.v1.ListMyFamiliesResponse
+	(*timestamppb.Timestamp)(nil),     // 15: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),             // 16: google.protobuf.Empty
 }
 var file_proto_family_v1_family_proto_depIdxs = []int32{
-	13, // 0: family.v1.Family.created_at:type_name -> google.protobuf.Timestamp
-	2,  // 1: family.v1.UpdateMemberRequest.member:type_name -> family.v1.Member
-	2,  // 2: family.v1.FamilyTree.members:type_name -> family.v1.Member
-	1,  // 3: family.v1.ListMyFamiliesResponse.families:type_name -> family.v1.Family
-	3,  // 4: family.v1.FamilyService.CreateFamily:input_type -> family.v1.CreateFamilyRequest
-	4,  // 5: family.v1.FamilyService.GetFamily:input_type -> family.v1.GetFamilyRequest
-	5,  // 6: family.v1.FamilyService.UpdateFamilyOwner:input_type -> family.v1.UpdateFamilyOwnerRequest
-	6,  // 7: family.v1.FamilyService.LeaveFamily:input_type -> family.v1.LeaveFamilyRequest
-	14, // 8: family.v1.FamilyService.ListMyFamilies:input_type -> google.protobuf.Empty
-	7,  // 9: family.v1.FamilyService.AddMember:input_type -> family.v1.AddMemberRequest
-	8,  // 10: family.v1.FamilyService.UpdateMember:input_type -> family.v1.UpdateMemberRequest
-	9,  // 11: family.v1.FamilyService.DeleteMember:input_type -> family.v1.DeleteMemberRequest
-	10, // 12: family.v1.FamilyService.GetFamilyTree:input_type -> family.v1.GetFamilyTreeRequest
-	0,  // 13: family.v1.FamilyService.JoinFamily:input_type -> family.v1.JoinFamilyRequest
-	1,  // 14: family.v1.FamilyService.CreateFamily:output_type -> family.v1.Family
-	1,  // 15: family.v1.FamilyService.GetFamily:output_type -> family.v1.Family
-	1,  // 16: family.v1.FamilyService.UpdateFamilyOwner:output_type -> family.v1.Family
-	14, // 17: family.v1.FamilyService.LeaveFamily:output_type -> google.protobuf.Empty
-	12, // 18: family.v1.FamilyService.ListMyFamilies:output_type -> family.v1.ListMyFamiliesResponse
-	2,  // 19: family.v1.FamilyService.AddMember:output_type -> family.v1.Member
-	2,  // 20: family.v1.FamilyService.UpdateMember:output_type -> family.v1.Member
-	14, // 21: family.v1.FamilyService.DeleteMember:output_type -> google.protobuf.Empty
-	11, // 22: family.v1.FamilyService.GetFamilyTree:output_type -> family.v1.FamilyTree
-	1,  // 23: family.v1.FamilyService.JoinFamily:output_type -> family.v1.Family
-	14, // [14:24] is the sub-list for method output_type
-	4,  // [4:14] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	15, // 0: family.v1.CreateInviteTokenResponse.expires_at:type_name -> google.protobuf.Timestamp
+	15, // 1: family.v1.Family.created_at:type_name -> google.protobuf.Timestamp
+	4,  // 2: family.v1.UpdateMemberRequest.member:type_name -> family.v1.Member
+	4,  // 3: family.v1.FamilyTree.members:type_name -> family.v1.Member
+	3,  // 4: family.v1.ListMyFamiliesResponse.families:type_name -> family.v1.Family
+	5,  // 5: family.v1.FamilyService.CreateFamily:input_type -> family.v1.CreateFamilyRequest
+	6,  // 6: family.v1.FamilyService.GetFamily:input_type -> family.v1.GetFamilyRequest
+	7,  // 7: family.v1.FamilyService.UpdateFamilyOwner:input_type -> family.v1.UpdateFamilyOwnerRequest
+	8,  // 8: family.v1.FamilyService.LeaveFamily:input_type -> family.v1.LeaveFamilyRequest
+	16, // 9: family.v1.FamilyService.ListMyFamilies:input_type -> google.protobuf.Empty
+	9,  // 10: family.v1.FamilyService.AddMember:input_type -> family.v1.AddMemberRequest
+	10, // 11: family.v1.FamilyService.UpdateMember:input_type -> family.v1.UpdateMemberRequest
+	11, // 12: family.v1.FamilyService.DeleteMember:input_type -> family.v1.DeleteMemberRequest
+	12, // 13: family.v1.FamilyService.GetFamilyTree:input_type -> family.v1.GetFamilyTreeRequest
+	1,  // 14: family.v1.FamilyService.CreateInviteToken:input_type -> family.v1.CreateInviteTokenRequest
+	0,  // 15: family.v1.FamilyService.JoinFamily:input_type -> family.v1.JoinFamilyRequest
+	3,  // 16: family.v1.FamilyService.CreateFamily:output_type -> family.v1.Family
+	3,  // 17: family.v1.FamilyService.GetFamily:output_type -> family.v1.Family
+	3,  // 18: family.v1.FamilyService.UpdateFamilyOwner:output_type -> family.v1.Family
+	16, // 19: family.v1.FamilyService.LeaveFamily:output_type -> google.protobuf.Empty
+	14, // 20: family.v1.FamilyService.ListMyFamilies:output_type -> family.v1.ListMyFamiliesResponse
+	4,  // 21: family.v1.FamilyService.AddMember:output_type -> family.v1.Member
+	4,  // 22: family.v1.FamilyService.UpdateMember:output_type -> family.v1.Member
+	16, // 23: family.v1.FamilyService.DeleteMember:output_type -> google.protobuf.Empty
+	13, // 24: family.v1.FamilyService.GetFamilyTree:output_type -> family.v1.FamilyTree
+	2,  // 25: family.v1.FamilyService.CreateInviteToken:output_type -> family.v1.CreateInviteTokenResponse
+	3,  // 26: family.v1.FamilyService.JoinFamily:output_type -> family.v1.Family
+	16, // [16:27] is the sub-list for method output_type
+	5,  // [5:16] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_proto_family_v1_family_proto_init() }
@@ -896,7 +1004,7 @@ func file_proto_family_v1_family_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_family_v1_family_proto_rawDesc), len(file_proto_family_v1_family_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

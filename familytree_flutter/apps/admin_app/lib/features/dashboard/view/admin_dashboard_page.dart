@@ -176,8 +176,16 @@ class _HealthCheckWidget extends ConsumerWidget {
 
   String _formatTimestamp(dynamic timestamp) {
     if (timestamp == null) return 'Unknown';
+
     try {
-      final dt = DateTime.fromMillisecondsSinceEpoch(timestamp.seconds * 1000 + timestamp.nanos ~/ 1000000);
+      // Protobuf Timestamp uses Int64 for seconds.
+      // We convert to int for DateTime.
+      final int seconds = timestamp.seconds.toInt();
+      final int nanos = timestamp.nanos;
+
+      if (seconds == 0 && nanos == 0) return 'Never';
+
+      final dt = DateTime.fromMillisecondsSinceEpoch(seconds * 1000 + nanos ~/ 1000000).toLocal();
       return '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}:${dt.second.toString().padLeft(2, '0')}';
     } catch (e) {
       return 'Unknown';

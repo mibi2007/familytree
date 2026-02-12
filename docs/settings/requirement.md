@@ -9,8 +9,10 @@ Enable users to customize their app experience, including language and theme pre
   - Dark Mode.
   - System Mode (Auto-sync with device).
 - **Language Selection**:
-  - Vietnamese (Primary).
-  - English (Secondary).
+  - System Language (Default).
+  - Vietnamese.
+  - English.
+  - **Logic**: If "System Language" is selected (or no user preference exists), the app will attempt to use the device's language if supported. If the device language is not supported, it will fallback to **English**.
 - **Notification Settings**:
   - Opt-in/out for **Email** and **Device (Push)** notifications.
 - **Accessibility**:

@@ -38,6 +38,7 @@ The Super Admin application (`admin_app`) is the centralized command center for 
   - **Logic**: Flexible matching using lower-case and accent-neutral text (e.g., "trần" matches "tran").
 - **Account Control**: Ability to suspend or reactivate user accounts for system safety.
 - **Role Management**: Promote/Demote other System Admins.
+- **Delete Account**: Permanently remove user account and associated PII data upon request or policy violation.
 
 ### 3. Family Support & Administration
 - **Support Workflow (Privacy-First)**:

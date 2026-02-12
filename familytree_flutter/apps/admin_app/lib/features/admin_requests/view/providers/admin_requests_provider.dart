@@ -32,11 +32,40 @@ class AdminRequestsController extends _$AdminRequestsController {
 
       await client.reviewAdminRequest(auth_proto.ReviewAdminRequestRequest(requestId: requestId, decision: status));
 
+      if (!ref.mounted) return;
+
       // Refresh the list
       ref.invalidate(pendingRequestsProvider);
       state = const AsyncData(null);
-    } catch (e) {
-      state = AsyncError(e, StackTrace.current);
+    } catch (e, st) {
+      if (!ref.mounted) return;
+      state = AsyncError(e, st);
     }
   }
+
+  Future<void> revokeAdminRole(String userId) async {
+    state = const AsyncLoading();
+    try {
+      final client = ref.read(authClientProvider);
+      await client.revokeAdminRole(auth_proto.RevokeAdminRoleRequest(userId: userId));
+
+      if (!ref.mounted) return;
+
+      // Refresh the admin list
+      ref.invalidate(superAdminsProvider);
+      state = const AsyncData(null);
+    } catch (e, st) {
+      if (!ref.mounted) return;
+      state = AsyncError(e, st);
+    }
+  }
+}
+
+@riverpod
+Future<List<common_proto.UserProfile>> superAdmins(Ref ref) async {
+  final client = ref.read(authClientProvider);
+  final response = await client.listAdmins(
+    auth_proto.ListAdminsRequest(pagination: common_proto.PaginatedRequest(pageSize: 50)),
+  );
+  return response.admins;
 }

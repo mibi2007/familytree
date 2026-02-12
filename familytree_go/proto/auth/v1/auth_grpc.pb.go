@@ -21,14 +21,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_GenerateInviteToken_FullMethodName = "/auth.v1.AuthService/GenerateInviteToken"
-	AuthService_ValidateInviteToken_FullMethodName = "/auth.v1.AuthService/ValidateInviteToken"
-	AuthService_RequestAdminAccess_FullMethodName  = "/auth.v1.AuthService/RequestAdminAccess"
-	AuthService_ListAdminRequests_FullMethodName   = "/auth.v1.AuthService/ListAdminRequests"
-	AuthService_ReviewAdminRequest_FullMethodName  = "/auth.v1.AuthService/ReviewAdminRequest"
-	AuthService_SyncUserProfile_FullMethodName     = "/auth.v1.AuthService/SyncUserProfile"
-	AuthService_GetUserProfile_FullMethodName      = "/auth.v1.AuthService/GetUserProfile"
-	AuthService_GetAuthStatus_FullMethodName       = "/auth.v1.AuthService/GetAuthStatus"
+	AuthService_GenerateInviteToken_FullMethodName    = "/auth.v1.AuthService/GenerateInviteToken"
+	AuthService_ValidateInviteToken_FullMethodName    = "/auth.v1.AuthService/ValidateInviteToken"
+	AuthService_RequestAdminAccess_FullMethodName     = "/auth.v1.AuthService/RequestAdminAccess"
+	AuthService_ListAdminRequests_FullMethodName      = "/auth.v1.AuthService/ListAdminRequests"
+	AuthService_ReviewAdminRequest_FullMethodName     = "/auth.v1.AuthService/ReviewAdminRequest"
+	AuthService_ListAdmins_FullMethodName             = "/auth.v1.AuthService/ListAdmins"
+	AuthService_RevokeAdminRole_FullMethodName        = "/auth.v1.AuthService/RevokeAdminRole"
+	AuthService_SyncUserProfile_FullMethodName        = "/auth.v1.AuthService/SyncUserProfile"
+	AuthService_GetUserProfile_FullMethodName         = "/auth.v1.AuthService/GetUserProfile"
+	AuthService_GetAuthStatus_FullMethodName          = "/auth.v1.AuthService/GetAuthStatus"
+	AuthService_RequestAccountDeletion_FullMethodName = "/auth.v1.AuthService/RequestAccountDeletion"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -42,10 +45,14 @@ type AuthServiceClient interface {
 	// Admin Approval
 	ListAdminRequests(ctx context.Context, in *ListAdminRequestsRequest, opts ...grpc.CallOption) (*ListAdminRequestsResponse, error)
 	ReviewAdminRequest(ctx context.Context, in *ReviewAdminRequestRequest, opts ...grpc.CallOption) (*AdminAccessRequest, error)
+	// Admin Management
+	ListAdmins(ctx context.Context, in *ListAdminsRequest, opts ...grpc.CallOption) (*ListAdminsResponse, error)
+	RevokeAdminRole(ctx context.Context, in *RevokeAdminRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Profile Management
 	SyncUserProfile(ctx context.Context, in *SyncUserProfileRequest, opts ...grpc.CallOption) (*v1.UserProfile, error)
 	GetUserProfile(ctx context.Context, in *GetUserProfileRequest, opts ...grpc.CallOption) (*v1.UserProfile, error)
 	GetAuthStatus(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AuthStatusResponse, error)
+	RequestAccountDeletion(ctx context.Context, in *RequestAccountDeletionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type authServiceClient struct {
@@ -106,6 +113,26 @@ func (c *authServiceClient) ReviewAdminRequest(ctx context.Context, in *ReviewAd
 	return out, nil
 }
 
+func (c *authServiceClient) ListAdmins(ctx context.Context, in *ListAdminsRequest, opts ...grpc.CallOption) (*ListAdminsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAdminsResponse)
+	err := c.cc.Invoke(ctx, AuthService_ListAdmins_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) RevokeAdminRole(ctx context.Context, in *RevokeAdminRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, AuthService_RevokeAdminRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *authServiceClient) SyncUserProfile(ctx context.Context, in *SyncUserProfileRequest, opts ...grpc.CallOption) (*v1.UserProfile, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(v1.UserProfile)
@@ -136,6 +163,16 @@ func (c *authServiceClient) GetAuthStatus(ctx context.Context, in *emptypb.Empty
 	return out, nil
 }
 
+func (c *authServiceClient) RequestAccountDeletion(ctx context.Context, in *RequestAccountDeletionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, AuthService_RequestAccountDeletion_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
@@ -147,10 +184,14 @@ type AuthServiceServer interface {
 	// Admin Approval
 	ListAdminRequests(context.Context, *ListAdminRequestsRequest) (*ListAdminRequestsResponse, error)
 	ReviewAdminRequest(context.Context, *ReviewAdminRequestRequest) (*AdminAccessRequest, error)
+	// Admin Management
+	ListAdmins(context.Context, *ListAdminsRequest) (*ListAdminsResponse, error)
+	RevokeAdminRole(context.Context, *RevokeAdminRoleRequest) (*emptypb.Empty, error)
 	// Profile Management
 	SyncUserProfile(context.Context, *SyncUserProfileRequest) (*v1.UserProfile, error)
 	GetUserProfile(context.Context, *GetUserProfileRequest) (*v1.UserProfile, error)
 	GetAuthStatus(context.Context, *emptypb.Empty) (*AuthStatusResponse, error)
+	RequestAccountDeletion(context.Context, *RequestAccountDeletionRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -176,6 +217,12 @@ func (UnimplementedAuthServiceServer) ListAdminRequests(context.Context, *ListAd
 func (UnimplementedAuthServiceServer) ReviewAdminRequest(context.Context, *ReviewAdminRequestRequest) (*AdminAccessRequest, error) {
 	return nil, status.Error(codes.Unimplemented, "method ReviewAdminRequest not implemented")
 }
+func (UnimplementedAuthServiceServer) ListAdmins(context.Context, *ListAdminsRequest) (*ListAdminsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAdmins not implemented")
+}
+func (UnimplementedAuthServiceServer) RevokeAdminRole(context.Context, *RevokeAdminRoleRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeAdminRole not implemented")
+}
 func (UnimplementedAuthServiceServer) SyncUserProfile(context.Context, *SyncUserProfileRequest) (*v1.UserProfile, error) {
 	return nil, status.Error(codes.Unimplemented, "method SyncUserProfile not implemented")
 }
@@ -184,6 +231,9 @@ func (UnimplementedAuthServiceServer) GetUserProfile(context.Context, *GetUserPr
 }
 func (UnimplementedAuthServiceServer) GetAuthStatus(context.Context, *emptypb.Empty) (*AuthStatusResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetAuthStatus not implemented")
+}
+func (UnimplementedAuthServiceServer) RequestAccountDeletion(context.Context, *RequestAccountDeletionRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method RequestAccountDeletion not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
@@ -296,6 +346,42 @@ func _AuthService_ReviewAdminRequest_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_ListAdmins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAdminsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).ListAdmins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_ListAdmins_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).ListAdmins(ctx, req.(*ListAdminsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_RevokeAdminRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeAdminRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).RevokeAdminRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_RevokeAdminRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).RevokeAdminRole(ctx, req.(*RevokeAdminRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AuthService_SyncUserProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SyncUserProfileRequest)
 	if err := dec(in); err != nil {
@@ -350,6 +436,24 @@ func _AuthService_GetAuthStatus_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_RequestAccountDeletion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAccountDeletionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).RequestAccountDeletion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_RequestAccountDeletion_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).RequestAccountDeletion(ctx, req.(*RequestAccountDeletionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -378,6 +482,14 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_ReviewAdminRequest_Handler,
 		},
 		{
+			MethodName: "ListAdmins",
+			Handler:    _AuthService_ListAdmins_Handler,
+		},
+		{
+			MethodName: "RevokeAdminRole",
+			Handler:    _AuthService_RevokeAdminRole_Handler,
+		},
+		{
 			MethodName: "SyncUserProfile",
 			Handler:    _AuthService_SyncUserProfile_Handler,
 		},
@@ -388,6 +500,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAuthStatus",
 			Handler:    _AuthService_GetAuthStatus_Handler,
+		},
+		{
+			MethodName: "RequestAccountDeletion",
+			Handler:    _AuthService_RequestAccountDeletion_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

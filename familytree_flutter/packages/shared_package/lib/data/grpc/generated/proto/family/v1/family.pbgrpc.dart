@@ -99,6 +99,13 @@ class FamilyServiceClient extends $grpc.Client {
     return $createUnaryCall(_$getFamilyTree, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.CreateInviteTokenResponse> createInviteToken(
+    $0.CreateInviteTokenRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$createInviteToken, request, options: options);
+  }
+
   $grpc.ResponseFuture<$0.Family> joinFamily(
     $0.JoinFamilyRequest request, {
     $grpc.CallOptions? options,
@@ -151,6 +158,11 @@ class FamilyServiceClient extends $grpc.Client {
           '/family.v1.FamilyService/GetFamilyTree',
           ($0.GetFamilyTreeRequest value) => value.writeToBuffer(),
           $0.FamilyTree.fromBuffer);
+  static final _$createInviteToken = $grpc.ClientMethod<
+          $0.CreateInviteTokenRequest, $0.CreateInviteTokenResponse>(
+      '/family.v1.FamilyService/CreateInviteToken',
+      ($0.CreateInviteTokenRequest value) => value.writeToBuffer(),
+      $0.CreateInviteTokenResponse.fromBuffer);
   static final _$joinFamily =
       $grpc.ClientMethod<$0.JoinFamilyRequest, $0.Family>(
           '/family.v1.FamilyService/JoinFamily',
@@ -232,6 +244,15 @@ abstract class FamilyServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.GetFamilyTreeRequest.fromBuffer(value),
         ($0.FamilyTree value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.CreateInviteTokenRequest,
+            $0.CreateInviteTokenResponse>(
+        'CreateInviteToken',
+        createInviteToken_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.CreateInviteTokenRequest.fromBuffer(value),
+        ($0.CreateInviteTokenResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.JoinFamilyRequest, $0.Family>(
         'JoinFamily',
         joinFamily_Pre,
@@ -312,6 +333,15 @@ abstract class FamilyServiceBase extends $grpc.Service {
 
   $async.Future<$0.FamilyTree> getFamilyTree(
       $grpc.ServiceCall call, $0.GetFamilyTreeRequest request);
+
+  $async.Future<$0.CreateInviteTokenResponse> createInviteToken_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.CreateInviteTokenRequest> $request) async {
+    return createInviteToken($call, await $request);
+  }
+
+  $async.Future<$0.CreateInviteTokenResponse> createInviteToken(
+      $grpc.ServiceCall call, $0.CreateInviteTokenRequest request);
 
   $async.Future<$0.Family> joinFamily_Pre($grpc.ServiceCall $call,
       $async.Future<$0.JoinFamilyRequest> $request) async {

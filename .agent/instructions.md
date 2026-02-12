@@ -19,3 +19,9 @@ You are working on the Family Tree Chat App. Follow these rules strictly for a b
 ## 4. Documentation
 - Update `PLAN.md` progress as you complete tasks.
 - Document any deviations from the architecture in a new file in `docs/`.
+
+## 5. Development Environment Rules
+- **NEVER run `flutter run -d web-server`** - The user manages the Flutter web server themselves.
+- Only run backend services (Go server, Firebase emulators, grpcwebproxy) if requested.
+- Refer to `.agent/workflows/run-dev.md` for the proper development setup workflow.
+

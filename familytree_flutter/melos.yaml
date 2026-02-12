@@ -20,3 +20,9 @@ scripts:
     packageFilters:
       dependsOn: build_runner
     description: Generate code for all packages.
+
+  run:admin:local:
+    exec: flutter run -d web-server --web-port 8081 -t lib/main_local.dart
+    packageFilters:
+      scope: admin_app
+    description: Run Admin App locally on port 8081

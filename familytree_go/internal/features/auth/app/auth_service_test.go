@@ -58,6 +58,27 @@ func (m *MockUserRepository) GetUserByID(ctx context.Context, id string) (*domai
 	return args.Get(0).(*domain.User), args.Error(1)
 }
 
+func (m *MockUserRepository) ListUsersByRole(ctx context.Context, role domain.SystemRole, limit int, offset int) ([]*domain.User, error) {
+	args := m.Called(ctx, role, limit, offset)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]*domain.User), args.Error(1)
+}
+
+func (m *MockUserRepository) GetUserByEmail(ctx context.Context, email string) (*domain.User, error) {
+	args := m.Called(ctx, email)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*domain.User), args.Error(1)
+}
+
+func (m *MockUserRepository) UpdateUserID(ctx context.Context, oldID, newID string) error {
+	args := m.Called(ctx, oldID, newID)
+	return args.Error(0)
+}
+
 func (m *MockUserRepository) MarkDeletionRequested(ctx context.Context, id string, requestedAt time.Time) error {
 	args := m.Called(ctx, id, requestedAt)
 	return args.Error(0)

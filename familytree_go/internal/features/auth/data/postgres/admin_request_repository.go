@@ -21,8 +21,13 @@ func (r *SuperAdminRequestRepository) Create(ctx context.Context, req *domain.Su
 		INSERT INTO admin_access_requests (id, user_id, requested_role, status, reason, reviewed_by, updated_at, created_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
+	var reviewedBy interface{} = nil
+	if req.ReviewedBy != "" {
+		reviewedBy = req.ReviewedBy
+	}
+
 	_, err := r.db.ExecContext(ctx, query,
-		req.ID, req.UserID, req.RequestedRole, req.Status, req.Reason, req.ReviewedBy, req.UpdatedAt, req.CreatedAt,
+		req.ID, req.UserID, req.RequestedRole, req.Status, req.Reason, reviewedBy, req.UpdatedAt, req.CreatedAt,
 	)
 	return err
 }
@@ -53,10 +58,12 @@ func (r *SuperAdminRequestRepository) GetByID(ctx context.Context, id string) (*
 
 func (r *SuperAdminRequestRepository) List(ctx context.Context, status domain.RequestStatus, limit int, offset int) ([]*domain.SuperAdminRequest, error) {
 	query := `
-		SELECT id, user_id, requested_role, status, reason, reviewed_by, updated_at, created_at
-		FROM admin_access_requests
-		WHERE ($1 = '' OR status = $1)
-		ORDER BY created_at DESC
+		SELECT r.id, r.user_id, r.requested_role, r.status, r.reason, r.reviewed_by, r.updated_at, r.created_at,
+		       u.email, u.display_name, u.photo_url
+		FROM admin_access_requests r
+		JOIN users u ON r.user_id = u.id
+		WHERE ($1 = '' OR r.status = $1)
+		ORDER BY r.created_at DESC
 		LIMIT $2 OFFSET $3
 	`
 	rows, err := r.db.QueryContext(ctx, query, status, limit, offset)
@@ -69,14 +76,34 @@ func (r *SuperAdminRequestRepository) List(ctx context.Context, status domain.Re
 	for rows.Next() {
 		var req domain.SuperAdminRequest
 		var reviewedBy sql.NullString
+
+		// Temporary vars for user info
+		var uEmail, uDisplayName, uPhotoUrl sql.NullString
+
 		if err := rows.Scan(
 			&req.ID, &req.UserID, &req.RequestedRole, &req.Status, &req.Reason, &reviewedBy, &req.UpdatedAt, &req.CreatedAt,
+			&uEmail, &uDisplayName, &uPhotoUrl,
 		); err != nil {
 			return nil, err
 		}
 		if reviewedBy.Valid {
 			req.ReviewedBy = reviewedBy.String
 		}
+
+		// Populate User struct
+		req.User = &domain.User{
+			ID: req.UserID,
+		}
+		if uEmail.Valid {
+			req.User.Email = uEmail.String
+		}
+		if uDisplayName.Valid {
+			req.User.DisplayName = uDisplayName.String
+		}
+		if uPhotoUrl.Valid {
+			req.User.PhotoURL = uPhotoUrl.String
+		}
+
 		requests = append(requests, &req)
 	}
 	return requests, nil

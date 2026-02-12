@@ -23,11 +23,21 @@ service FamilyService {
   
   // Tree Sync
   rpc GetFamilyTree(GetFamilyTreeRequest) returns (FamilyTree);
+  rpc CreateInviteToken(CreateInviteTokenRequest) returns (CreateInviteTokenResponse);
   rpc JoinFamily(JoinFamilyRequest) returns (Family);
 }
 
 message JoinFamilyRequest {
   string invite_token = 1;
+}
+
+message CreateInviteTokenRequest {
+  string family_id = 1;
+}
+
+message CreateInviteTokenResponse {
+  string invite_token = 1;
+  google.protobuf.Timestamp expires_at = 2;
 }
 
 message Family {

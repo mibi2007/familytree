@@ -152,7 +152,7 @@ final class FamilyControllerProvider
   FamilyController create() => FamilyController();
 }
 
-String _$familyControllerHash() => r'323bfd5ce17a0cd4f22b833902af410ee3bc615e';
+String _$familyControllerHash() => r'22f10d558adf31029ec93cf1c3fae25e6ba36798';
 
 abstract class _$FamilyController extends $AsyncNotifier<void> {
   FutureOr<void> build();

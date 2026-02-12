@@ -18,6 +18,9 @@ import (
 	familyApp "github.com/mibi2007/familytree/familytree_go/internal/features/family/app"
 	familyPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/family/data/postgres"
 	familyGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/family/interfaces/grpc"
+	settingsApp "github.com/mibi2007/familytree/familytree_go/internal/features/settings/application"
+	settingsPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/settings/data"
+	settingsGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/settings/interfaces/grpc"
 	systemApp "github.com/mibi2007/familytree/familytree_go/internal/features/system/app"
 	systemPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/system/data/postgres"
 	systemGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/system/interfaces/grpc"
@@ -25,6 +28,7 @@ import (
 	authv1 "github.com/mibi2007/familytree/familytree_go/proto/auth/v1"
 	chatv1 "github.com/mibi2007/familytree/familytree_go/proto/chat/v1"
 	familyv1 "github.com/mibi2007/familytree/familytree_go/proto/family/v1"
+	settingsv1 "github.com/mibi2007/familytree/familytree_go/proto/settings/v1"
 	systemv1 "github.com/mibi2007/familytree/familytree_go/proto/system/v1"
 
 	"cloud.google.com/go/storage"
@@ -86,6 +90,7 @@ func main() {
 	memberRepo := familyPostgres.NewMemberRepository(dbConn)
 	logRepo := systemPostgres.NewLogRepository(dbConn)
 	chatRepo := chatPostgres.NewChatRepository(dbConn)
+	settingsRepo := settingsPostgres.NewPostgresSettingsRepository(dbConn)
 
 	// 4. Initialize Services (Application Layer)
 	authService := authApp.NewAuthService(tokenRepo, userRepo, adminRepo)
@@ -93,6 +98,7 @@ func main() {
 	chatPublisher := chatApp.NewMemoryChatPublisher()
 	chatService := chatApp.NewChatService(chatRepo, chatPublisher)
 	systemService := systemApp.NewSystemService(dbConn, gcsClient)
+	settingsService := settingsApp.NewSettingsService(settingsRepo)
 
 	// 5. Start Background Jobs
 	ctx, cancel := context.WithCancel(context.Background())
@@ -102,7 +108,7 @@ func main() {
 	go cleanupJob.Start(ctx, 24*time.Hour)
 
 	// 6. Setup Interceptors
-	authInterceptor := middleware.NewAuthInterceptor(authClient)
+	authInterceptor := middleware.NewAuthInterceptor(authClient, authService)
 
 	// 7. Initialize gRPC Server with Interceptors
 	s := grpc.NewServer(
@@ -120,6 +126,7 @@ func main() {
 	familyv1.RegisterFamilyServiceServer(s, familyGrpc.NewFamilyHandler(familyService))
 	chatv1.RegisterChatServiceServer(s, chatGrpc.NewChatHandler(chatService))
 	systemv1.RegisterSystemServiceServer(s, systemGrpc.NewSystemHandler(systemService))
+	settingsv1.RegisterSettingsServiceServer(s, settingsGrpc.NewSettingsHandler(settingsService))
 
 	// 9. Reflection for Debugging
 	reflection.Register(s)

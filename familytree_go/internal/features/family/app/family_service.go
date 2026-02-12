@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/google/uuid"
 	authdomain "github.com/mibi2007/familytree/familytree_go/internal/features/auth/domain"
 	"github.com/mibi2007/familytree/familytree_go/internal/features/family/domain"
 	"github.com/mibi2007/familytree/familytree_go/internal/middleware"
@@ -169,4 +170,55 @@ func (s *FamilyService) JoinFamily(ctx context.Context, inviteToken string) (*do
 	}
 
 	return s.familyRepo.GetByID(ctx, familyID)
+}
+
+func (s *FamilyService) CreateInviteToken(ctx context.Context, familyID string) (string, time.Time, error) {
+	// 1. Check access (Owner or Member) - simplified check for now
+	user := middleware.GetUser(ctx)
+	if user == nil {
+		return "", time.Time{}, fmt.Errorf("unauthenticated")
+	}
+
+	// Verify user is in the family
+	// Checking if user has access to the family
+	families, err := s.familyRepo.ListByMember(ctx, user.UID)
+	if err != nil {
+		return "", time.Time{}, err
+	}
+	hasAccess := false
+	for _, f := range families {
+		if f.ID == familyID {
+			hasAccess = true
+			break
+		}
+	}
+	if !hasAccess {
+		return "", time.Time{}, fmt.Errorf("unauthorized: not a member of this family")
+	}
+
+	// 2. Generate token
+	tokenStr := uuid.New().String() // Simple UUID token for now. Can be more complex.
+
+	familyUUID, err := uuid.Parse(familyID)
+	if err != nil {
+		return "", time.Time{}, fmt.Errorf("invalid family ID: %v", err)
+	}
+
+	expiration := time.Now().Add(7 * 24 * time.Hour) // 7 days
+
+	token := &authdomain.SecureToken{
+		Token:        tokenStr,
+		Purpose:      authdomain.PurposeFamilyInvite,
+		AssociatedID: &familyUUID,
+		CreatedBy:    user.UID,
+		ExpiresAt:    &expiration,
+		IsUsed:       false,
+		CreatedAt:    time.Now(),
+	}
+
+	if err := s.tokenRepo.Create(ctx, token); err != nil {
+		return "", time.Time{}, err
+	}
+
+	return tokenStr, expiration, nil
 }

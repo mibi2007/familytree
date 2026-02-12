@@ -32,6 +32,9 @@ go run cmd/server/main.go
 ### 5. Run Flutter Apps (LOCAL)
 Run the apps using the `main_local.dart` entry point to connect to the emulators and local gRPC server.
 
+> [!IMPORTANT]
+> **The user manages the Flutter web server themselves.** Do NOT run `flutter run -d web-server` automatically.
+
 **User App:**
 ```bash
 cd familytree_flutter/apps/user_app
@@ -43,3 +46,4 @@ flutter run -t lib/main_local.dart
 cd familytree_flutter/apps/admin_app
 flutter run -t lib/main_local.dart
 ```
+

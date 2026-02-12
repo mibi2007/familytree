@@ -8,6 +8,10 @@ export 'package:grpc/grpc.dart';
 // Export Core Libraries
 export 'package:hooks_riverpod/hooks_riverpod.dart';
 export 'package:riverpod_annotation/riverpod_annotation.dart' show riverpod;
+// Signals - New state management (coexisting during migration)
+// signals_flutter re-exports signals, so we only need to export signals_flutter
+// Hide types that conflict with Riverpod
+export 'package:signals_flutter/signals_flutter.dart' hide AsyncData, AsyncError, AsyncLoading;
 
 // Export Application Layer
 export 'app/app.dart';

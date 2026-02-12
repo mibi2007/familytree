@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shared_package/shared_package.dart';
 
 import 'widgets/sidebar.dart';
 
-class MainLayout extends ConsumerWidget {
+class MainLayout extends StatelessWidget {
   final Widget child;
 
   const MainLayout({super.key, required this.child});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 1024;
 
     return Scaffold(
@@ -25,7 +24,7 @@ class MainLayout extends ConsumerWidget {
         children: [
           if (isDesktop) const Sidebar(),
           Expanded(
-            child: Container(color: Colors.grey[100], child: child),
+            child: Container(color: Theme.of(context).colorScheme.surface, child: child),
           ),
         ],
       ),

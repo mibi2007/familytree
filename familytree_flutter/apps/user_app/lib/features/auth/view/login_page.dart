@@ -1,17 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:shared_package/shared_package.dart';
+import 'package:user_app/l10n/app_localizations.dart';
+import '../../../features/settings/view/settings_page.dart';
 
-class LoginPage extends HookConsumerWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final emailController = useTextEditingController();
-    final passwordController = useTextEditingController();
-    final authController = ref.watch(authControllerProvider);
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign In')),
+      appBar: AppBar(
+        title: Text(l10n.appTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage())),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -20,59 +43,55 @@ class LoginPage extends HookConsumerWidget {
             const Icon(Icons.family_restroom, size: 80, color: Colors.orange),
             const SizedBox(height: 32),
             TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder()),
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
               obscureText: true,
             ),
             const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: authController.isLoading 
-                  ? null 
-                  : () => ref.read(authControllerProvider.notifier).signInWithEmail(
-                      emailController.text, 
-                      passwordController.text,
-                    ),
-                child: authController.isLoading 
-                  ? const CircularProgressIndicator() 
-                  : const Text('Sign In'),
-              ),
-            ),
+            Watch((context) {
+              final isLoading = authSignalsController.isLoadingSignal.value;
+
+              return SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: isLoading
+                      ? null
+                      : () => authSignalsController.signInWithEmail(_emailController.text, _passwordController.text),
+                  child: isLoading ? const CircularProgressIndicator() : const Text('Sign In'),
+                ),
+              );
+            }),
             const SizedBox(height: 16),
-            TextButton(
-              onPressed: authController.isLoading 
-                ? null 
-                : () => ref.read(authControllerProvider.notifier).signUpWithEmail(
-                    emailController.text, 
-                    passwordController.text,
-                  ),
-              child: const Text('Don\'t have an account? Sign Up'),
-            ),
+            Watch((context) {
+              final isLoading = authSignalsController.isLoadingSignal.value;
+
+              return TextButton(
+                onPressed: isLoading
+                    ? null
+                    : () => authSignalsController.signUpWithEmail(_emailController.text, _passwordController.text),
+                child: const Text('Don\'t have an account? Sign Up'),
+              );
+            }),
             const Divider(height: 48),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: OutlinedButton.icon(
-                onPressed: authController.isLoading 
-                  ? null 
-                  : () => ref.read(authControllerProvider.notifier).signInWithGoogle(),
-                icon: const Icon(Icons.login),
-                label: const Text('Sign in with Google'),
-              ),
-            ),
+            Watch((context) {
+              final isLoading = authSignalsController.isLoadingSignal.value;
+
+              return SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: OutlinedButton.icon(
+                  onPressed: isLoading ? null : authSignalsController.signInWithGoogle,
+                  icon: const Icon(Icons.login),
+                  label: const Text('Sign in with Google'),
+                ),
+              );
+            }),
           ],
         ),
       ),

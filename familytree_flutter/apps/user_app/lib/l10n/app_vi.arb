@@ -1,0 +1,16 @@
+{
+    "@@locale": "vi",
+    "appTitle": "Gia Phả",
+    "settings": "Cài đặt",
+    "theme": "Giao diện",
+    "lightMode": "Chế độ Sáng",
+    "darkMode": "Chế độ Tối",
+    "systemMode": "Tự động theo hệ thống",
+    "language": "Ngôn ngữ",
+    "vietnamese": "Tiếng Việt",
+    "english": "Tiếng Anh",
+    "notifications": "Thông báo",
+    "emailNotifications": "Thông báo qua Email",
+    "pushNotifications": "Thông báo đẩy",
+    "general": "Chung"
+}

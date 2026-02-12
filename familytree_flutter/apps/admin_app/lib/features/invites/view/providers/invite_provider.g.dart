@@ -33,7 +33,7 @@ final class InviteControllerProvider
   InviteController create() => InviteController();
 }
 
-String _$inviteControllerHash() => r'67d831ca12d4aee30e4c166fa2945050a2723162';
+String _$inviteControllerHash() => r'678b497d024e1e10f60a6f2541f021a20270e2e3';
 
 abstract class _$InviteController
     extends $AsyncNotifier<auth_proto.InviteToken?> {

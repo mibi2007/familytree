@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_package/data/grpc/generated/proto/auth/v1/auth.pb.dart' as auth_proto;
 import 'package:shared_package/shared_package.dart';
 
@@ -39,9 +40,35 @@ class _AdminOnboardingPageState extends ConsumerState<AdminOnboardingPage> {
           requestedRole: 'SUPER_ADMIN',
         ),
       );
-      // Invalidate status to refresh UI
-      // Use invalidate to force refresh
-      ref.invalidate(adminStatusProvider);
+      // Refresh admin status to reflect the new request
+      adminStatusSignal.reload();
+
+      if (mounted) {
+        await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Request Submitted'),
+            content: const Text(
+              'Your admin access request has been submitted successfully.\nPlease wait for approval.',
+            ),
+            actions: [
+              TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK')),
+              FilledButton.icon(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  // Wait for admin status to refresh before navigating
+                  await adminStatusSignal.reload();
+                  if (context.mounted) {
+                    context.go('/');
+                  }
+                },
+                icon: const Icon(Icons.home),
+                label: const Text('Go to Home'),
+              ),
+            ],
+          ),
+        );
+      }
     } catch (e) {
       if (mounted) {
         setState(() => _error = e.toString());

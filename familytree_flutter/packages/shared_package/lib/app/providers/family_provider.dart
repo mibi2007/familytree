@@ -30,12 +30,15 @@ class FamilyController extends _$FamilyController {
       final client = ref.read(familyClientProvider);
       final family = await client.createFamily(family_proto.CreateFamilyRequest(name: name));
 
+      if (!ref.mounted) return family;
+
       // Refresh families list
       ref.invalidate(myFamiliesProvider);
 
       state = const AsyncData(null);
       return family;
     } catch (e, st) {
+      if (!ref.mounted) rethrow;
       state = AsyncError(e, st);
       rethrow;
     }
@@ -59,12 +62,15 @@ class FamilyController extends _$FamilyController {
         ),
       );
 
+      if (!ref.mounted) return member;
+
       // Invalidate the members list for this family
       ref.invalidate(familyMembersProvider(familyId));
 
       state = const AsyncData(null);
       return member;
     } catch (e, st) {
+      if (!ref.mounted) rethrow;
       state = AsyncError(e, st);
       rethrow;
     }
@@ -76,12 +82,32 @@ class FamilyController extends _$FamilyController {
       final client = ref.read(familyClientProvider);
       final family = await client.joinFamily(family_proto.JoinFamilyRequest(inviteToken: inviteToken));
 
+      if (!ref.mounted) return family;
+
       // Refresh families list
       ref.invalidate(myFamiliesProvider);
 
       state = const AsyncData(null);
       return family;
     } catch (e, st) {
+      if (!ref.mounted) rethrow;
+      state = AsyncError(e, st);
+      rethrow;
+    }
+  }
+
+  Future<String> createInviteToken(String familyId) async {
+    state = const AsyncLoading();
+    try {
+      final client = ref.read(familyClientProvider);
+      final response = await client.createInviteToken(family_proto.CreateInviteTokenRequest(familyId: familyId));
+
+      if (!ref.mounted) return response.inviteToken;
+
+      state = const AsyncData(null);
+      return response.inviteToken;
+    } catch (e, st) {
+      if (!ref.mounted) rethrow;
       state = AsyncError(e, st);
       rethrow;
     }

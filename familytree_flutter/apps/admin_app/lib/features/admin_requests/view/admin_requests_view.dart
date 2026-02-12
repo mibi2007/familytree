@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_package/data/grpc/generated/proto/auth/v1/auth.pb.dart' as auth_proto;
+import 'package:shared_package/data/grpc/generated/proto/common/v1/common.pb.dart' as common_proto;
 import 'package:shared_package/shared_package.dart';
 
 import '../../invites/view/invite_generator_dialog.dart';
@@ -10,10 +11,36 @@ class AdminRequestsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text('Admin Management'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Pending Requests'),
+              Tab(text: 'Manage Admins'),
+            ],
+          ),
+        ),
+        body: const TabBarView(children: [_PendingRequestsList(), _AdminManagementView()]),
+      ),
+    );
+  }
+}
+
+class _PendingRequestsList extends ConsumerWidget {
+  const _PendingRequestsList();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final requestsAsync = ref.watch(pendingRequestsProvider);
 
     return Scaffold(
-      backgroundColor: Colors.transparent, // Integrate seamlessly
+      backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           showDialog(context: context, builder: (context) => const InviteGeneratorDialog());
@@ -26,14 +53,15 @@ class AdminRequestsView extends ConsumerWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Pending Requests', style: Theme.of(context).textTheme.headlineSmall),
-              IconButton(onPressed: () => ref.invalidate(pendingRequestsProvider), icon: const Icon(Icons.refresh)),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(onPressed: () => ref.invalidate(pendingRequestsProvider), icon: const Icon(Icons.refresh)),
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
           Expanded(
             child: requestsAsync.when(
               data: (requests) {
@@ -53,7 +81,7 @@ class AdminRequestsView extends ConsumerWidget {
                   itemCount: requests.length,
                   itemBuilder: (context, index) {
                     final req = requests[index];
-                    return _RequestCard(request: req);
+                    return _RequestCard(key: ValueKey(req.id), request: req);
                   },
                 );
               },
@@ -67,10 +95,91 @@ class AdminRequestsView extends ConsumerWidget {
   }
 }
 
+class _AdminManagementView extends ConsumerWidget {
+  const _AdminManagementView();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final adminsAsync = ref.watch(superAdminsProvider);
+    final currentUserRef = ref.watch(currentUserProvider); // Make sure we have current user info
+    // For specific root admin check:
+    final isRootAdmin = currentUserRef.value?.email == 'binhhm2009@gmail.com';
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Super Admins', style: Theme.of(context).textTheme.headlineSmall),
+              IconButton(onPressed: () => ref.invalidate(superAdminsProvider), icon: const Icon(Icons.refresh)),
+            ],
+          ),
+        ),
+        Expanded(
+          child: adminsAsync.when(
+            data: (admins) {
+              return ListView.builder(
+                itemCount: admins.length,
+                itemBuilder: (context, index) {
+                  final admin = admins[index];
+                  // Do not show revoke button for self or if not root admin
+                  final canRevoke = isRootAdmin && admin.email != 'binhhm2009@gmail.com';
+
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: admin.photoUrl.isNotEmpty ? NetworkImage(admin.photoUrl) : null,
+                      child: admin.photoUrl.isEmpty
+                          ? Text(admin.displayName.isNotEmpty ? admin.displayName[0] : '?')
+                          : null,
+                    ),
+                    title: Text(admin.displayName.isNotEmpty ? admin.displayName : 'Unknown Name'),
+                    subtitle: Text(admin.email),
+                    trailing: canRevoke
+                        ? IconButton(
+                            icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
+                            onPressed: () => _confirmRevoke(context, ref, admin),
+                          )
+                        : null,
+                  );
+                },
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Error: $err')),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _confirmRevoke(BuildContext context, WidgetRef ref, common_proto.UserProfile admin) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Revoke Access'),
+        content: Text('Are you sure you want to remove ${admin.email} from Super Admins?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await ref.read(adminRequestsControllerProvider.notifier).revokeAdminRole(admin.id);
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Revoke'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _RequestCard extends ConsumerStatefulWidget {
   final auth_proto.AdminAccessRequest request;
 
-  const _RequestCard({required this.request});
+  const _RequestCard({super.key, required this.request});
 
   @override
   ConsumerState<_RequestCard> createState() => _RequestCardState();
@@ -81,10 +190,36 @@ class _RequestCardState extends ConsumerState<_RequestCard> {
 
   Future<void> _handleDecision(bool approve) async {
     setState(() => _isProcessing = true);
-    final controller = ref.read(adminRequestsControllerProvider.notifier);
-    await controller.reviewRequest(widget.request.id, approve);
-    if (mounted) {
-      setState(() => _isProcessing = false);
+    try {
+      final controller = ref.read(adminRequestsControllerProvider.notifier);
+      await controller.reviewRequest(widget.request.id, approve);
+
+      // Wait a moment for the backend to process and then force refresh
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      if (mounted) {
+        // Force refresh the list
+        ref.invalidate(pendingRequestsProvider);
+
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(approve ? 'Request approved!' : 'Request rejected'),
+            backgroundColor: approve ? Colors.green : Colors.orange,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red, duration: const Duration(seconds: 3)),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isProcessing = false);
+      }
     }
   }
 
@@ -94,7 +229,7 @@ class _RequestCardState extends ConsumerState<_RequestCard> {
     final userProfile = req.userProfile;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -131,6 +266,13 @@ class _RequestCardState extends ConsumerState<_RequestCard> {
                   child: Text(req.requestedRole, style: TextStyle(color: Colors.blue[800], fontSize: 12)),
                 ),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 56.0, top: 4.0),
+              child: Text(
+                'Requested: ${req.updatedAt.toDateTime().toLocal().toString().split('.')[0]}',
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
+              ),
             ),
             const SizedBox(height: 16),
             const Text(

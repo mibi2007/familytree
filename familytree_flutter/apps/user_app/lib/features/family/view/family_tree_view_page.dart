@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_package/shared_package.dart';
 
 import '../../chat/view/chat_page.dart';
 import 'widgets/family_tree_canvas.dart';
 
-class FamilyTreeViewPage extends ConsumerStatefulWidget {
+class FamilyTreeViewPage extends StatefulWidget {
   final String familyId;
   final String familyName;
 
   const FamilyTreeViewPage({super.key, required this.familyId, required this.familyName});
 
   @override
-  ConsumerState<FamilyTreeViewPage> createState() => _FamilyTreeViewPageState();
+  State<FamilyTreeViewPage> createState() => _FamilyTreeViewPageState();
 }
 
-class _FamilyTreeViewPageState extends ConsumerState<FamilyTreeViewPage> {
+class _FamilyTreeViewPageState extends State<FamilyTreeViewPage> {
   bool _isTreeView = true;
 
   @override
   Widget build(BuildContext context) {
-    final membersAsync = ref.watch(familyMembersProvider(widget.familyId));
+    // Watch signal via extension or signals_flutter Watch widget is implied if not used directly
+    // Using .watch(context) from signals_flutter
+    final membersAsync = familyMembersSignal(widget.familyId).watch(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.familyName),
         actions: [
+          IconButton(
+            onPressed: () => _showInviteDialog(context),
+            icon: const Icon(Icons.share),
+            tooltip: 'Invite Member',
+          ),
           IconButton(
             onPressed: () => Navigator.push(
               context,
@@ -40,13 +48,10 @@ class _FamilyTreeViewPageState extends ConsumerState<FamilyTreeViewPage> {
             icon: Icon(_isTreeView ? Icons.list : Icons.account_tree),
             tooltip: _isTreeView ? 'Switch to List' : 'Switch to Tree',
           ),
-          IconButton(
-            onPressed: () => ref.invalidate(familyMembersProvider(widget.familyId)),
-            icon: const Icon(Icons.refresh),
-          ),
+          IconButton(onPressed: () => reloadFamilyMembers(widget.familyId), icon: const Icon(Icons.refresh)),
         ],
       ),
-      body: membersAsync.when(
+      body: membersAsync.map(
         data: (members) {
           if (members.isEmpty) {
             return Center(
@@ -58,7 +63,7 @@ class _FamilyTreeViewPageState extends ConsumerState<FamilyTreeViewPage> {
                   const Text('No members found in this family.'),
                   const SizedBox(height: 24),
                   ElevatedButton.icon(
-                    onPressed: () => _showAddMemberDialog(context, ref),
+                    onPressed: () => _showAddMemberDialog(context),
                     icon: const Icon(Icons.person_add),
                     label: const Text('Add First Member'),
                   ),
@@ -68,7 +73,7 @@ class _FamilyTreeViewPageState extends ConsumerState<FamilyTreeViewPage> {
           }
 
           if (_isTreeView) {
-            return FamilyTreeCanvas(members: members);
+            return FamilyTreeCanvas(members: members, onNodeTap: _handleNodeTap, onAddChild: _handleAddChild);
           }
 
           return ListView.builder(
@@ -81,9 +86,7 @@ class _FamilyTreeViewPageState extends ConsumerState<FamilyTreeViewPage> {
                 subtitle: Text(
                   'Level: ${member.level}${member.parentId.isNotEmpty ? ' | Parent: ${member.parentId}' : ''}',
                 ),
-                onTap: () {
-                  // TODO: Member details or edit
-                },
+                onTap: () => _handleNodeTap(member),
               );
             },
           );
@@ -92,23 +95,99 @@ class _FamilyTreeViewPageState extends ConsumerState<FamilyTreeViewPage> {
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddMemberDialog(context, ref),
+        onPressed: () => _showAddMemberDialog(context),
         child: const Icon(Icons.person_add),
       ),
     );
   }
 
-  void _showAddMemberDialog(BuildContext context, WidgetRef ref) {
+  void _handleNodeTap(Member member) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: Text(member.displayName, style: const TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text('ID: ${member.id}\nLevel: ${member.level}'),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  // TODO: Implement Edit
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.person_add),
+              title: const Text('Add Child'),
+              onTap: () {
+                Navigator.pop(context);
+                _handleAddChild(member);
+              },
+            ),
+            // TODO: Add Spouse
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _handleAddChild(Member parent) {
+    _showAddMemberDialog(context, parentId: parent.id);
+  }
+
+  void _showAddMemberDialog(BuildContext context, {String? parentId}) {
     showDialog(
       context: context,
-      builder: (context) => _AddMemberDialog(familyId: widget.familyId),
+      builder: (context) => _AddMemberDialog(familyId: widget.familyId, parentId: parentId),
     );
+  }
+
+  Future<void> _showInviteDialog(BuildContext context) async {
+    try {
+      final token = await familySignalsController.createInviteToken(widget.familyId);
+      if (!mounted || token == null) return;
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Invite Member'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Share this token with your family member:'),
+              const SizedBox(height: 16),
+              SelectableText(token, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            ],
+          ),
+          actions: [
+            TextButton.icon(
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: token));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Token copied!')));
+              },
+              icon: const Icon(Icons.copy),
+              label: const Text('Copy'),
+            ),
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+          ],
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
+    }
   }
 }
 
 class _AddMemberDialog extends StatefulWidget {
   final String familyId;
-  const _AddMemberDialog({required this.familyId});
+  final String? parentId;
+  const _AddMemberDialog({required this.familyId, this.parentId});
 
   @override
   State<_AddMemberDialog> createState() => _AddMemberDialogState();
@@ -116,47 +195,55 @@ class _AddMemberDialog extends StatefulWidget {
 
 class _AddMemberDialogState extends State<_AddMemberDialog> {
   final _nameController = TextEditingController();
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    // Watch loading state
+    final isLoading = familySignalsController.isLoadingSignal.watch(context);
+
     return AlertDialog(
-      title: const Text('Add Member'),
-      content: TextField(
-        controller: _nameController,
-        decoration: const InputDecoration(labelText: 'Display Name'),
-        autofocus: true,
+      title: Text(widget.parentId != null ? 'Add Child' : 'Add Member'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _nameController,
+            decoration: const InputDecoration(labelText: 'Display Name'),
+            autofocus: true,
+          ),
+          if (widget.parentId != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text('Parent ID: ${widget.parentId}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            ),
+        ],
       ),
       actions: [
-        TextButton(onPressed: _isLoading ? null : () => Navigator.pop(context), child: const Text('Cancel')),
-        Consumer(
-          builder: (context, ref, _) {
-            return ElevatedButton(
-              onPressed: _isLoading ? null : () => _handleAdd(ref),
-              child: _isLoading
-                  ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                  : const Text('Add'),
-            );
-          },
+        TextButton(onPressed: isLoading ? null : () => Navigator.pop(context), child: const Text('Cancel')),
+        ElevatedButton(
+          onPressed: isLoading ? null : _handleAdd,
+          child: isLoading
+              ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+              : const Text('Add'),
         ),
       ],
     );
   }
 
-  Future<void> _handleAdd(WidgetRef ref) async {
+  Future<void> _handleAdd() async {
     final name = _nameController.text.trim();
     if (name.isEmpty) return;
 
-    setState(() => _isLoading = true);
-    try {
-      await ref.read(familyControllerProvider.notifier).addMember(familyId: widget.familyId, displayName: name);
+    await familySignalsController.addMember(familyId: widget.familyId, displayName: name, parentId: widget.parentId);
+
+    if (familySignalsController.error != null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: ${familySignalsController.error}'), backgroundColor: Colors.red));
+    } else {
       if (!mounted) return;
       Navigator.pop(context);
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
   }
 }

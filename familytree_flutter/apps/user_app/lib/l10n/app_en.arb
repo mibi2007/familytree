@@ -1,0 +1,31 @@
+{
+    "@@locale": "en",
+    "appTitle": "Family Tree",
+    "@appTitle": {
+        "description": "The title of the application"
+    },
+    "settings": "Settings",
+    "@settings": {},
+    "theme": "Theme",
+    "@theme": {},
+    "lightMode": "Light Mode",
+    "@lightMode": {},
+    "darkMode": "Dark Mode",
+    "@darkMode": {},
+    "systemMode": "System Mode",
+    "@systemMode": {},
+    "language": "Language",
+    "@language": {},
+    "vietnamese": "Vietnamese",
+    "@vietnamese": {},
+    "english": "English",
+    "@english": {},
+    "notifications": "Notifications",
+    "@notifications": {},
+    "emailNotifications": "Email Notifications",
+    "@emailNotifications": {},
+    "pushNotifications": "Push Notifications",
+    "@pushNotifications": {},
+    "general": "General",
+    "@general": {}
+}

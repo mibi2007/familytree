@@ -27,6 +27,42 @@ const JoinFamilyRequest$json = {
 final $typed_data.Uint8List joinFamilyRequestDescriptor = $convert.base64Decode(
     'ChFKb2luRmFtaWx5UmVxdWVzdBIhCgxpbnZpdGVfdG9rZW4YASABKAlSC2ludml0ZVRva2Vu');
 
+@$core.Deprecated('Use createInviteTokenRequestDescriptor instead')
+const CreateInviteTokenRequest$json = {
+  '1': 'CreateInviteTokenRequest',
+  '2': [
+    {'1': 'family_id', '3': 1, '4': 1, '5': 9, '10': 'familyId'},
+  ],
+};
+
+/// Descriptor for `CreateInviteTokenRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createInviteTokenRequestDescriptor =
+    $convert.base64Decode(
+        'ChhDcmVhdGVJbnZpdGVUb2tlblJlcXVlc3QSGwoJZmFtaWx5X2lkGAEgASgJUghmYW1pbHlJZA'
+        '==');
+
+@$core.Deprecated('Use createInviteTokenResponseDescriptor instead')
+const CreateInviteTokenResponse$json = {
+  '1': 'CreateInviteTokenResponse',
+  '2': [
+    {'1': 'invite_token', '3': 1, '4': 1, '5': 9, '10': 'inviteToken'},
+    {
+      '1': 'expires_at',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'expiresAt'
+    },
+  ],
+};
+
+/// Descriptor for `CreateInviteTokenResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createInviteTokenResponseDescriptor = $convert.base64Decode(
+    'ChlDcmVhdGVJbnZpdGVUb2tlblJlc3BvbnNlEiEKDGludml0ZV90b2tlbhgBIAEoCVILaW52aX'
+    'RlVG9rZW4SOQoKZXhwaXJlc19hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBS'
+    'CWV4cGlyZXNBdA==');
+
 @$core.Deprecated('Use familyDescriptor instead')
 const Family$json = {
   '1': 'Family',

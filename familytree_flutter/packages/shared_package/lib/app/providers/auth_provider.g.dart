@@ -172,7 +172,7 @@ final class AuthControllerProvider
         argument: null,
         retry: null,
         name: r'authControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -185,7 +185,7 @@ final class AuthControllerProvider
   AuthController create() => AuthController();
 }
 
-String _$authControllerHash() => r'4b88283e889f10f97283ea30a33a12cfb8dffc89';
+String _$authControllerHash() => r'b2ea8a7555c1dfcd3bc2e06d1e52bd9c38df6e8a';
 
 abstract class _$AuthController extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -204,3 +204,44 @@ abstract class _$AuthController extends $AsyncNotifier<void> {
     element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(currentUser)
+final currentUserProvider = CurrentUserProvider._();
+
+final class CurrentUserProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<common_proto.UserProfile?>,
+          common_proto.UserProfile?,
+          FutureOr<common_proto.UserProfile?>
+        >
+    with
+        $FutureModifier<common_proto.UserProfile?>,
+        $FutureProvider<common_proto.UserProfile?> {
+  CurrentUserProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentUserProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentUserHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<common_proto.UserProfile?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<common_proto.UserProfile?> create(Ref ref) {
+    return currentUser(ref);
+  }
+}
+
+String _$currentUserHash() => r'd2b8baf74b3775ae734a63694ebfae8a5d54d3ed';

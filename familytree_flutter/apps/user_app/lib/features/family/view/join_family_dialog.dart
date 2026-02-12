@@ -23,31 +23,34 @@ class _JoinFamilyDialogState extends State<JoinFamilyDialog> {
       ),
       actions: [
         TextButton(onPressed: _isLoading ? null : () => Navigator.pop(context), child: const Text('Cancel')),
-        Consumer(
-          builder: (context, ref, _) {
-            return ElevatedButton(
-              onPressed: _isLoading ? null : () => _handleJoin(ref),
-              child: _isLoading
-                  ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                  : const Text('Join'),
-            );
-          },
+        ElevatedButton(
+          onPressed: _isLoading ? null : _handleJoin,
+          child: _isLoading
+              ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+              : const Text('Join'),
         ),
       ],
     );
   }
 
-  Future<void> _handleJoin(WidgetRef ref) async {
+  Future<void> _handleJoin() async {
     final token = _tokenController.text.trim();
     if (token.isEmpty) return;
 
     setState(() => _isLoading = true);
     try {
-      await ref.read(familyControllerProvider.notifier).joinFamily(token);
-      if (!mounted) return;
+      await familySignalsController.joinFamily(token);
 
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Successfully joined family!')));
+      if (familySignalsController.error != null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to join: ${familySignalsController.error}')));
+      } else {
+        if (!mounted) return;
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Successfully joined family!')));
+      }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to join: $e')));

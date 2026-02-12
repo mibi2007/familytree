@@ -1,0 +1,5 @@
+Analyzing 2 items...                                            
+
+   info - The imported package 'protobuf' isn't a dependency of the importing package - lib\mock\fake_services.dart:3:8 - depend_on_referenced_packages
+
+1 issue found. (ran in 2.0s)

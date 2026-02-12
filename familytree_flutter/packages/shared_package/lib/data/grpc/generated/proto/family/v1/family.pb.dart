@@ -72,6 +72,131 @@ class JoinFamilyRequest extends $pb.GeneratedMessage {
   void clearInviteToken() => $_clearField(1);
 }
 
+class CreateInviteTokenRequest extends $pb.GeneratedMessage {
+  factory CreateInviteTokenRequest({
+    $core.String? familyId,
+  }) {
+    final result = create();
+    if (familyId != null) result.familyId = familyId;
+    return result;
+  }
+
+  CreateInviteTokenRequest._();
+
+  factory CreateInviteTokenRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CreateInviteTokenRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateInviteTokenRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'family.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'familyId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateInviteTokenRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateInviteTokenRequest copyWith(
+          void Function(CreateInviteTokenRequest) updates) =>
+      super.copyWith((message) => updates(message as CreateInviteTokenRequest))
+          as CreateInviteTokenRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateInviteTokenRequest create() => CreateInviteTokenRequest._();
+  @$core.override
+  CreateInviteTokenRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static CreateInviteTokenRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateInviteTokenRequest>(create);
+  static CreateInviteTokenRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get familyId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set familyId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasFamilyId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFamilyId() => $_clearField(1);
+}
+
+class CreateInviteTokenResponse extends $pb.GeneratedMessage {
+  factory CreateInviteTokenResponse({
+    $core.String? inviteToken,
+    $2.Timestamp? expiresAt,
+  }) {
+    final result = create();
+    if (inviteToken != null) result.inviteToken = inviteToken;
+    if (expiresAt != null) result.expiresAt = expiresAt;
+    return result;
+  }
+
+  CreateInviteTokenResponse._();
+
+  factory CreateInviteTokenResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CreateInviteTokenResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateInviteTokenResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'family.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'inviteToken')
+    ..aOM<$2.Timestamp>(2, _omitFieldNames ? '' : 'expiresAt',
+        subBuilder: $2.Timestamp.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateInviteTokenResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateInviteTokenResponse copyWith(
+          void Function(CreateInviteTokenResponse) updates) =>
+      super.copyWith((message) => updates(message as CreateInviteTokenResponse))
+          as CreateInviteTokenResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateInviteTokenResponse create() => CreateInviteTokenResponse._();
+  @$core.override
+  CreateInviteTokenResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static CreateInviteTokenResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateInviteTokenResponse>(create);
+  static CreateInviteTokenResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get inviteToken => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set inviteToken($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasInviteToken() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearInviteToken() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $2.Timestamp get expiresAt => $_getN(1);
+  @$pb.TagNumber(2)
+  set expiresAt($2.Timestamp value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpiresAt() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpiresAt() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $2.Timestamp ensureExpiresAt() => $_ensure(1);
+}
+
 class Family extends $pb.GeneratedMessage {
   factory Family({
     $core.String? id,

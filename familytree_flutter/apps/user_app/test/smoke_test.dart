@@ -17,16 +17,17 @@ void main() {
   setUp(() {
     mockAuthRepository = MockAuthRepository();
     mockAuthClient = MockAuthServiceClient();
+
+    // Setup signals overrides
+    authRepositorySignal.value = mockAuthRepository;
+    mockAuthClientSignal.value = mockAuthClient;
+
+    // Reset internal state
+    authSignalsController.isLoadingSignal.value = false;
   });
 
   Widget createWidgetUnderTest() {
-    return ProviderScope(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(mockAuthRepository),
-        authClientProvider.overrideWithValue(mockAuthClient),
-      ],
-      child: const MaterialApp(home: LoginPage()),
-    );
+    return const MaterialApp(home: LoginPage());
   }
 
   testWidgets('LoginPage smoke test', (tester) async {

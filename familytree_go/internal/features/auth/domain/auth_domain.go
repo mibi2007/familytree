@@ -44,6 +44,7 @@ type SuperAdminRequest struct {
 	ReviewedBy    string
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
+	User          *User // Populated on list/get if available
 }
 
 type TokenPurpose string
@@ -67,8 +68,11 @@ type SecureToken struct {
 type UserRepository interface {
 	UpsertUser(ctx context.Context, user *User) error
 	GetUserByID(ctx context.Context, id string) (*User, error)
+	GetUserByEmail(ctx context.Context, email string) (*User, error)
+	UpdateUserID(ctx context.Context, oldID, newID string) error
 	MarkDeletionRequested(ctx context.Context, id string, requestedAt time.Time) error
 	SetUserRole(ctx context.Context, id string, role SystemRole) error
+	ListUsersByRole(ctx context.Context, role SystemRole, limit int, offset int) ([]*User, error)
 }
 
 type TokenRepository interface {

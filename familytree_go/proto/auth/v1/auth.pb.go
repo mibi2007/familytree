@@ -834,6 +834,190 @@ func (x *AuthStatusResponse) GetPendingRequestStatus() RequestStatus {
 	return RequestStatus_REQUEST_STATUS_UNSPECIFIED
 }
 
+type ListAdminsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Pagination    *v1.PaginatedRequest   `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAdminsRequest) Reset() {
+	*x = ListAdminsRequest{}
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAdminsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAdminsRequest) ProtoMessage() {}
+
+func (x *ListAdminsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAdminsRequest.ProtoReflect.Descriptor instead.
+func (*ListAdminsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ListAdminsRequest) GetPagination() *v1.PaginatedRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type ListAdminsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Admins        []*v1.UserProfile      `protobuf:"bytes,1,rep,name=admins,proto3" json:"admins,omitempty"`
+	Pagination    *v1.PaginatedResponse  `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAdminsResponse) Reset() {
+	*x = ListAdminsResponse{}
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAdminsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAdminsResponse) ProtoMessage() {}
+
+func (x *ListAdminsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAdminsResponse.ProtoReflect.Descriptor instead.
+func (*ListAdminsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ListAdminsResponse) GetAdmins() []*v1.UserProfile {
+	if x != nil {
+		return x.Admins
+	}
+	return nil
+}
+
+func (x *ListAdminsResponse) GetPagination() *v1.PaginatedResponse {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type RevokeAdminRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeAdminRoleRequest) Reset() {
+	*x = RevokeAdminRoleRequest{}
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeAdminRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeAdminRoleRequest) ProtoMessage() {}
+
+func (x *RevokeAdminRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeAdminRoleRequest.ProtoReflect.Descriptor instead.
+func (*RevokeAdminRoleRequest) Descriptor() ([]byte, []int) {
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *RevokeAdminRoleRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type RequestAccountDeletionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Password      string                 `protobuf:"bytes,1,opt,name=password,proto3" json:"password,omitempty"` // Optional: Require password check if needed
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestAccountDeletionRequest) Reset() {
+	*x = RequestAccountDeletionRequest{}
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestAccountDeletionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestAccountDeletionRequest) ProtoMessage() {}
+
+func (x *RequestAccountDeletionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_auth_v1_auth_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestAccountDeletionRequest.ProtoReflect.Descriptor instead.
+func (*RequestAccountDeletionRequest) Descriptor() ([]byte, []int) {
+	return file_proto_auth_v1_auth_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *RequestAccountDeletionRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
 var File_proto_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_proto_auth_v1_auth_proto_rawDesc = "" +
@@ -892,7 +1076,20 @@ const file_proto_auth_v1_auth_proto_rawDesc = "" +
 	"\tphoto_url\x18\x02 \x01(\tR\bphotoUrl\"\x88\x01\n" +
 	"\x12AuthStatusResponse\x12$\n" +
 	"\x0eis_super_admin\x18\x01 \x01(\bR\fisSuperAdmin\x12L\n" +
-	"\x16pending_request_status\x18\x02 \x01(\x0e2\x16.auth.v1.RequestStatusR\x14pendingRequestStatus*\x93\x01\n" +
+	"\x16pending_request_status\x18\x02 \x01(\x0e2\x16.auth.v1.RequestStatusR\x14pendingRequestStatus\"P\n" +
+	"\x11ListAdminsRequest\x12;\n" +
+	"\n" +
+	"pagination\x18\x01 \x01(\v2\x1b.common.v1.PaginatedRequestR\n" +
+	"pagination\"\x82\x01\n" +
+	"\x12ListAdminsResponse\x12.\n" +
+	"\x06admins\x18\x01 \x03(\v2\x16.common.v1.UserProfileR\x06admins\x12<\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2\x1c.common.v1.PaginatedResponseR\n" +
+	"pagination\"1\n" +
+	"\x16RevokeAdminRoleRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\";\n" +
+	"\x1dRequestAccountDeletionRequest\x12\x1a\n" +
+	"\bpassword\x18\x01 \x01(\tR\bpassword*\x93\x01\n" +
 	"\fTokenPurpose\x12\x1d\n" +
 	"\x19TOKEN_PURPOSE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eTOKEN_PURPOSE_ADMIN_ONBOARDING\x10\x01\x12\x1f\n" +
@@ -902,16 +1099,20 @@ const file_proto_auth_v1_auth_proto_rawDesc = "" +
 	"\x1aREQUEST_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16REQUEST_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17REQUEST_STATUS_APPROVED\x10\x02\x12\x1b\n" +
-	"\x17REQUEST_STATUS_REJECTED\x10\x032\xa7\x05\n" +
+	"\x17REQUEST_STATUS_REJECTED\x10\x032\x94\a\n" +
 	"\vAuthService\x12P\n" +
 	"\x13GenerateInviteToken\x12#.auth.v1.GenerateInviteTokenRequest\x1a\x14.auth.v1.InviteToken\x12`\n" +
 	"\x13ValidateInviteToken\x12#.auth.v1.ValidateInviteTokenRequest\x1a$.auth.v1.ValidateInviteTokenResponse\x12U\n" +
 	"\x12RequestAdminAccess\x12\".auth.v1.RequestAdminAccessRequest\x1a\x1b.auth.v1.AdminAccessRequest\x12Z\n" +
 	"\x11ListAdminRequests\x12!.auth.v1.ListAdminRequestsRequest\x1a\".auth.v1.ListAdminRequestsResponse\x12U\n" +
-	"\x12ReviewAdminRequest\x12\".auth.v1.ReviewAdminRequestRequest\x1a\x1b.auth.v1.AdminAccessRequest\x12J\n" +
+	"\x12ReviewAdminRequest\x12\".auth.v1.ReviewAdminRequestRequest\x1a\x1b.auth.v1.AdminAccessRequest\x12E\n" +
+	"\n" +
+	"ListAdmins\x12\x1a.auth.v1.ListAdminsRequest\x1a\x1b.auth.v1.ListAdminsResponse\x12J\n" +
+	"\x0fRevokeAdminRole\x12\x1f.auth.v1.RevokeAdminRoleRequest\x1a\x16.google.protobuf.Empty\x12J\n" +
 	"\x0fSyncUserProfile\x12\x1f.auth.v1.SyncUserProfileRequest\x1a\x16.common.v1.UserProfile\x12H\n" +
 	"\x0eGetUserProfile\x12\x1e.auth.v1.GetUserProfileRequest\x1a\x16.common.v1.UserProfile\x12D\n" +
-	"\rGetAuthStatus\x12\x16.google.protobuf.Empty\x1a\x1b.auth.v1.AuthStatusResponseB<Z:github.com/mibi2007/familytree/familytree_go/proto/auth/v1b\x06proto3"
+	"\rGetAuthStatus\x12\x16.google.protobuf.Empty\x1a\x1b.auth.v1.AuthStatusResponse\x12X\n" +
+	"\x16RequestAccountDeletion\x12&.auth.v1.RequestAccountDeletionRequest\x1a\x16.google.protobuf.EmptyB<Z:github.com/mibi2007/familytree/familytree_go/proto/auth/v1b\x06proto3"
 
 var (
 	file_proto_auth_v1_auth_proto_rawDescOnce sync.Once
@@ -926,63 +1127,76 @@ func file_proto_auth_v1_auth_proto_rawDescGZIP() []byte {
 }
 
 var file_proto_auth_v1_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_proto_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_proto_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_proto_auth_v1_auth_proto_goTypes = []any{
-	(TokenPurpose)(0),                   // 0: auth.v1.TokenPurpose
-	(RequestStatus)(0),                  // 1: auth.v1.RequestStatus
-	(*GetUserProfileRequest)(nil),       // 2: auth.v1.GetUserProfileRequest
-	(*InviteToken)(nil),                 // 3: auth.v1.InviteToken
-	(*GenerateInviteTokenRequest)(nil),  // 4: auth.v1.GenerateInviteTokenRequest
-	(*ValidateInviteTokenRequest)(nil),  // 5: auth.v1.ValidateInviteTokenRequest
-	(*ValidateInviteTokenResponse)(nil), // 6: auth.v1.ValidateInviteTokenResponse
-	(*RequestAdminAccessRequest)(nil),   // 7: auth.v1.RequestAdminAccessRequest
-	(*AdminAccessRequest)(nil),          // 8: auth.v1.AdminAccessRequest
-	(*ListAdminRequestsRequest)(nil),    // 9: auth.v1.ListAdminRequestsRequest
-	(*ListAdminRequestsResponse)(nil),   // 10: auth.v1.ListAdminRequestsResponse
-	(*ReviewAdminRequestRequest)(nil),   // 11: auth.v1.ReviewAdminRequestRequest
-	(*SyncUserProfileRequest)(nil),      // 12: auth.v1.SyncUserProfileRequest
-	(*AuthStatusResponse)(nil),          // 13: auth.v1.AuthStatusResponse
-	(*timestamppb.Timestamp)(nil),       // 14: google.protobuf.Timestamp
-	(*v1.UserProfile)(nil),              // 15: common.v1.UserProfile
-	(*v1.PaginatedRequest)(nil),         // 16: common.v1.PaginatedRequest
-	(*v1.PaginatedResponse)(nil),        // 17: common.v1.PaginatedResponse
-	(*emptypb.Empty)(nil),               // 18: google.protobuf.Empty
+	(TokenPurpose)(0),                     // 0: auth.v1.TokenPurpose
+	(RequestStatus)(0),                    // 1: auth.v1.RequestStatus
+	(*GetUserProfileRequest)(nil),         // 2: auth.v1.GetUserProfileRequest
+	(*InviteToken)(nil),                   // 3: auth.v1.InviteToken
+	(*GenerateInviteTokenRequest)(nil),    // 4: auth.v1.GenerateInviteTokenRequest
+	(*ValidateInviteTokenRequest)(nil),    // 5: auth.v1.ValidateInviteTokenRequest
+	(*ValidateInviteTokenResponse)(nil),   // 6: auth.v1.ValidateInviteTokenResponse
+	(*RequestAdminAccessRequest)(nil),     // 7: auth.v1.RequestAdminAccessRequest
+	(*AdminAccessRequest)(nil),            // 8: auth.v1.AdminAccessRequest
+	(*ListAdminRequestsRequest)(nil),      // 9: auth.v1.ListAdminRequestsRequest
+	(*ListAdminRequestsResponse)(nil),     // 10: auth.v1.ListAdminRequestsResponse
+	(*ReviewAdminRequestRequest)(nil),     // 11: auth.v1.ReviewAdminRequestRequest
+	(*SyncUserProfileRequest)(nil),        // 12: auth.v1.SyncUserProfileRequest
+	(*AuthStatusResponse)(nil),            // 13: auth.v1.AuthStatusResponse
+	(*ListAdminsRequest)(nil),             // 14: auth.v1.ListAdminsRequest
+	(*ListAdminsResponse)(nil),            // 15: auth.v1.ListAdminsResponse
+	(*RevokeAdminRoleRequest)(nil),        // 16: auth.v1.RevokeAdminRoleRequest
+	(*RequestAccountDeletionRequest)(nil), // 17: auth.v1.RequestAccountDeletionRequest
+	(*timestamppb.Timestamp)(nil),         // 18: google.protobuf.Timestamp
+	(*v1.UserProfile)(nil),                // 19: common.v1.UserProfile
+	(*v1.PaginatedRequest)(nil),           // 20: common.v1.PaginatedRequest
+	(*v1.PaginatedResponse)(nil),          // 21: common.v1.PaginatedResponse
+	(*emptypb.Empty)(nil),                 // 22: google.protobuf.Empty
 }
 var file_proto_auth_v1_auth_proto_depIdxs = []int32{
 	0,  // 0: auth.v1.InviteToken.purpose:type_name -> auth.v1.TokenPurpose
-	14, // 1: auth.v1.InviteToken.expires_at:type_name -> google.protobuf.Timestamp
+	18, // 1: auth.v1.InviteToken.expires_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: auth.v1.GenerateInviteTokenRequest.purpose:type_name -> auth.v1.TokenPurpose
 	0,  // 3: auth.v1.ValidateInviteTokenResponse.purpose:type_name -> auth.v1.TokenPurpose
 	1,  // 4: auth.v1.AdminAccessRequest.status:type_name -> auth.v1.RequestStatus
-	14, // 5: auth.v1.AdminAccessRequest.updated_at:type_name -> google.protobuf.Timestamp
-	15, // 6: auth.v1.AdminAccessRequest.user_profile:type_name -> common.v1.UserProfile
+	18, // 5: auth.v1.AdminAccessRequest.updated_at:type_name -> google.protobuf.Timestamp
+	19, // 6: auth.v1.AdminAccessRequest.user_profile:type_name -> common.v1.UserProfile
 	1,  // 7: auth.v1.ListAdminRequestsRequest.filter_status:type_name -> auth.v1.RequestStatus
-	16, // 8: auth.v1.ListAdminRequestsRequest.pagination:type_name -> common.v1.PaginatedRequest
+	20, // 8: auth.v1.ListAdminRequestsRequest.pagination:type_name -> common.v1.PaginatedRequest
 	8,  // 9: auth.v1.ListAdminRequestsResponse.requests:type_name -> auth.v1.AdminAccessRequest
-	17, // 10: auth.v1.ListAdminRequestsResponse.pagination:type_name -> common.v1.PaginatedResponse
+	21, // 10: auth.v1.ListAdminRequestsResponse.pagination:type_name -> common.v1.PaginatedResponse
 	1,  // 11: auth.v1.ReviewAdminRequestRequest.decision:type_name -> auth.v1.RequestStatus
 	1,  // 12: auth.v1.AuthStatusResponse.pending_request_status:type_name -> auth.v1.RequestStatus
-	4,  // 13: auth.v1.AuthService.GenerateInviteToken:input_type -> auth.v1.GenerateInviteTokenRequest
-	5,  // 14: auth.v1.AuthService.ValidateInviteToken:input_type -> auth.v1.ValidateInviteTokenRequest
-	7,  // 15: auth.v1.AuthService.RequestAdminAccess:input_type -> auth.v1.RequestAdminAccessRequest
-	9,  // 16: auth.v1.AuthService.ListAdminRequests:input_type -> auth.v1.ListAdminRequestsRequest
-	11, // 17: auth.v1.AuthService.ReviewAdminRequest:input_type -> auth.v1.ReviewAdminRequestRequest
-	12, // 18: auth.v1.AuthService.SyncUserProfile:input_type -> auth.v1.SyncUserProfileRequest
-	2,  // 19: auth.v1.AuthService.GetUserProfile:input_type -> auth.v1.GetUserProfileRequest
-	18, // 20: auth.v1.AuthService.GetAuthStatus:input_type -> google.protobuf.Empty
-	3,  // 21: auth.v1.AuthService.GenerateInviteToken:output_type -> auth.v1.InviteToken
-	6,  // 22: auth.v1.AuthService.ValidateInviteToken:output_type -> auth.v1.ValidateInviteTokenResponse
-	8,  // 23: auth.v1.AuthService.RequestAdminAccess:output_type -> auth.v1.AdminAccessRequest
-	10, // 24: auth.v1.AuthService.ListAdminRequests:output_type -> auth.v1.ListAdminRequestsResponse
-	8,  // 25: auth.v1.AuthService.ReviewAdminRequest:output_type -> auth.v1.AdminAccessRequest
-	15, // 26: auth.v1.AuthService.SyncUserProfile:output_type -> common.v1.UserProfile
-	15, // 27: auth.v1.AuthService.GetUserProfile:output_type -> common.v1.UserProfile
-	13, // 28: auth.v1.AuthService.GetAuthStatus:output_type -> auth.v1.AuthStatusResponse
-	21, // [21:29] is the sub-list for method output_type
-	13, // [13:21] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	20, // 13: auth.v1.ListAdminsRequest.pagination:type_name -> common.v1.PaginatedRequest
+	19, // 14: auth.v1.ListAdminsResponse.admins:type_name -> common.v1.UserProfile
+	21, // 15: auth.v1.ListAdminsResponse.pagination:type_name -> common.v1.PaginatedResponse
+	4,  // 16: auth.v1.AuthService.GenerateInviteToken:input_type -> auth.v1.GenerateInviteTokenRequest
+	5,  // 17: auth.v1.AuthService.ValidateInviteToken:input_type -> auth.v1.ValidateInviteTokenRequest
+	7,  // 18: auth.v1.AuthService.RequestAdminAccess:input_type -> auth.v1.RequestAdminAccessRequest
+	9,  // 19: auth.v1.AuthService.ListAdminRequests:input_type -> auth.v1.ListAdminRequestsRequest
+	11, // 20: auth.v1.AuthService.ReviewAdminRequest:input_type -> auth.v1.ReviewAdminRequestRequest
+	14, // 21: auth.v1.AuthService.ListAdmins:input_type -> auth.v1.ListAdminsRequest
+	16, // 22: auth.v1.AuthService.RevokeAdminRole:input_type -> auth.v1.RevokeAdminRoleRequest
+	12, // 23: auth.v1.AuthService.SyncUserProfile:input_type -> auth.v1.SyncUserProfileRequest
+	2,  // 24: auth.v1.AuthService.GetUserProfile:input_type -> auth.v1.GetUserProfileRequest
+	22, // 25: auth.v1.AuthService.GetAuthStatus:input_type -> google.protobuf.Empty
+	17, // 26: auth.v1.AuthService.RequestAccountDeletion:input_type -> auth.v1.RequestAccountDeletionRequest
+	3,  // 27: auth.v1.AuthService.GenerateInviteToken:output_type -> auth.v1.InviteToken
+	6,  // 28: auth.v1.AuthService.ValidateInviteToken:output_type -> auth.v1.ValidateInviteTokenResponse
+	8,  // 29: auth.v1.AuthService.RequestAdminAccess:output_type -> auth.v1.AdminAccessRequest
+	10, // 30: auth.v1.AuthService.ListAdminRequests:output_type -> auth.v1.ListAdminRequestsResponse
+	8,  // 31: auth.v1.AuthService.ReviewAdminRequest:output_type -> auth.v1.AdminAccessRequest
+	15, // 32: auth.v1.AuthService.ListAdmins:output_type -> auth.v1.ListAdminsResponse
+	22, // 33: auth.v1.AuthService.RevokeAdminRole:output_type -> google.protobuf.Empty
+	19, // 34: auth.v1.AuthService.SyncUserProfile:output_type -> common.v1.UserProfile
+	19, // 35: auth.v1.AuthService.GetUserProfile:output_type -> common.v1.UserProfile
+	13, // 36: auth.v1.AuthService.GetAuthStatus:output_type -> auth.v1.AuthStatusResponse
+	22, // 37: auth.v1.AuthService.RequestAccountDeletion:output_type -> google.protobuf.Empty
+	27, // [27:38] is the sub-list for method output_type
+	16, // [16:27] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_proto_auth_v1_auth_proto_init() }
@@ -996,7 +1210,7 @@ func file_proto_auth_v1_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_auth_v1_auth_proto_rawDesc), len(file_proto_auth_v1_auth_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   12,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

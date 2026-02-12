@@ -32,7 +32,9 @@
                 "-d",
                 "web-server",
                 "--web-port",
-                "8081"
+                "8081",
+                "--web-hostname",
+                "127.0.0.1"
             ]
         },
         // --- Dev Environment ---

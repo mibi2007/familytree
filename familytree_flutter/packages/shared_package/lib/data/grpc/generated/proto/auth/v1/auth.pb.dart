@@ -17,7 +17,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:protobuf/well_known_types/google/protobuf/timestamp.pb.dart'
     as $3;
 
-import '../../common/v1/common.pb.dart' as $1;
+import '../../common/v1/common.pb.dart' as $2;
 import 'auth.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -493,7 +493,7 @@ class AdminAccessRequest extends $pb.GeneratedMessage {
     $core.String? reason,
     $core.String? reviewedBy,
     $3.Timestamp? updatedAt,
-    $1.UserProfile? userProfile,
+    $2.UserProfile? userProfile,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -529,8 +529,8 @@ class AdminAccessRequest extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'reviewedBy')
     ..aOM<$3.Timestamp>(7, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $3.Timestamp.create)
-    ..aOM<$1.UserProfile>(8, _omitFieldNames ? '' : 'userProfile',
-        subBuilder: $1.UserProfile.create)
+    ..aOM<$2.UserProfile>(8, _omitFieldNames ? '' : 'userProfile',
+        subBuilder: $2.UserProfile.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -618,21 +618,21 @@ class AdminAccessRequest extends $pb.GeneratedMessage {
   $3.Timestamp ensureUpdatedAt() => $_ensure(6);
 
   @$pb.TagNumber(8)
-  $1.UserProfile get userProfile => $_getN(7);
+  $2.UserProfile get userProfile => $_getN(7);
   @$pb.TagNumber(8)
-  set userProfile($1.UserProfile value) => $_setField(8, value);
+  set userProfile($2.UserProfile value) => $_setField(8, value);
   @$pb.TagNumber(8)
   $core.bool hasUserProfile() => $_has(7);
   @$pb.TagNumber(8)
   void clearUserProfile() => $_clearField(8);
   @$pb.TagNumber(8)
-  $1.UserProfile ensureUserProfile() => $_ensure(7);
+  $2.UserProfile ensureUserProfile() => $_ensure(7);
 }
 
 class ListAdminRequestsRequest extends $pb.GeneratedMessage {
   factory ListAdminRequestsRequest({
     RequestStatus? filterStatus,
-    $1.PaginatedRequest? pagination,
+    $2.PaginatedRequest? pagination,
   }) {
     final result = create();
     if (filterStatus != null) result.filterStatus = filterStatus;
@@ -655,8 +655,8 @@ class ListAdminRequestsRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aE<RequestStatus>(1, _omitFieldNames ? '' : 'filterStatus',
         enumValues: RequestStatus.values)
-    ..aOM<$1.PaginatedRequest>(2, _omitFieldNames ? '' : 'pagination',
-        subBuilder: $1.PaginatedRequest.create)
+    ..aOM<$2.PaginatedRequest>(2, _omitFieldNames ? '' : 'pagination',
+        subBuilder: $2.PaginatedRequest.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -689,21 +689,21 @@ class ListAdminRequestsRequest extends $pb.GeneratedMessage {
   void clearFilterStatus() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $1.PaginatedRequest get pagination => $_getN(1);
+  $2.PaginatedRequest get pagination => $_getN(1);
   @$pb.TagNumber(2)
-  set pagination($1.PaginatedRequest value) => $_setField(2, value);
+  set pagination($2.PaginatedRequest value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasPagination() => $_has(1);
   @$pb.TagNumber(2)
   void clearPagination() => $_clearField(2);
   @$pb.TagNumber(2)
-  $1.PaginatedRequest ensurePagination() => $_ensure(1);
+  $2.PaginatedRequest ensurePagination() => $_ensure(1);
 }
 
 class ListAdminRequestsResponse extends $pb.GeneratedMessage {
   factory ListAdminRequestsResponse({
     $core.Iterable<AdminAccessRequest>? requests,
-    $1.PaginatedResponse? pagination,
+    $2.PaginatedResponse? pagination,
   }) {
     final result = create();
     if (requests != null) result.requests.addAll(requests);
@@ -726,8 +726,8 @@ class ListAdminRequestsResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..pPM<AdminAccessRequest>(1, _omitFieldNames ? '' : 'requests',
         subBuilder: AdminAccessRequest.create)
-    ..aOM<$1.PaginatedResponse>(2, _omitFieldNames ? '' : 'pagination',
-        subBuilder: $1.PaginatedResponse.create)
+    ..aOM<$2.PaginatedResponse>(2, _omitFieldNames ? '' : 'pagination',
+        subBuilder: $2.PaginatedResponse.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -754,15 +754,15 @@ class ListAdminRequestsResponse extends $pb.GeneratedMessage {
   $pb.PbList<AdminAccessRequest> get requests => $_getList(0);
 
   @$pb.TagNumber(2)
-  $1.PaginatedResponse get pagination => $_getN(1);
+  $2.PaginatedResponse get pagination => $_getN(1);
   @$pb.TagNumber(2)
-  set pagination($1.PaginatedResponse value) => $_setField(2, value);
+  set pagination($2.PaginatedResponse value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasPagination() => $_has(1);
   @$pb.TagNumber(2)
   void clearPagination() => $_clearField(2);
   @$pb.TagNumber(2)
-  $1.PaginatedResponse ensurePagination() => $_ensure(1);
+  $2.PaginatedResponse ensurePagination() => $_ensure(1);
 }
 
 class ReviewAdminRequestRequest extends $pb.GeneratedMessage {
@@ -967,6 +967,239 @@ class AuthStatusResponse extends $pb.GeneratedMessage {
   $core.bool hasPendingRequestStatus() => $_has(1);
   @$pb.TagNumber(2)
   void clearPendingRequestStatus() => $_clearField(2);
+}
+
+class ListAdminsRequest extends $pb.GeneratedMessage {
+  factory ListAdminsRequest({
+    $2.PaginatedRequest? pagination,
+  }) {
+    final result = create();
+    if (pagination != null) result.pagination = pagination;
+    return result;
+  }
+
+  ListAdminsRequest._();
+
+  factory ListAdminsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ListAdminsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ListAdminsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'auth.v1'),
+      createEmptyInstance: create)
+    ..aOM<$2.PaginatedRequest>(1, _omitFieldNames ? '' : 'pagination',
+        subBuilder: $2.PaginatedRequest.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListAdminsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListAdminsRequest copyWith(void Function(ListAdminsRequest) updates) =>
+      super.copyWith((message) => updates(message as ListAdminsRequest))
+          as ListAdminsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListAdminsRequest create() => ListAdminsRequest._();
+  @$core.override
+  ListAdminsRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ListAdminsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListAdminsRequest>(create);
+  static ListAdminsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $2.PaginatedRequest get pagination => $_getN(0);
+  @$pb.TagNumber(1)
+  set pagination($2.PaginatedRequest value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPagination() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPagination() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $2.PaginatedRequest ensurePagination() => $_ensure(0);
+}
+
+class ListAdminsResponse extends $pb.GeneratedMessage {
+  factory ListAdminsResponse({
+    $core.Iterable<$2.UserProfile>? admins,
+    $2.PaginatedResponse? pagination,
+  }) {
+    final result = create();
+    if (admins != null) result.admins.addAll(admins);
+    if (pagination != null) result.pagination = pagination;
+    return result;
+  }
+
+  ListAdminsResponse._();
+
+  factory ListAdminsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ListAdminsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ListAdminsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'auth.v1'),
+      createEmptyInstance: create)
+    ..pPM<$2.UserProfile>(1, _omitFieldNames ? '' : 'admins',
+        subBuilder: $2.UserProfile.create)
+    ..aOM<$2.PaginatedResponse>(2, _omitFieldNames ? '' : 'pagination',
+        subBuilder: $2.PaginatedResponse.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListAdminsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListAdminsResponse copyWith(void Function(ListAdminsResponse) updates) =>
+      super.copyWith((message) => updates(message as ListAdminsResponse))
+          as ListAdminsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListAdminsResponse create() => ListAdminsResponse._();
+  @$core.override
+  ListAdminsResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ListAdminsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListAdminsResponse>(create);
+  static ListAdminsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$2.UserProfile> get admins => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $2.PaginatedResponse get pagination => $_getN(1);
+  @$pb.TagNumber(2)
+  set pagination($2.PaginatedResponse value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPagination() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPagination() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $2.PaginatedResponse ensurePagination() => $_ensure(1);
+}
+
+class RevokeAdminRoleRequest extends $pb.GeneratedMessage {
+  factory RevokeAdminRoleRequest({
+    $core.String? userId,
+  }) {
+    final result = create();
+    if (userId != null) result.userId = userId;
+    return result;
+  }
+
+  RevokeAdminRoleRequest._();
+
+  factory RevokeAdminRoleRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RevokeAdminRoleRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RevokeAdminRoleRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'auth.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RevokeAdminRoleRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RevokeAdminRoleRequest copyWith(
+          void Function(RevokeAdminRoleRequest) updates) =>
+      super.copyWith((message) => updates(message as RevokeAdminRoleRequest))
+          as RevokeAdminRoleRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RevokeAdminRoleRequest create() => RevokeAdminRoleRequest._();
+  @$core.override
+  RevokeAdminRoleRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static RevokeAdminRoleRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RevokeAdminRoleRequest>(create);
+  static RevokeAdminRoleRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+}
+
+class RequestAccountDeletionRequest extends $pb.GeneratedMessage {
+  factory RequestAccountDeletionRequest({
+    $core.String? password,
+  }) {
+    final result = create();
+    if (password != null) result.password = password;
+    return result;
+  }
+
+  RequestAccountDeletionRequest._();
+
+  factory RequestAccountDeletionRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RequestAccountDeletionRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RequestAccountDeletionRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'auth.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'password')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RequestAccountDeletionRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RequestAccountDeletionRequest copyWith(
+          void Function(RequestAccountDeletionRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as RequestAccountDeletionRequest))
+          as RequestAccountDeletionRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RequestAccountDeletionRequest create() =>
+      RequestAccountDeletionRequest._();
+  @$core.override
+  RequestAccountDeletionRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static RequestAccountDeletionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RequestAccountDeletionRequest>(create);
+  static RequestAccountDeletionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get password => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set password($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPassword() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPassword() => $_clearField(1);
 }
 
 const $core.bool _omitFieldNames =

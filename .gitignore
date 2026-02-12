@@ -35,3 +35,7 @@ lib/core/config/firebase_options*.dart
 build/
 build_old/
 *build*/
+
+# Qdrant MCP
+qdrant_mcp/
+qdrant_storage/

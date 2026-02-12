@@ -16,6 +16,9 @@
     },
     {
       "name": "SystemService"
+    },
+    {
+      "name": "SettingsService"
     }
   ],
   "consumes": [

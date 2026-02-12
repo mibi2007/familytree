@@ -18,13 +18,16 @@ class InviteController extends _$InviteController {
       final token = await client.generateInviteToken(
         auth_proto.GenerateInviteTokenRequest(
           purpose: purpose,
-          lifetimeSeconds: Int64(86400 * 7), // 7 days
+          lifetimeSeconds: Int64(3600), // 1 hour
         ),
       );
 
+      if (!ref.mounted) return;
+
       state = AsyncData(token);
-    } catch (e) {
-      state = AsyncError(e, StackTrace.current);
+    } catch (e, st) {
+      if (!ref.mounted) return;
+      state = AsyncError(e, st);
     }
   }
 }

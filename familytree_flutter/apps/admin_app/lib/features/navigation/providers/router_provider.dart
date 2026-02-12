@@ -7,24 +7,27 @@ import '../../admin_requests/view/admin_requests_view.dart';
 import '../../auth/view/admin_login_page.dart';
 import '../../auth/view/admin_onboarding_page.dart';
 import '../../dashboard/view/admin_dashboard_page.dart';
+import '../../settings/view/settings_page.dart';
 import '../view/main_layout.dart';
 
 part 'router_provider.g.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
-@riverpod
+@Riverpod(keepAlive: true)
 GoRouter appRouter(Ref ref) {
-  final authState = ref.watch(authStateProvider);
-  final adminStatus = ref.watch(adminStatusProvider);
+  // Use refreshListenable to trigger redirects without rebuilding the GoRouter object
+  final refreshListenable = _RouterRefreshStream(ref);
 
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/',
+    refreshListenable: refreshListenable,
     redirect: (context, state) {
-      final user = authState.value;
-      final status = adminStatus.value;
+      // Use ref.read to get current values without establishing a dependency
+      // that would recreate this GoRouter instance.
+      final user = ref.read(authStateProvider).value;
+      final status = ref.read(adminStatusProvider).value;
 
       final isLoggingIn = state.matchedLocation == '/login';
 
@@ -33,7 +36,6 @@ GoRouter appRouter(Ref ref) {
       }
 
       if (status == null) {
-        // Still loading admin status, or error
         return null;
       }
 
@@ -44,7 +46,6 @@ GoRouter appRouter(Ref ref) {
         return null;
       }
 
-      // If user is logged in and is admin, redirect from login to home
       if (isLoggingIn || state.matchedLocation == '/onboarding') {
         return '/';
       }
@@ -56,24 +57,45 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: '/onboarding',
         builder: (context, state) {
-          final status = adminStatus.value;
-          if (status == null) {
-            return const Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-          return AdminOnboardingPage(status: status);
+          return Consumer(
+            builder: (context, ref, _) {
+              final status = ref.watch(adminStatusProvider).value;
+              if (status == null) {
+                return const Scaffold(body: Center(child: CircularProgressIndicator()));
+              }
+              return AdminOnboardingPage(status: status);
+            },
+          );
         },
       ),
       ShellRoute(
-        navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
           return MainLayout(child: child);
         },
         routes: [
           GoRoute(path: '/', builder: (context, state) => const AdminDashboardPage()),
           GoRoute(path: '/requests', builder: (context, state) => const AdminRequestsView()),
-          // Add more admin routes here (Users, Logs, etc.)
+          GoRoute(path: '/settings', builder: (context, state) => const SettingsPage()),
         ],
       ),
     ],
   );
+}
+
+/// Simple class to bridge Riverpod and GoRouter's refresh protocol
+class _RouterRefreshStream extends ChangeNotifier {
+  _RouterRefreshStream(Ref ref) {
+    _subscription = ref.listen(authStateProvider, (_, __) => notifyListeners());
+    _statusSubscription = ref.listen(adminStatusProvider, (_, __) => notifyListeners());
+  }
+
+  late final ProviderSubscription<AsyncValue<dynamic>> _subscription;
+  late final ProviderSubscription<AsyncValue<dynamic>> _statusSubscription;
+
+  @override
+  void dispose() {
+    _subscription.close();
+    _statusSubscription.close();
+    super.dispose();
+  }
 }

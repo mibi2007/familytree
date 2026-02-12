@@ -29,6 +29,7 @@ const (
 	FamilyService_UpdateMember_FullMethodName      = "/family.v1.FamilyService/UpdateMember"
 	FamilyService_DeleteMember_FullMethodName      = "/family.v1.FamilyService/DeleteMember"
 	FamilyService_GetFamilyTree_FullMethodName     = "/family.v1.FamilyService/GetFamilyTree"
+	FamilyService_CreateInviteToken_FullMethodName = "/family.v1.FamilyService/CreateInviteToken"
 	FamilyService_JoinFamily_FullMethodName        = "/family.v1.FamilyService/JoinFamily"
 )
 
@@ -48,6 +49,7 @@ type FamilyServiceClient interface {
 	DeleteMember(ctx context.Context, in *DeleteMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Tree Sync
 	GetFamilyTree(ctx context.Context, in *GetFamilyTreeRequest, opts ...grpc.CallOption) (*FamilyTree, error)
+	CreateInviteToken(ctx context.Context, in *CreateInviteTokenRequest, opts ...grpc.CallOption) (*CreateInviteTokenResponse, error)
 	JoinFamily(ctx context.Context, in *JoinFamilyRequest, opts ...grpc.CallOption) (*Family, error)
 }
 
@@ -149,6 +151,16 @@ func (c *familyServiceClient) GetFamilyTree(ctx context.Context, in *GetFamilyTr
 	return out, nil
 }
 
+func (c *familyServiceClient) CreateInviteToken(ctx context.Context, in *CreateInviteTokenRequest, opts ...grpc.CallOption) (*CreateInviteTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateInviteTokenResponse)
+	err := c.cc.Invoke(ctx, FamilyService_CreateInviteToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *familyServiceClient) JoinFamily(ctx context.Context, in *JoinFamilyRequest, opts ...grpc.CallOption) (*Family, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Family)
@@ -175,6 +187,7 @@ type FamilyServiceServer interface {
 	DeleteMember(context.Context, *DeleteMemberRequest) (*emptypb.Empty, error)
 	// Tree Sync
 	GetFamilyTree(context.Context, *GetFamilyTreeRequest) (*FamilyTree, error)
+	CreateInviteToken(context.Context, *CreateInviteTokenRequest) (*CreateInviteTokenResponse, error)
 	JoinFamily(context.Context, *JoinFamilyRequest) (*Family, error)
 	mustEmbedUnimplementedFamilyServiceServer()
 }
@@ -212,6 +225,9 @@ func (UnimplementedFamilyServiceServer) DeleteMember(context.Context, *DeleteMem
 }
 func (UnimplementedFamilyServiceServer) GetFamilyTree(context.Context, *GetFamilyTreeRequest) (*FamilyTree, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetFamilyTree not implemented")
+}
+func (UnimplementedFamilyServiceServer) CreateInviteToken(context.Context, *CreateInviteTokenRequest) (*CreateInviteTokenResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateInviteToken not implemented")
 }
 func (UnimplementedFamilyServiceServer) JoinFamily(context.Context, *JoinFamilyRequest) (*Family, error) {
 	return nil, status.Error(codes.Unimplemented, "method JoinFamily not implemented")
@@ -399,6 +415,24 @@ func _FamilyService_GetFamilyTree_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FamilyService_CreateInviteToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateInviteTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FamilyServiceServer).CreateInviteToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FamilyService_CreateInviteToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FamilyServiceServer).CreateInviteToken(ctx, req.(*CreateInviteTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FamilyService_JoinFamily_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(JoinFamilyRequest)
 	if err := dec(in); err != nil {
@@ -459,6 +493,10 @@ var FamilyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFamilyTree",
 			Handler:    _FamilyService_GetFamilyTree_Handler,
+		},
+		{
+			MethodName: "CreateInviteToken",
+			Handler:    _FamilyService_CreateInviteToken_Handler,
 		},
 		{
 			MethodName: "JoinFamily",

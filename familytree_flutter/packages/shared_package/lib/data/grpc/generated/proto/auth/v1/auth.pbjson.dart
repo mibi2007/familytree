@@ -332,3 +332,79 @@ final $typed_data.Uint8List authStatusResponseDescriptor = $convert.base64Decode
     'ChJBdXRoU3RhdHVzUmVzcG9uc2USJAoOaXNfc3VwZXJfYWRtaW4YASABKAhSDGlzU3VwZXJBZG'
     '1pbhJMChZwZW5kaW5nX3JlcXVlc3Rfc3RhdHVzGAIgASgOMhYuYXV0aC52MS5SZXF1ZXN0U3Rh'
     'dHVzUhRwZW5kaW5nUmVxdWVzdFN0YXR1cw==');
+
+@$core.Deprecated('Use listAdminsRequestDescriptor instead')
+const ListAdminsRequest$json = {
+  '1': 'ListAdminsRequest',
+  '2': [
+    {
+      '1': 'pagination',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.common.v1.PaginatedRequest',
+      '10': 'pagination'
+    },
+  ],
+};
+
+/// Descriptor for `ListAdminsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listAdminsRequestDescriptor = $convert.base64Decode(
+    'ChFMaXN0QWRtaW5zUmVxdWVzdBI7CgpwYWdpbmF0aW9uGAEgASgLMhsuY29tbW9uLnYxLlBhZ2'
+    'luYXRlZFJlcXVlc3RSCnBhZ2luYXRpb24=');
+
+@$core.Deprecated('Use listAdminsResponseDescriptor instead')
+const ListAdminsResponse$json = {
+  '1': 'ListAdminsResponse',
+  '2': [
+    {
+      '1': 'admins',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.common.v1.UserProfile',
+      '10': 'admins'
+    },
+    {
+      '1': 'pagination',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.common.v1.PaginatedResponse',
+      '10': 'pagination'
+    },
+  ],
+};
+
+/// Descriptor for `ListAdminsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listAdminsResponseDescriptor = $convert.base64Decode(
+    'ChJMaXN0QWRtaW5zUmVzcG9uc2USLgoGYWRtaW5zGAEgAygLMhYuY29tbW9uLnYxLlVzZXJQcm'
+    '9maWxlUgZhZG1pbnMSPAoKcGFnaW5hdGlvbhgCIAEoCzIcLmNvbW1vbi52MS5QYWdpbmF0ZWRS'
+    'ZXNwb25zZVIKcGFnaW5hdGlvbg==');
+
+@$core.Deprecated('Use revokeAdminRoleRequestDescriptor instead')
+const RevokeAdminRoleRequest$json = {
+  '1': 'RevokeAdminRoleRequest',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+  ],
+};
+
+/// Descriptor for `RevokeAdminRoleRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List revokeAdminRoleRequestDescriptor =
+    $convert.base64Decode(
+        'ChZSZXZva2VBZG1pblJvbGVSZXF1ZXN0EhcKB3VzZXJfaWQYASABKAlSBnVzZXJJZA==');
+
+@$core.Deprecated('Use requestAccountDeletionRequestDescriptor instead')
+const RequestAccountDeletionRequest$json = {
+  '1': 'RequestAccountDeletionRequest',
+  '2': [
+    {'1': 'password', '3': 1, '4': 1, '5': 9, '10': 'password'},
+  ],
+};
+
+/// Descriptor for `RequestAccountDeletionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List requestAccountDeletionRequestDescriptor =
+    $convert.base64Decode(
+        'Ch1SZXF1ZXN0QWNjb3VudERlbGV0aW9uUmVxdWVzdBIaCghwYXNzd29yZBgBIAEoCVIIcGFzc3'
+        'dvcmQ=');

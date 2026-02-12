@@ -1,0 +1,169 @@
+00:00 +0: loading D:/Code/FamilyTree/source/familytree_flutter/packages/shared_package/test/app/providers/chat_provider_test.dart
+test/app/providers/chat_provider_test.dart:9:8: Error: Error when reading 'lib/data/grpc/clients/chat_client_provider.dart': The system cannot find the path specified
+import 'package:shared_package/data/grpc/clients/chat_client_provider.dart';
+       ^
+test/app/providers/chat_provider_test.dart:22:49: Error: Undefined name 'chatClientProvider'.
+      container = ProviderContainer(overrides: [chatClientProvider.overrideWithValue(mockChatClient)]);
+                                                ^^^^^^^^^^^^^^^^^^
+test/app/providers/chat_provider_test.dart:52:75: Error: A value of type 'Stream<Message>' can't be returned from a function with return type 'ResponseStream<Message>'.
+ - 'Stream' is from 'dart:async'.
+ - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'ResponseStream' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+        when(mockChatClient.streamMessages(any)).thenAnswer((_) => Stream.fromIterable(messages));
+                                                                          ^
+test/app/providers/chat_provider_test.dart:55:74: Error: The getter 'stream' isn't defined for the type 'FamilyChatStreamProvider'.
+ - 'FamilyChatStreamProvider' is from 'package:shared_package/app/providers/chat_provider.dart' ('lib/app/providers/chat_provider.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'stream'.
+        final stream = container.read(familyChatStreamProvider(familyId).stream);
+                                                                         ^^^^^^
+test/app/providers/chat_provider_test.dart:72:75: Error: A value of type 'Stream<dynamic>' can't be returned from a function with return type 'ResponseStream<Message>'.
+ - 'Stream' is from 'dart:async'.
+ - 'ResponseStream' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+ - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+        when(mockChatClient.streamMessages(any)).thenAnswer((_) => Stream.error(error));
+                                                                          ^
+test/app/providers/chat_provider_test.dart:75:74: Error: The getter 'stream' isn't defined for the type 'FamilyChatStreamProvider'.
+ - 'FamilyChatStreamProvider' is from 'package:shared_package/app/providers/chat_provider.dart' ('lib/app/providers/chat_provider.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'stream'.
+        final stream = container.read(familyChatStreamProvider(familyId).stream);
+                                                                         ^^^^^^
+test/app/providers/chat_provider_test.dart:97:59: Error: The argument type 'Future<ListMessagesResponse> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<ListMessagesResponse> Function(Invocation)'.
+ - 'Future' is from 'dart:async'.
+ - 'ListMessagesResponse' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'Invocation' is from 'dart:core'.
+ - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+        when(mockChatClient.listMessages(any)).thenAnswer((_) async => ListMessagesResponse(messages: messages));
+                                                          ^
+test/app/providers/chat_provider_test.dart:113:59: Error: The argument type 'Future<ListMessagesResponse> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<ListMessagesResponse> Function(Invocation)'.
+ - 'Future' is from 'dart:async'.
+ - 'ListMessagesResponse' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'Invocation' is from 'dart:core'.
+ - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+        when(mockChatClient.listMessages(any)).thenAnswer((_) async => ListMessagesResponse(messages: []));
+                                                          ^
+test/app/providers/chat_provider_test.dart:160:59: Error: The argument type 'Future<ListMessagesResponse> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<ListMessagesResponse> Function(Invocation)'.
+ - 'Future' is from 'dart:async'.
+ - 'ListMessagesResponse' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'Invocation' is from 'dart:core'.
+ - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+        when(mockChatClient.listMessages(any)).thenAnswer((_) async => ListMessagesResponse(messages: historyMessages));
+                                                          ^
+test/app/providers/chat_provider_test.dart:162:75: Error: A value of type 'Stream<Message>' can't be returned from a function with return type 'ResponseStream<Message>'.
+ - 'Stream' is from 'dart:async'.
+ - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'ResponseStream' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+        when(mockChatClient.streamMessages(any)).thenAnswer((_) => Stream.fromIterable(streamMessages));
+                                                                          ^
+test/app/providers/chat_provider_test.dart:184:59: Error: The argument type 'Future<ListMessagesResponse> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<ListMessagesResponse> Function(Invocation)'.
+ - 'Future' is from 'dart:async'.
+ - 'ListMessagesResponse' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'Invocation' is from 'dart:core'.
+ - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+        when(mockChatClient.listMessages(any)).thenAnswer((_) async => ListMessagesResponse(messages: [duplicateMsg]));
+                                                          ^
+test/app/providers/chat_provider_test.dart:187:25: Error: A value of type 'Stream<Message>' can't be returned from a function with return type 'ResponseStream<Message>'.
+ - 'Stream' is from 'dart:async'.
+ - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'ResponseStream' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          (_) => Stream.fromIterable([duplicateMsg]), // Same message in stream
+                        ^
+test/app/providers/chat_provider_test.dart:205:11: Error: The argument type 'Future<Message> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<Message> Function(Invocation)'.
+ - 'Future' is from 'dart:async'.
+ - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'Invocation' is from 'dart:core'.
+ - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          (_) async => Message(
+          ^
+test/app/providers/chat_provider_test.dart:252:11: Error: The argument type 'Future<Message> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<Message> Function(Invocation)'.
+ - 'Future' is from 'dart:async'.
+ - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+ - 'Invocation' is from 'dart:core'.
+ - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          (_) async => Message(
+          ^
+00:00 +0 -1: loading D:/Code/FamilyTree/source/familytree_flutter/packages/shared_package/test/app/providers/chat_provider_test.dart [E]
+  Failed to load "D:/Code/FamilyTree/source/familytree_flutter/packages/shared_package/test/app/providers/chat_provider_test.dart":
+  Compilation failed for testPath=D:/Code/FamilyTree/source/familytree_flutter/packages/shared_package/test/app/providers/chat_provider_test.dart: test/app/providers/chat_provider_test.dart:9:8: Error: Error when reading 'lib/data/grpc/clients/chat_client_provider.dart': The system cannot find the path specified
+  import 'package:shared_package/data/grpc/clients/chat_client_provider.dart';
+         ^
+  test/app/providers/chat_provider_test.dart:22:49: Error: Undefined name 'chatClientProvider'.
+        container = ProviderContainer(overrides: [chatClientProvider.overrideWithValue(mockChatClient)]);
+                                                  ^^^^^^^^^^^^^^^^^^
+  test/app/providers/chat_provider_test.dart:52:75: Error: A value of type 'Stream<Message>' can't be returned from a function with return type 'ResponseStream<Message>'.
+   - 'Stream' is from 'dart:async'.
+   - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'ResponseStream' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          when(mockChatClient.streamMessages(any)).thenAnswer((_) => Stream.fromIterable(messages));
+                                                                            ^
+  test/app/providers/chat_provider_test.dart:55:74: Error: The getter 'stream' isn't defined for the type 'FamilyChatStreamProvider'.
+   - 'FamilyChatStreamProvider' is from 'package:shared_package/app/providers/chat_provider.dart' ('lib/app/providers/chat_provider.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'stream'.
+          final stream = container.read(familyChatStreamProvider(familyId).stream);
+                                                                           ^^^^^^
+  test/app/providers/chat_provider_test.dart:72:75: Error: A value of type 'Stream<dynamic>' can't be returned from a function with return type 'ResponseStream<Message>'.
+   - 'Stream' is from 'dart:async'.
+   - 'ResponseStream' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+   - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+          when(mockChatClient.streamMessages(any)).thenAnswer((_) => Stream.error(error));
+                                                                            ^
+  test/app/providers/chat_provider_test.dart:75:74: Error: The getter 'stream' isn't defined for the type 'FamilyChatStreamProvider'.
+   - 'FamilyChatStreamProvider' is from 'package:shared_package/app/providers/chat_provider.dart' ('lib/app/providers/chat_provider.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'stream'.
+          final stream = container.read(familyChatStreamProvider(familyId).stream);
+                                                                           ^^^^^^
+  test/app/providers/chat_provider_test.dart:97:59: Error: The argument type 'Future<ListMessagesResponse> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<ListMessagesResponse> Function(Invocation)'.
+   - 'Future' is from 'dart:async'.
+   - 'ListMessagesResponse' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'Invocation' is from 'dart:core'.
+   - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          when(mockChatClient.listMessages(any)).thenAnswer((_) async => ListMessagesResponse(messages: messages));
+                                                            ^
+  test/app/providers/chat_provider_test.dart:113:59: Error: The argument type 'Future<ListMessagesResponse> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<ListMessagesResponse> Function(Invocation)'.
+   - 'Future' is from 'dart:async'.
+   - 'ListMessagesResponse' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'Invocation' is from 'dart:core'.
+   - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          when(mockChatClient.listMessages(any)).thenAnswer((_) async => ListMessagesResponse(messages: []));
+                                                            ^
+  test/app/providers/chat_provider_test.dart:160:59: Error: The argument type 'Future<ListMessagesResponse> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<ListMessagesResponse> Function(Invocation)'.
+   - 'Future' is from 'dart:async'.
+   - 'ListMessagesResponse' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'Invocation' is from 'dart:core'.
+   - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          when(mockChatClient.listMessages(any)).thenAnswer((_) async => ListMessagesResponse(messages: historyMessages));
+                                                            ^
+  test/app/providers/chat_provider_test.dart:162:75: Error: A value of type 'Stream<Message>' can't be returned from a function with return type 'ResponseStream<Message>'.
+   - 'Stream' is from 'dart:async'.
+   - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'ResponseStream' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          when(mockChatClient.streamMessages(any)).thenAnswer((_) => Stream.fromIterable(streamMessages));
+                                                                            ^
+  test/app/providers/chat_provider_test.dart:184:59: Error: The argument type 'Future<ListMessagesResponse> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<ListMessagesResponse> Function(Invocation)'.
+   - 'Future' is from 'dart:async'.
+   - 'ListMessagesResponse' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'Invocation' is from 'dart:core'.
+   - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+          when(mockChatClient.listMessages(any)).thenAnswer((_) async => ListMessagesResponse(messages: [duplicateMsg]));
+                                                            ^
+  test/app/providers/chat_provider_test.dart:187:25: Error: A value of type 'Stream<Message>' can't be returned from a function with return type 'ResponseStream<Message>'.
+   - 'Stream' is from 'dart:async'.
+   - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'ResponseStream' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+            (_) => Stream.fromIterable([duplicateMsg]), // Same message in stream
+                          ^
+  test/app/providers/chat_provider_test.dart:205:11: Error: The argument type 'Future<Message> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<Message> Function(Invocation)'.
+   - 'Future' is from 'dart:async'.
+   - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'Invocation' is from 'dart:core'.
+   - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+            (_) async => Message(
+            ^
+  test/app/providers/chat_provider_test.dart:252:11: Error: The argument type 'Future<Message> Function(Invocation)' can't be assigned to the parameter type 'ResponseFuture<Message> Function(Invocation)'.
+   - 'Future' is from 'dart:async'.
+   - 'Message' is from 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pb.dart' ('lib/data/grpc/generated/proto/chat/v1/chat.pb.dart').
+   - 'Invocation' is from 'dart:core'.
+   - 'ResponseFuture' is from 'package:grpc/src/client/common.dart' ('/C:/Users/ADMIN/AppData/Local/Pub/Cache/hosted/pub.dev/grpc-5.1.0/lib/src/client/common.dart').
+            (_) async => Message(
+            ^
+  .
+00:00 +0 -1: Some tests failed.

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_package/shared_package.dart';
 
-class CreateFamilyDialog extends ConsumerStatefulWidget {
+class CreateFamilyDialog extends StatefulWidget {
   const CreateFamilyDialog({super.key});
 
   @override
-  ConsumerState<CreateFamilyDialog> createState() => _CreateFamilyDialogState();
+  State<CreateFamilyDialog> createState() => _CreateFamilyDialogState();
 }
 
-class _CreateFamilyDialogState extends ConsumerState<CreateFamilyDialog> {
+class _CreateFamilyDialogState extends State<CreateFamilyDialog> {
   final _nameController = TextEditingController();
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -21,13 +20,31 @@ class _CreateFamilyDialogState extends ConsumerState<CreateFamilyDialog> {
   Future<void> _submit() async {
     if (_nameController.text.trim().isEmpty) return;
 
+    // familySignalsController handles loading state internally if we wanted to watch it,
+    // but here we are using local state for simplicity or we can watch the global signal.
+    // However, the controller methods return Future, so we can await them.
+
+    // We can use the controller's loading signal if we want, or keep local state.
+    // Keeping local state to match existing behavior cleanly, but using signals for action.
+
     setState(() => _isLoading = true);
     try {
-      await ref.read(familyControllerProvider.notifier).createFamily(_nameController.text.trim());
-      // Refresh the families list
-      ref.invalidate(myFamiliesProvider);
-      if (mounted) Navigator.of(context).pop();
+      await familySignalsController.createFamily(_nameController.text.trim());
+
+      // Error handling via signal or return value?
+      // createFamily in signals returns the Family object or null on error, and sets errorSignal.
+
+      if (familySignalsController.error != null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${familySignalsController.error}'), backgroundColor: Colors.red),
+          );
+        }
+      } else {
+        if (mounted) Navigator.of(context).pop();
+      }
     } catch (e) {
+      // Should be caught by controller, but just in case
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
       }
@@ -35,6 +52,10 @@ class _CreateFamilyDialogState extends ConsumerState<CreateFamilyDialog> {
       if (mounted) setState(() => _isLoading = false);
     }
   }
+
+  // Local loading state because we might be in a dialog where we don't want to conflict
+  // with other global loaders if any.
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {

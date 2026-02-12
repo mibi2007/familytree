@@ -11,43 +11,15 @@ Future<void> bootstrap({
   bool useSecureGrpc = true,
   String appTitle = 'Family Chat Admin',
   Color seedColor = Colors.blueGrey,
+  bool initFirebase = true,
 }) async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  if (environment == AppEnvironment.local) {
-    // When running locally, we need to override the databaseURL to point to the emulator
-    // so that Firebase.initializeApp doesn't fail or complain about missing URL.
-    // We create a new FirebaseOptions instance with the emulator URL.
-    final localOptions = FirebaseOptions(
-      apiKey: firebaseOptions.apiKey,
-      appId: firebaseOptions.appId,
-      messagingSenderId: firebaseOptions.messagingSenderId,
-      projectId: firebaseOptions.projectId,
-      authDomain: firebaseOptions.authDomain,
-      storageBucket: firebaseOptions.storageBucket,
-      measurementId: firebaseOptions.measurementId,
-      databaseURL: 'http://127.0.0.1:9000/?ns=${firebaseOptions.projectId}',
-    );
-
-    await Firebase.initializeApp(options: localOptions);
-
-    // Connect to Firebase Emulators
-    const host = '127.0.0.1';
-    await FirebaseAuth.instance.useAuthEmulator(host, 9099);
-    FirebaseDatabase.instance.useDatabaseEmulator(host, 9000);
-    await FirebaseStorage.instance.useStorageEmulator(host, 9199);
-  } else {
-    await Firebase.initializeApp(options: firebaseOptions);
-  }
-
-  runApp(
-    ProviderScope(
-      overrides: [
-        appConfigProvider.overrideWithValue(
-          AppConfig(environment: environment, grpcHost: grpcHost, grpcPort: grpcPort, useSecureGrpc: useSecureGrpc),
-        ),
-      ],
-      child: AdminApp(title: appTitle, seedColor: seedColor),
-    ),
+  await sharedBootstrap(
+    firebaseOptions: firebaseOptions,
+    environment: environment,
+    grpcHost: grpcHost,
+    grpcPort: grpcPort,
+    useSecureGrpc: useSecureGrpc,
+    initFirebase: initFirebase,
+    builder: (config) => AdminApp(title: appTitle, seedColor: seedColor),
   );
 }

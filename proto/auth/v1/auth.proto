@@ -18,10 +18,15 @@ service AuthService {
   rpc ListAdminRequests(ListAdminRequestsRequest) returns (ListAdminRequestsResponse);
   rpc ReviewAdminRequest(ReviewAdminRequestRequest) returns (AdminAccessRequest);
 
+  // Admin Management
+  rpc ListAdmins(ListAdminsRequest) returns (ListAdminsResponse);
+  rpc RevokeAdminRole(RevokeAdminRoleRequest) returns (google.protobuf.Empty);
+
   // Profile Management
   rpc SyncUserProfile(SyncUserProfileRequest) returns (common.v1.UserProfile);
   rpc GetUserProfile(GetUserProfileRequest) returns (common.v1.UserProfile);
   rpc GetAuthStatus(google.protobuf.Empty) returns (AuthStatusResponse);
+  rpc RequestAccountDeletion(RequestAccountDeletionRequest) returns (google.protobuf.Empty);
 }
 
 message GetUserProfileRequest {
@@ -108,4 +113,21 @@ message SyncUserProfileRequest {
 message AuthStatusResponse {
   bool is_super_admin = 1;
   RequestStatus pending_request_status = 2; // UNSPECIFIED if none
+}
+
+message ListAdminsRequest {
+  common.v1.PaginatedRequest pagination = 1;
+}
+
+message ListAdminsResponse {
+  repeated common.v1.UserProfile admins = 1;
+  common.v1.PaginatedResponse pagination = 2;
+}
+
+message RevokeAdminRoleRequest {
+  string user_id = 1;
+}
+
+message RequestAccountDeletionRequest {
+  string password = 1; // Optional: Require password check if needed
 }

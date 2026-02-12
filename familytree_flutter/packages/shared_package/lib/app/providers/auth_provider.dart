@@ -31,7 +31,7 @@ Future<common_proto.UserProfile> userProfile(Ref ref, String userId) async {
   return client.getUserProfile(auth_proto.GetUserProfileRequest(userId: userId));
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AuthController extends _$AuthController {
   @override
   FutureOr<void> build() {}
@@ -41,6 +41,7 @@ class AuthController extends _$AuthController {
     final repo = ref.read(authRepositoryProvider);
     final result = await repo.signInWithEmail(email, password);
 
+    if (!ref.mounted) return;
     await result.fold(
       (error) async => state = AsyncError(error, StackTrace.current),
       (user) async => await _syncProfile(user),
@@ -51,6 +52,8 @@ class AuthController extends _$AuthController {
     state = const AsyncLoading();
     final repo = ref.read(authRepositoryProvider);
     final result = await repo.signUpWithEmail(email, password);
+
+    if (!ref.mounted) return;
     await result.fold(
       (error) async => state = AsyncError(error, StackTrace.current),
       (user) async => await _syncProfile(user),
@@ -61,6 +64,8 @@ class AuthController extends _$AuthController {
     state = const AsyncLoading();
     final repo = ref.read(authRepositoryProvider);
     final result = await repo.signInWithGoogle();
+
+    if (!ref.mounted) return;
     await result.fold(
       (error) async => state = AsyncError(error, StackTrace.current),
       (user) async => await _syncProfile(user),
@@ -81,6 +86,7 @@ class AuthController extends _$AuthController {
       onVerificationFailed: onVerificationFailed,
       webRecaptchaVerifier: webRecaptchaVerifier,
     );
+    if (!ref.mounted) return;
     state = result.fold((error) => AsyncError(error, StackTrace.current), (_) => const AsyncData(null));
   }
 
@@ -88,6 +94,8 @@ class AuthController extends _$AuthController {
     state = const AsyncLoading();
     final repo = ref.read(authRepositoryProvider);
     final result = await repo.verifyPhoneCode(verificationId, smsCode);
+
+    if (!ref.mounted) return;
     await result.fold(
       (error) async => state = AsyncError(error, StackTrace.current),
       (user) async => await _syncProfile(user),
@@ -97,6 +105,7 @@ class AuthController extends _$AuthController {
   Future<void> signOut() async {
     state = const AsyncLoading();
     await ref.read(authRepositoryProvider).signOut();
+    if (!ref.mounted) return;
     state = const AsyncData(null);
   }
 
@@ -106,9 +115,58 @@ class AuthController extends _$AuthController {
       await client.syncUserProfile(
         auth_proto.SyncUserProfileRequest(displayName: user.displayName ?? '', photoUrl: user.photoURL ?? ''),
       );
+      if (!ref.mounted) return;
       state = const AsyncData(null);
-    } catch (e) {
-      state = AsyncError('Profile sync failed: $e', StackTrace.current);
+    } catch (e, st) {
+      if (!ref.mounted) return;
+      state = AsyncError('Profile sync failed: $e', st);
     }
+  }
+
+  Future<void> deleteAccount() async {
+    state = const AsyncLoading();
+    try {
+      final client = ref.read(authClientProvider);
+      await client.requestAccountDeletion(auth_proto.RequestAccountDeletionRequest());
+      if (!ref.mounted) return;
+      // After requesting deletion, sign out the user
+      await signOut();
+    } catch (e, st) {
+      if (!ref.mounted) return;
+      state = AsyncError(e, st);
+    }
+  }
+
+  Future<void> revokeSelf() async {
+    state = const AsyncLoading();
+    try {
+      final user = await ref.read(authStateProvider.future);
+      if (user == null) throw Exception('Not authenticated');
+
+      final client = ref.read(authClientProvider);
+      // Revoke our own role
+      await client.revokeAdminRole(auth_proto.RevokeAdminRoleRequest(userId: user.uid));
+
+      if (!ref.mounted) return;
+
+      // Force sign out immediately
+      await signOut();
+    } catch (e, st) {
+      if (!ref.mounted) return;
+      state = AsyncError(e, st);
+    }
+  }
+}
+
+@riverpod
+Future<common_proto.UserProfile?> currentUser(Ref ref) async {
+  final authUser = await ref.watch(authStateProvider.future);
+  if (authUser == null) return null;
+
+  try {
+    final client = ref.read(authClientProvider);
+    return await client.getUserProfile(auth_proto.GetUserProfileRequest(userId: authUser.uid));
+  } catch (e) {
+    return null;
   }
 }

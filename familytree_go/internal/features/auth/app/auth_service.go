@@ -17,6 +17,45 @@ type AuthService struct {
 	adminRepo domain.SuperAdminRequestRepository
 }
 
+func (s *AuthService) EnsureUserExists(ctx context.Context, uid string, email string, emailVerified bool) (*domain.User, error) {
+	// 1. Check by ID
+	existing, err := s.userRepo.GetUserByID(ctx, uid)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to check user by ID: %v", err)
+	}
+	if existing != nil {
+		return existing, nil
+	}
+
+	// 2. Check by Email (to handle UID changes for same email, e.g. in dev)
+	if email != "" {
+		byEmail, err := s.userRepo.GetUserByEmail(ctx, email)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to check user by email: %v", err)
+		}
+		if byEmail != nil {
+			// UID changed, update old record with new UID
+			if err := s.userRepo.UpdateUserID(ctx, byEmail.ID, uid); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update user UID: %v", err)
+			}
+			byEmail.ID = uid
+			return byEmail, nil
+		}
+	}
+
+	// 3. Register brand new user
+	user := &domain.User{
+		ID:            uid,
+		Email:         email,
+		EmailVerified: emailVerified,
+		Role:          domain.SystemRoleUser,
+	}
+	if err := s.userRepo.UpsertUser(ctx, user); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to auto-register user: %v", err)
+	}
+	return user, nil
+}
+
 // NewAuthService creates an application service that orchestrates auth operations
 func NewAuthService(tokenRepo domain.TokenRepository, userRepo domain.UserRepository, adminRepo domain.SuperAdminRequestRepository) *AuthService {
 	return &AuthService{
@@ -213,6 +252,17 @@ func (s *AuthService) GetLatestAdminRequest(ctx context.Context, userID string) 
 	return s.adminRepo.GetLatestByUserID(ctx, userID)
 }
 
+func (s *AuthService) GetRole(ctx context.Context, userID string) (domain.SystemRole, error) {
+	user, err := s.userRepo.GetUserByID(ctx, userID)
+	if err != nil {
+		return "", err
+	}
+	if user == nil {
+		return "", status.Error(codes.NotFound, "user not found")
+	}
+	return user.Role, nil
+}
+
 func (s *AuthService) GetAuthStatus(ctx context.Context, userID string) (isSuperAdmin bool, latestRequest *domain.SuperAdminRequest, err error) {
 	user, err := s.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
@@ -246,6 +296,40 @@ func (s *AuthService) ReviewAdminRequest(ctx context.Context, requestID string, 
 		if err := s.userRepo.SetUserRole(ctx, req.UserID, req.RequestedRole); err != nil {
 			return status.Errorf(codes.Internal, "failed to promote user: %v", err)
 		}
+	}
+
+	return nil
+}
+
+func (s *AuthService) ListAdmins(ctx context.Context, limit, offset int) ([]*domain.User, error) {
+	// We need a method in repo to list users by role
+	// For now adding it to userRepo interface in next step
+	return s.userRepo.ListUsersByRole(ctx, domain.SystemRoleSuperAdmin, limit, offset)
+}
+
+func (s *AuthService) RevokeAdminRole(ctx context.Context, executorID string, targetUserID string) error {
+	// 1. Check if executor is authorized
+	// For now assuming handler checked if executor is super admin.
+	// We ALLOW revoking self as per new requirements.
+
+	// 2. Fetch target
+	target, err := s.userRepo.GetUserByID(ctx, targetUserID)
+	if err != nil {
+		return err
+	}
+	if target == nil {
+		return status.Error(codes.NotFound, "user not found")
+	}
+
+	// 3. Prevent removing the hardcoded root admin if necessary
+	// Using the email provided by user request
+	if target.Email == "binhhm2009@gmail.com" {
+		return status.Error(codes.PermissionDenied, "cannot remove root admin")
+	}
+
+	// 4. Revoke
+	if err := s.userRepo.SetUserRole(ctx, targetUserID, domain.SystemRoleUser); err != nil {
+		return status.Errorf(codes.Internal, "failed to revoke admin role: %v", err)
 	}
 
 	return nil

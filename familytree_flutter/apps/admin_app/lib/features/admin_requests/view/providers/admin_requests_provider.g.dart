@@ -75,7 +75,7 @@ final class AdminRequestsControllerProvider
 }
 
 String _$adminRequestsControllerHash() =>
-    r'891b3d9e9c5752e577d45d1f7c3fc1b0f5608077';
+    r'16fc23f120735c90b15905ac8a35258c8f4afcd4';
 
 abstract class _$AdminRequestsController extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -94,3 +94,44 @@ abstract class _$AdminRequestsController extends $AsyncNotifier<void> {
     element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(superAdmins)
+final superAdminsProvider = SuperAdminsProvider._();
+
+final class SuperAdminsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<common_proto.UserProfile>>,
+          List<common_proto.UserProfile>,
+          FutureOr<List<common_proto.UserProfile>>
+        >
+    with
+        $FutureModifier<List<common_proto.UserProfile>>,
+        $FutureProvider<List<common_proto.UserProfile>> {
+  SuperAdminsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'superAdminsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$superAdminsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<common_proto.UserProfile>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<common_proto.UserProfile>> create(Ref ref) {
+    return superAdmins(ref);
+  }
+}
+
+String _$superAdminsHash() => r'e7c1ef2a7d996718223c6beaf78476d5cbe5d35d';
