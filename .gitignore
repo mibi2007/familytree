@@ -44,3 +44,10 @@ qdrant_storage/
 backend-deploy.zip
 *.zip
 *.tar.gz
+
+# Playwright E2E artifacts
+e2e/node_modules/
+e2e/.auth/
+e2e/logs/
+e2e/playwright-report/
+e2e/test-results/

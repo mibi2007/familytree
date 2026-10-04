@@ -37,6 +37,36 @@
       ]
     },
     {
+      "target": "user_stg",
+      "public": "hosting/stg/user",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "admin_stg",
+      "public": "hosting/stg/admin",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
       "target": "user_dev",
       "public": "hosting/dev/user",
       "ignore": [

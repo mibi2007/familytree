@@ -99,6 +99,13 @@ class FamilyServiceClient extends $grpc.Client {
     return $createUnaryCall(_$getFamilyTree, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.KinshipRelationship> getKinship(
+    $0.GetKinshipRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getKinship, request, options: options);
+  }
+
   $grpc.ResponseFuture<$0.CreateInviteTokenResponse> createInviteToken(
     $0.CreateInviteTokenRequest request, {
     $grpc.CallOptions? options,
@@ -158,6 +165,11 @@ class FamilyServiceClient extends $grpc.Client {
           '/family.v1.FamilyService/GetFamilyTree',
           ($0.GetFamilyTreeRequest value) => value.writeToBuffer(),
           $0.FamilyTree.fromBuffer);
+  static final _$getKinship =
+      $grpc.ClientMethod<$0.GetKinshipRequest, $0.KinshipRelationship>(
+          '/family.v1.FamilyService/GetKinship',
+          ($0.GetKinshipRequest value) => value.writeToBuffer(),
+          $0.KinshipRelationship.fromBuffer);
   static final _$createInviteToken = $grpc.ClientMethod<
           $0.CreateInviteTokenRequest, $0.CreateInviteTokenResponse>(
       '/family.v1.FamilyService/CreateInviteToken',
@@ -244,6 +256,15 @@ abstract class FamilyServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.GetFamilyTreeRequest.fromBuffer(value),
         ($0.FamilyTree value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.GetKinshipRequest, $0.KinshipRelationship>(
+            'GetKinship',
+            getKinship_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.GetKinshipRequest.fromBuffer(value),
+            ($0.KinshipRelationship value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.CreateInviteTokenRequest,
             $0.CreateInviteTokenResponse>(
         'CreateInviteToken',
@@ -333,6 +354,14 @@ abstract class FamilyServiceBase extends $grpc.Service {
 
   $async.Future<$0.FamilyTree> getFamilyTree(
       $grpc.ServiceCall call, $0.GetFamilyTreeRequest request);
+
+  $async.Future<$0.KinshipRelationship> getKinship_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.GetKinshipRequest> $request) async {
+    return getKinship($call, await $request);
+  }
+
+  $async.Future<$0.KinshipRelationship> getKinship(
+      $grpc.ServiceCall call, $0.GetKinshipRequest request);
 
   $async.Future<$0.CreateInviteTokenResponse> createInviteToken_Pre(
       $grpc.ServiceCall $call,

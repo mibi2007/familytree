@@ -1,4 +1,5 @@
 import 'package:grpc/grpc.dart';
+
 import '../../domain/repositories/auth_repository.dart';
 
 class GrpcAuthInterceptor extends ClientInterceptor {
@@ -13,7 +14,21 @@ class GrpcAuthInterceptor extends ClientInterceptor {
     CallOptions options,
     ClientUnaryInvoker<Q, R> invoker,
   ) {
-    final newOptions = options.mergedWith(
+    return invoker(method, request, _withAuth(options));
+  }
+
+  @override
+  ResponseStream<R> interceptStreaming<Q, R>(
+    ClientMethod<Q, R> method,
+    Stream<Q> requests,
+    CallOptions options,
+    ClientStreamingInvoker<Q, R> invoker,
+  ) {
+    return invoker(method, requests, _withAuth(options));
+  }
+
+  CallOptions _withAuth(CallOptions options) {
+    return options.mergedWith(
       CallOptions(
         providers: [
           (metadata, uri) async {
@@ -25,8 +40,5 @@ class GrpcAuthInterceptor extends ClientInterceptor {
         ],
       ),
     );
-    return invoker(method, request, newOptions);
   }
-
-  // Handle streams if needed
 }

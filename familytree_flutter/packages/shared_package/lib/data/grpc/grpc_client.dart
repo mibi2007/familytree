@@ -7,7 +7,8 @@ import '../../data/grpc/generated/proto/family/v1/family.pbgrpc.dart';
 import '../../data/grpc/generated/proto/system/v1/system.pbgrpc.dart';
 import '../config/app_config.dart';
 import '../repositories/firebase_auth_repository.dart';
-import 'grpc_channel_io.dart' if (dart.library.js_interop) 'grpc_channel_web.dart';
+import 'grpc_channel_io.dart'
+    if (dart.library.js_interop) 'grpc_channel_web.dart';
 import 'grpc_interceptor.dart';
 
 part 'grpc_client.g.dart';
@@ -23,7 +24,10 @@ AuthServiceClient authClient(Ref ref) {
   final channel = ref.watch(grpcChannelProvider);
   final authRepo = ref.watch(authRepositoryProvider);
 
-  return AuthServiceClient(channel, interceptors: [GrpcAuthInterceptor(authRepo)]);
+  return AuthServiceClient(
+    channel,
+    interceptors: [GrpcAuthInterceptor(authRepo)],
+  );
 }
 
 @riverpod
@@ -31,7 +35,10 @@ FamilyServiceClient familyClient(Ref ref) {
   final channel = ref.watch(grpcChannelProvider);
   final authRepo = ref.watch(authRepositoryProvider);
 
-  return FamilyServiceClient(channel, interceptors: [GrpcAuthInterceptor(authRepo)]);
+  return FamilyServiceClient(
+    channel,
+    interceptors: [GrpcAuthInterceptor(authRepo)],
+  );
 }
 
 @riverpod
@@ -39,7 +46,10 @@ ChatServiceClient chatClient(Ref ref) {
   final channel = ref.watch(grpcChannelProvider);
   final authRepo = ref.watch(authRepositoryProvider);
 
-  return ChatServiceClient(channel, interceptors: [GrpcAuthInterceptor(authRepo)]);
+  return ChatServiceClient(
+    channel,
+    interceptors: [GrpcAuthInterceptor(authRepo)],
+  );
 }
 
 @riverpod

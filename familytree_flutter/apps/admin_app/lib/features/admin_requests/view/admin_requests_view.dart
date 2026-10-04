@@ -139,6 +139,7 @@ class _AdminManagementView extends ConsumerWidget {
                     trailing: canRevoke
                         ? IconButton(
                             icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
+                            tooltip: 'Revoke ${admin.email}',
                             onPressed: () => _confirmRevoke(context, ref, admin),
                           )
                         : null,
@@ -166,6 +167,9 @@ class _AdminManagementView extends ConsumerWidget {
             onPressed: () async {
               Navigator.of(context).pop();
               await ref.read(adminRequestsControllerProvider.notifier).revokeAdminRole(admin.id);
+              if (context.mounted) {
+                ref.invalidate(superAdminsProvider);
+              }
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: const Text('Revoke'),

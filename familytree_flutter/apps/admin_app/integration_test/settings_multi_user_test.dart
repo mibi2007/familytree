@@ -14,10 +14,6 @@ void main() {
 
   group('Multi-User Settings Isolation', () {
     testWidgets('Each user maintains their own settings across login/logout', (tester) async {
-      // Test users
-      const userAEmail = 'settings_test_a@test.com';
-      const userBEmail = 'settings_test_b@test.com';
-
       // === SETUP: Ensure both users exist ===
       // Note: In a real test, you'd seed these users in Firebase Auth emulator
 

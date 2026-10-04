@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:signals/signals.dart';
 
 import '../../data/grpc/generated/proto/chat/v1/chat.pbgrpc.dart' as chat_proto;
@@ -7,7 +9,9 @@ import '../../data/signals/grpc_client_signals.dart';
 final _messagesMap = <String, Signal<AsyncState<List<chat_proto.Message>>>>{};
 
 /// Get signal for merged chat messages (history + real-time) for a family
-Signal<AsyncState<List<chat_proto.Message>>> mergedChatMessagesSignal(String familyId) {
+Signal<AsyncState<List<chat_proto.Message>>> mergedChatMessagesSignal(
+  String familyId,
+) {
   if (!_messagesMap.containsKey(familyId)) {
     _messagesMap[familyId] = signal(AsyncState.loading());
   }
@@ -19,7 +23,9 @@ Future<void> loadMessages(String familyId) async {
   final s = mergedChatMessagesSignal(familyId);
   try {
     final client = chatClientSignal.value;
-    final response = await client.listMessages(chat_proto.ListMessagesRequest(familyId: familyId, limit: 50));
+    final response = await client.listMessages(
+      chat_proto.ListMessagesRequest(familyId: familyId, limit: 50),
+    );
     s.value = AsyncState.data(response.messages);
   } catch (e, stack) {
     s.value = AsyncState.error(e, stack);
@@ -27,11 +33,13 @@ Future<void> loadMessages(String familyId) async {
 }
 
 /// Start streaming messages for a family
-Future<void> streamMessages(String familyId) async {
+StreamSubscription<chat_proto.Message> streamMessages(String familyId) {
   final client = chatClientSignal.value;
-  final stream = client.streamMessages(chat_proto.StreamMessagesRequest(familyId: familyId));
+  final stream = client.streamMessages(
+    chat_proto.StreamMessagesRequest(familyId: familyId),
+  );
 
-  stream.listen(
+  return stream.listen(
     (message) {
       final s = mergedChatMessagesSignal(familyId);
       final current = s.value.value ?? [];
@@ -69,6 +77,10 @@ Future<void> streamMessages(String familyId) async {
 Future<void> sendMessage(String familyId, String content) async {
   final client = chatClientSignal.value;
   await client.sendMessage(
-    chat_proto.SendMessageRequest(familyId: familyId, content: content, type: chat_proto.MessageType.MESSAGE_TYPE_TEXT),
+    chat_proto.SendMessageRequest(
+      familyId: familyId,
+      content: content,
+      type: chat_proto.MessageType.MESSAGE_TYPE_TEXT,
+    ),
   );
 }

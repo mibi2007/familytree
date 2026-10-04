@@ -133,7 +133,50 @@
     - [x] "Go to Home" Button after admin approval.
     - [x] Fixed navigation timing issues.
 
-## Phase 6: Cloud Deployment (Backend) (IN PROGRESS 🚧)
+## Phase 6: Advanced Features (DONE ✅)
+- [x] **AI Assistant**: Gemini context integration via Genkit Go.
+    - [x] **AI-1**: Set up env-driven Genkit Go/Gemini foundation, startup wiring, readiness scaffold, and missing-key tests.
+    - [x] **AI-2**: Create selected-family context injection with acting member, snapshot summary, role-aware relevant history, and title-mapping port.
+    - [x] **AI-3**: Add authenticated unary/streaming-ready gRPC contract, family-access enforcement, Genkit ask service, generated Go/Dart stubs, and server registration.
+    - [x] **AI-4**: Integrate private AI chat and group `@family` mentions into Flutter with loading, error, and widget-test coverage.
+- [x] **Vietnamese Kinship**: Complex addressing logic.
+    - [x] **KIN-1**: Define the domain model and reviewable northern-Vietnamese baseline rule catalog.
+    - [x] **KIN-2**: Implement deterministic direct, grandparent, sibling, and uncle/aunt calculations.
+    - [x] **KIN-3**: Handle spouse-side addressing and ambiguity-safe AI title mapping.
+    - [x] **KIN-4**: Expose authenticated kinship results through gRPC and Flutter acting-member UX with scenario QA.
+- [x] **AIDD Adoption**:
+    - [x] Create `docs/aidd/README.md`
+    - [x] Create `.agent/workflows/apply-aidd.md`
+    - [x] Create `docs/aidd/phase_6_inception_plan.md`
+    - [x] Approve Inception gate for AI-1 and KIN-1
+    - [x] Start Construction sprint for AI-1
+    - [x] Complete and validate AI-1 acceptance criteria
+    - [x] Approve AI-2 privacy default: selected family + relevant chats only
+    - [x] Complete and validate AI-2 acceptance criteria
+    - [x] Complete and validate AI-3 gRPC contract and authenticated handler
+    - [x] Approve AI-4 release scope: private + group `@family`
+
+## Phase 6 Validation Evidence (2026-08-31)
+- [x] Required development tooling: `bash scripts/doctor_dev.sh` (PASS).
+- [x] Backend application packages: `go test ./cmd/... ./internal/... ./pkg/... ./proto/...` (PASS).
+- [x] AI-1 foundation and configuration: `go test ./internal/features/ai/... ./internal/config` (PASS; includes provider initialization, startup configuration, missing-key, and handler-readiness coverage).
+- [x] AI-2 context pipeline: `go test ./internal/features/ai/... ./cmd/server` (PASS; includes selected-family boundaries, role mapping, snapshot ingestion/fallback, title-mapping port, and server composition).
+- [x] Go protobuf/OpenAPI generation: `bash scripts/generate_go_protos.sh` (PASS).
+- [x] AI-3 Go/Dart contract generation: `bash scripts/generate_go_protos.sh && bash scripts/generate_dart_protos.sh` (PASS after granting Puro its normal preferences-directory access).
+- [x] AI-3 backend contract and handler: `go test ./internal/features/ai/... ./proto/ai/v1 ./cmd/server` (PASS).
+- [x] Full backend wildcard suite: `go test ./...` (PASS after separating maintenance commands into independent packages).
+- [x] Dart protobuf generation (PASS with narrowly scoped access to Puro preferences; generated AI stubs are present).
+- [x] Flutter toolchain: Puro `1.5.0`, Flutter `3.47.2` stable, Dart `3.13.2`; Melos bootstrap completed.
+- [x] Shared-package Flutter tests: `flutter test` (37 PASS).
+- [x] Admin app Flutter tests: `flutter test` (4 PASS).
+- [x] User app Flutter tests: `flutter test` (28 PASS), including AI-4 and kinship-title UX coverage.
+- [x] AI-4 Flutter integration: private assistant response/validation widget tests, group `@family` mention widget test, and shared AI signal tests (PASS).
+- [x] KIN-1 through KIN-3 backend: `go test ./internal/features/family/... ./internal/features/ai/... ./cmd/server` (PASS; includes side, age-order, spouse-path, ambiguity, and AI mapping scenarios).
+- [x] KIN-4 API and UX: generated Go/Dart/OpenAPI contracts, authenticated family-access handler tests, and acting-member title widget test (PASS).
+- [x] Workspace `flutter analyze --no-fatal-infos` (PASS; environment-generated Firebase entrypoints excluded, no errors or warnings, informational modernization lints remain visible).
+- [x] Optional tooling disposition: Firebase CLI, Task, grpcwebproxy, and Docker daemon intentionally left optional; required doctor checks pass.
+
+## Phase 7: Cloud Deployment (Backend) (IN PROGRESS 🚧)
 - [x] **Containerization**:
     - [x] Create multi-stage `Dockerfile` and `docker-compose.yml`.
     - [x] Verify local build.
@@ -148,16 +191,6 @@
     - [x] Setup Caddy for automatic HTTPS & gRPC-Web.
     - [x] Fix gRPC-Web Content-Type support.
     - [ ] Verify secure connection from Frontend.
-
-## Phase 7: Advanced Features (PLANNED ï¿½)
-- [ ] **AI Assistant**: Gemini context integration via Genkit Go.
-    - [ ] Set up Genkit Go framework.
-    - [ ] Create AI service with context injection.
-    - [ ] Integrate with chat for family history queries.
-- [ ] **Vietnamese Kinship**: Complex addressing logic.
-    - [ ] Implement relationship calculator.
-    - [ ] Add cultural titles (Bác, Chú, Cô, Dì, etc.).
-    - [ ] Handle spouse-side family addressing.
 
 ## Verification Tasks (CURRENT)
 - [x] backend: `go test ./...` (PASS)

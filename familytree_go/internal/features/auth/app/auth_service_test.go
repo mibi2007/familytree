@@ -145,7 +145,8 @@ func TestRegisterUser(t *testing.T) {
 		emailVerified := true
 
 		mockUserRepo.On("UpsertUser", ctx, mock.MatchedBy(func(u *domain.User) bool {
-			return u.ID == uid && u.Email == email && u.EmailVerified == emailVerified
+			return u.ID == uid && u.Email == email && u.EmailVerified == emailVerified &&
+				u.Role == domain.SystemRoleUser
 		})).Return(nil).Once()
 
 		user, err := authService.RegisterUser(ctx, uid, email, displayName, photoURL, emailVerified)
@@ -154,6 +155,7 @@ func TestRegisterUser(t *testing.T) {
 		assert.NotNil(t, user)
 		assert.Equal(t, uid, user.ID)
 		assert.Equal(t, email, user.Email)
+		assert.Equal(t, domain.SystemRoleUser, user.Role)
 		mockUserRepo.AssertExpectations(t)
 	})
 
@@ -166,6 +168,23 @@ func TestRegisterUser(t *testing.T) {
 		assert.Nil(t, user)
 		mockUserRepo.AssertExpectations(t)
 	})
+}
+
+func TestValidateInviteTokenNotFound(t *testing.T) {
+	mockUserRepo := new(MockUserRepository)
+	mockTokenRepo := new(MockTokenRepository)
+	mockAdminRepo := new(MockSuperAdminRequestRepository)
+	authService := app.NewAuthService(mockTokenRepo, mockUserRepo, mockAdminRepo)
+	ctx := context.Background()
+
+	mockTokenRepo.On("Get", ctx, "missing-token").Return(nil, nil).Once()
+
+	token, valid, err := authService.ValidateInviteToken(ctx, "missing-token")
+
+	assert.NoError(t, err)
+	assert.False(t, valid)
+	assert.Nil(t, token)
+	mockTokenRepo.AssertExpectations(t)
 }
 
 func TestRequestAdminAccess(t *testing.T) {

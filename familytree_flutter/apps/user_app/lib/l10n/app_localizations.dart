@@ -194,11 +194,11 @@ abstract class AppLocalizations {
   /// **'Sign In'**
   String get signIn;
 
-  /// No description provided for @signUp.
+  /// No description provided for @signUpPrompt.
   ///
   /// In en, this message translates to:
-  /// **'Sign Up'**
-  String get signUp;
+  /// **'Don\'t have an account? Sign Up'**
+  String get signUpPrompt;
 
   /// No description provided for @signInWithGoogle.
   ///
@@ -206,11 +206,419 @@ abstract class AppLocalizations {
   /// **'Sign in with Google'**
   String get signInWithGoogle;
 
-  /// No description provided for @dontHaveAccount.
+  /// No description provided for @authenticationError.
   ///
   /// In en, this message translates to:
-  /// **'Don\'t have an account? Sign Up'**
-  String get dontHaveAccount;
+  /// **'Authentication error: {error}'**
+  String authenticationError(String error);
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// No description provided for @defaultUser.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get defaultUser;
+
+  /// No description provided for @welcomeUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {name}!'**
+  String welcomeUser(String name);
+
+  /// No description provided for @noFamilyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not part of any family tree yet. Start by creating your own family or join one via an invite link.'**
+  String get noFamilyDescription;
+
+  /// No description provided for @createMyFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Create My Family'**
+  String get createMyFamily;
+
+  /// No description provided for @joinViaInviteToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Join via Invite Token'**
+  String get joinViaInviteToken;
+
+  /// No description provided for @createFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Create family'**
+  String get createFamily;
+
+  /// No description provided for @familyId.
+  ///
+  /// In en, this message translates to:
+  /// **'ID: {id}'**
+  String familyId(String id);
+
+  /// No description provided for @createNewFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Family'**
+  String get createNewFamily;
+
+  /// No description provided for @familyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Name'**
+  String get familyName;
+
+  /// No description provided for @familyNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. The Smith Family'**
+  String get familyNameHint;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
+  /// No description provided for @joinFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Family'**
+  String get joinFamily;
+
+  /// No description provided for @inviteToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Token'**
+  String get inviteToken;
+
+  /// No description provided for @inviteTokenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the invite token'**
+  String get inviteTokenHint;
+
+  /// No description provided for @join.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get join;
+
+  /// No description provided for @successfullyJoinedFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully joined family!'**
+  String get successfullyJoinedFamily;
+
+  /// No description provided for @failedToJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to join: {error}'**
+  String failedToJoin(String error);
+
+  /// No description provided for @errorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String errorMessage(String error);
+
+  /// No description provided for @inviteMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Member'**
+  String get inviteMember;
+
+  /// No description provided for @familyAssistant.
+  ///
+  /// In en, this message translates to:
+  /// **'@family Assistant'**
+  String get familyAssistant;
+
+  /// No description provided for @familyChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Chat'**
+  String get familyChat;
+
+  /// No description provided for @switchToList.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to List'**
+  String get switchToList;
+
+  /// No description provided for @switchToTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Tree'**
+  String get switchToTree;
+
+  /// No description provided for @refreshFamilyMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh family members'**
+  String get refreshFamilyMembers;
+
+  /// No description provided for @noMembersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No members found in this family.'**
+  String get noMembersFound;
+
+  /// No description provided for @addFirstMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add First Member'**
+  String get addFirstMember;
+
+  /// No description provided for @showTitlesAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Show titles as'**
+  String get showTitlesAs;
+
+  /// No description provided for @addFamilyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add family member'**
+  String get addFamilyMember;
+
+  /// No description provided for @levelValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Level: {level}'**
+  String levelValue(int level);
+
+  /// No description provided for @parentValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent: {parentId}'**
+  String parentValue(String parentId);
+
+  /// No description provided for @selectShowTitles.
+  ///
+  /// In en, this message translates to:
+  /// **'Select \'Show titles as\' to see kinship titles'**
+  String get selectShowTitles;
+
+  /// No description provided for @calculatingKinship.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating kinship title...'**
+  String get calculatingKinship;
+
+  /// No description provided for @kinshipUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Kinship title unavailable'**
+  String get kinshipUnavailable;
+
+  /// No description provided for @kinshipResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Kinship: {title}, {details}'**
+  String kinshipResult(String title, String details);
+
+  /// No description provided for @viaSpouse.
+  ///
+  /// In en, this message translates to:
+  /// **'via spouse'**
+  String get viaSpouse;
+
+  /// No description provided for @needsConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'needs confirmation'**
+  String get needsConfirmation;
+
+  /// No description provided for @addChild.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Child'**
+  String get addChild;
+
+  /// No description provided for @addMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Member'**
+  String get addMember;
+
+  /// No description provided for @displayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Display Name'**
+  String get displayName;
+
+  /// No description provided for @parentId.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent ID: {id}'**
+  String parentId(String id);
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @shareInviteToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this token with your family member:'**
+  String get shareInviteToken;
+
+  /// No description provided for @inviteTokenValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite token: {token}'**
+  String inviteTokenValue(String token);
+
+  /// No description provided for @tokenCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Token copied!'**
+  String get tokenCopied;
+
+  /// No description provided for @copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @chatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat: {familyName}'**
+  String chatTitle(String familyName);
+
+  /// No description provided for @actingAsFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Acting as for @family'**
+  String get actingAsFamily;
+
+  /// No description provided for @typeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message...'**
+  String get typeMessage;
+
+  /// No description provided for @sendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send message'**
+  String get sendMessage;
+
+  /// No description provided for @noMessagesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet.'**
+  String get noMessagesYet;
+
+  /// No description provided for @chatMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat message: {content}'**
+  String chatMessage(String content);
+
+  /// No description provided for @selectActingMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an acting member for @family.'**
+  String get selectActingMember;
+
+  /// No description provided for @unknownUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknownUser;
+
+  /// No description provided for @newChat.
+  ///
+  /// In en, this message translates to:
+  /// **'New chat'**
+  String get newChat;
+
+  /// No description provided for @familyContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Family context'**
+  String get familyContext;
+
+  /// No description provided for @couldNotLoadFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load families: {error}'**
+  String couldNotLoadFamilies(String error);
+
+  /// No description provided for @actingAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Acting as'**
+  String get actingAs;
+
+  /// No description provided for @couldNotLoadMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load members: {error}'**
+  String couldNotLoadMembers(String error);
+
+  /// No description provided for @selectFamilyAndMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a family and acting member.'**
+  String get selectFamilyAndMember;
+
+  /// No description provided for @enterFamilyQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a question for @family.'**
+  String get enterFamilyQuestion;
+
+  /// No description provided for @aiEmptyPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask about your selected family history or relationships.'**
+  String get aiEmptyPrompt;
+
+  /// No description provided for @familyThinking.
+  ///
+  /// In en, this message translates to:
+  /// **'@family is thinking…'**
+  String get familyThinking;
+
+  /// No description provided for @askFamilyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask @family…'**
+  String get askFamilyHint;
+
+  /// No description provided for @ask.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get ask;
 }
 
 class _AppLocalizationsDelegate

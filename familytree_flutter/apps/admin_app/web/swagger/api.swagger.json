@@ -19,6 +19,9 @@
     },
     {
       "name": "SettingsService"
+    },
+    {
+      "name": "AIService"
     }
   ],
   "consumes": [

@@ -5,7 +5,8 @@
 import 'package:protobuf/well_known_types/google/protobuf/empty.pb.dart';
 import 'package:signals/signals.dart';
 
-import '../../data/grpc/generated/proto/family/v1/family.pbgrpc.dart' as family_proto;
+import '../../data/grpc/generated/proto/family/v1/family.pbgrpc.dart'
+    as family_proto;
 import '../../data/signals/grpc_client_signals.dart';
 
 /// My Families signal - fetches list of families for current user
@@ -15,7 +16,7 @@ final myFamiliesSignal = futureSignal<List<family_proto.Family>>(() async {
     final response = await client.listMyFamilies(Empty());
     return response.families;
   } catch (e) {
-    throw e;
+    rethrow;
   }
 });
 
@@ -23,7 +24,8 @@ final myFamiliesSignal = futureSignal<List<family_proto.Family>>(() async {
 ///
 /// Creates a future signal for fetching members of a specific family.
 /// We use a cache to store created signals so we don't recreate them on every call.
-final _familyMembersSignals = <String, FutureSignal<List<family_proto.Member>>>{};
+final _familyMembersSignals =
+    <String, FutureSignal<List<family_proto.Member>>>{};
 
 FutureSignal<List<family_proto.Member>> familyMembersSignal(String familyId) {
   if (_familyMembersSignals.containsKey(familyId)) {
@@ -33,10 +35,12 @@ FutureSignal<List<family_proto.Member>> familyMembersSignal(String familyId) {
   final signal = futureSignal<List<family_proto.Member>>(() async {
     try {
       final client = familyClientSignal.value;
-      final response = await client.getFamilyTree(family_proto.GetFamilyTreeRequest(familyId: familyId));
+      final response = await client.getFamilyTree(
+        family_proto.GetFamilyTreeRequest(familyId: familyId),
+      );
       return response.members;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   });
 
@@ -69,7 +73,9 @@ class FamilySignalsController {
 
     try {
       final client = familyClientSignal.value;
-      final family = await client.createFamily(family_proto.CreateFamilyRequest(name: name));
+      final family = await client.createFamily(
+        family_proto.CreateFamilyRequest(name: name),
+      );
 
       // Refresh families list
       myFamiliesSignal.reload();
@@ -123,7 +129,9 @@ class FamilySignalsController {
 
     try {
       final client = familyClientSignal.value;
-      final family = await client.joinFamily(family_proto.JoinFamilyRequest(inviteToken: inviteToken));
+      final family = await client.joinFamily(
+        family_proto.JoinFamilyRequest(inviteToken: inviteToken),
+      );
 
       // Refresh families list
       myFamiliesSignal.reload();
@@ -144,7 +152,9 @@ class FamilySignalsController {
 
     try {
       final client = familyClientSignal.value;
-      final response = await client.createInviteToken(family_proto.CreateInviteTokenRequest(familyId: familyId));
+      final response = await client.createInviteToken(
+        family_proto.CreateInviteTokenRequest(familyId: familyId),
+      );
       return response.inviteToken;
     } catch (e) {
       _error.value = e.toString();
@@ -152,6 +162,20 @@ class FamilySignalsController {
     } finally {
       _isLoading.value = false;
     }
+  }
+
+  Future<family_proto.KinshipRelationship> getKinship({
+    required String familyId,
+    required String actingMemberId,
+    required String targetMemberId,
+  }) {
+    return familyClientSignal.value.getKinship(
+      family_proto.GetKinshipRequest(
+        familyId: familyId,
+        actingMemberId: actingMemberId,
+        targetMemberId: targetMemberId,
+      ),
+    );
   }
 }
 

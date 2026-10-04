@@ -67,6 +67,7 @@
 /// - [Migration Plan](../../../../docs/migration/RIVERPOD_TO_SIGNALS_MIGRATION_PLAN.md)
 library;
 
+export 'ai_signals.dart';
 export 'app_config_signal.dart';
 export 'auth_signals.dart';
 export 'chat_signals.dart';

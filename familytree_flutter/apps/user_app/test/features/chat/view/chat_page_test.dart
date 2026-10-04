@@ -5,12 +5,20 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:protobuf/well_known_types/google/protobuf/timestamp.pb.dart' as timestamp_proto;
-import 'package:shared_package/data/grpc/generated/proto/auth/v1/auth.pbgrpc.dart' as auth_proto;
-import 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pbgrpc.dart' as chat_proto;
-import 'package:shared_package/data/grpc/generated/proto/common/v1/common.pb.dart' as common_proto;
+import 'package:protobuf/well_known_types/google/protobuf/timestamp.pb.dart'
+    as timestamp_proto;
+import 'package:shared_package/data/grpc/generated/proto/auth/v1/auth.pbgrpc.dart'
+    as auth_proto;
+import 'package:shared_package/data/grpc/generated/proto/chat/v1/chat.pbgrpc.dart'
+    as chat_proto;
+import 'package:shared_package/data/grpc/generated/proto/common/v1/common.pb.dart'
+    as common_proto;
 import 'package:shared_package/shared_package.dart';
 import 'package:user_app/features/chat/view/chat_page.dart';
+import 'package:user_app/l10n/app_localizations.dart';
+import 'package:user_app/l10n/app_localizations_en.dart';
+
+final l10n = AppLocalizationsEn();
 
 // Mock classes
 class MockChatClient extends Mock implements chat_proto.ChatServiceClient {}
@@ -54,11 +62,14 @@ class FakeResponseFuture<T> implements ResponseFuture<T> {
       _future.catchError(onError, test: test);
 
   @override
-  Future<S> then<S>(FutureOr<S> Function(T value) onValue, {Function? onError}) =>
-      _future.then(onValue, onError: onError);
+  Future<S> then<S>(
+    FutureOr<S> Function(T value) onValue, {
+    Function? onError,
+  }) => _future.then(onValue, onError: onError);
 
   @override
-  Future<T> whenComplete(FutureOr<void> Function() action) => _future.whenComplete(action);
+  Future<T> whenComplete(FutureOr<void> Function() action) =>
+      _future.whenComplete(action);
 
   @override
   Future<T> timeout(Duration timeLimit, {FutureOr<T> Function()? onTimeout}) =>
@@ -77,7 +88,12 @@ class FakeResponseStream<T> extends Stream<T> implements ResponseStream<T> {
     void Function()? onDone,
     bool? cancelOnError,
   }) {
-    return _stream.listen(onData, onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+    return _stream.listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
   }
 
   @override
@@ -100,7 +116,8 @@ class FakeResponseStream<T> extends Stream<T> implements ResponseStream<T> {
   ResponseFuture<T> get last => FakeResponseFuture(_stream.last);
 
   @override
-  ResponseFuture<T> elementAt(int index) => FakeResponseFuture(_stream.elementAt(index));
+  ResponseFuture<T> elementAt(int index) =>
+      FakeResponseFuture(_stream.elementAt(index));
 }
 
 void main() {
@@ -119,15 +136,16 @@ void main() {
     late MockAuthRepository mockAuthRepository;
 
     setUp(() {
+      resetUserProfileSignals();
       mockChatClient = MockChatClient();
       mockAuthRepository = MockAuthRepository();
 
-      // Setup signals overrides
-      mockChatClientSignal.value = mockChatClient;
+      // Stub reactive dependencies before publishing mocks to signals.
+      when(
+        () => mockAuthRepository.authStateChanges,
+      ).thenAnswer((_) => Stream.value(null));
       authRepositorySignal.value = mockAuthRepository;
-
-      // Default auth state (not logged in)
-      when(() => mockAuthRepository.authStateChanges).thenAnswer((_) => Stream.value(null));
+      mockChatClientSignal.value = mockChatClient;
 
       testMessages = [
         chat_proto.Message(
@@ -136,7 +154,9 @@ void main() {
           senderId: 'user1',
           content: 'Hello from user 1',
           type: chat_proto.MessageType.MESSAGE_TYPE_TEXT,
-          createdAt: _createTimestamp(DateTime.now().subtract(const Duration(minutes: 5))),
+          createdAt: _createTimestamp(
+            DateTime.now().subtract(const Duration(minutes: 5)),
+          ),
         ),
         chat_proto.Message(
           id: 'msg2',
@@ -144,7 +164,9 @@ void main() {
           senderId: 'user2',
           content: 'Hi from user 2',
           type: chat_proto.MessageType.MESSAGE_TYPE_TEXT,
-          createdAt: _createTimestamp(DateTime.now().subtract(const Duration(minutes: 2))),
+          createdAt: _createTimestamp(
+            DateTime.now().subtract(const Duration(minutes: 2)),
+          ),
         ),
         chat_proto.Message(
           id: 'msg3',
@@ -160,30 +182,45 @@ void main() {
       mergedChatMessagesSignal(testFamilyId).value = AsyncState.loading();
 
       // Mock stream response
-      when(() => mockChatClient.streamMessages(any())).thenAnswer((_) => FakeResponseStream(const Stream.empty()));
       when(
-        () => mockChatClient.listMessages(any()),
-      ).thenAnswer((_) => FakeResponseFuture.value(chat_proto.ListMessagesResponse(messages: [])));
+        () => mockChatClient.streamMessages(any()),
+      ).thenAnswer((_) => FakeResponseStream(const Stream.empty()));
+      when(() => mockChatClient.listMessages(any())).thenAnswer(
+        (_) => FakeResponseFuture.value(
+          chat_proto.ListMessagesResponse(messages: []),
+        ),
+      );
     });
 
     Widget createTestWidget() {
       return const MaterialApp(
-        home: ChatPage(familyId: testFamilyId, familyName: testFamilyName),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: ChatPage(
+          familyId: testFamilyId,
+          familyName: testFamilyName,
+          autoLoad: false,
+          showActingMemberSelector: false,
+        ),
       );
     }
 
     testWidgets('should display app bar with family name', (tester) async {
       // Arrange
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
       // Assert
-      expect(find.text('Chat: $testFamilyName'), findsOneWidget);
+      expect(find.text(l10n.chatTitle(testFamilyName)), findsOneWidget);
     });
 
-    testWidgets('should display loading indicator when messages are loading', (tester) async {
+    testWidgets('should display loading indicator when messages are loading', (
+      tester,
+    ) async {
       // Arrange
       mergedChatMessagesSignal(testFamilyId).value = AsyncState.loading();
 
@@ -194,20 +231,27 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('should display error message when messages fail to load', (tester) async {
+    testWidgets('should display error message when messages fail to load', (
+      tester,
+    ) async {
       // Arrange
       final error = Exception('Failed to load messages');
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.error(error, StackTrace.empty);
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.error(
+        error,
+        StackTrace.empty,
+      );
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
       // Assert
-      expect(find.textContaining('Error:'), findsOneWidget);
+      expect(find.textContaining(l10n.errorMessage('')), findsOneWidget);
       expect(find.textContaining('Failed to load messages'), findsOneWidget);
     });
 
-    testWidgets('should display "No messages yet" when list is empty', (tester) async {
+    testWidgets('should display "No messages yet" when list is empty', (
+      tester,
+    ) async {
       // Arrange
       mergedChatMessagesSignal(testFamilyId).value = AsyncState.data([]);
 
@@ -215,19 +259,29 @@ void main() {
       await tester.pump();
 
       // Assert
-      expect(find.text('No messages yet.'), findsOneWidget);
+      expect(find.text(l10n.noMessagesYet), findsOneWidget);
     });
 
     testWidgets('should display all messages in the list', (tester) async {
       // Arrange
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
 
       // Mock user profiles
       getUserProfileSignal('user1').value = AsyncState.data(
-        common_proto.UserProfile(id: 'user1', displayName: 'User One', photoUrl: ''),
+        common_proto.UserProfile(
+          id: 'user1',
+          displayName: 'User One',
+          photoUrl: '',
+        ),
       );
       getUserProfileSignal('user2').value = AsyncState.data(
-        common_proto.UserProfile(id: 'user2', displayName: 'User Two', photoUrl: ''),
+        common_proto.UserProfile(
+          id: 'user2',
+          displayName: 'User Two',
+          photoUrl: '',
+        ),
       );
 
       await tester.pumpWidget(createTestWidget());
@@ -239,9 +293,13 @@ void main() {
       expect(find.text('My message'), findsOneWidget);
     });
 
-    testWidgets('should display message input field and send button', (tester) async {
+    testWidgets('should display message input field and send button', (
+      tester,
+    ) async {
       // Arrange
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
@@ -249,13 +307,22 @@ void main() {
       // Assert
       expect(find.byType(TextField), findsOneWidget);
       expect(find.byIcon(Icons.send), findsOneWidget);
-      expect(find.widgetWithText(TextField, 'Type a message...'), findsOneWidget);
+      expect(
+        find.widgetWithText(TextField, 'Type a message...'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('should send message when send button is tapped', (tester) async {
+    testWidgets('should send message when send button is tapped', (
+      tester,
+    ) async {
       // Arrange
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
-      when(() => mockChatClient.sendMessage(any())).thenAnswer((_) => FakeResponseFuture.value(chat_proto.Message()));
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
+      when(
+        () => mockChatClient.sendMessage(any()),
+      ).thenAnswer((_) => FakeResponseFuture.value(chat_proto.Message()));
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
@@ -272,17 +339,24 @@ void main() {
         () => mockChatClient.sendMessage(
           any(
             that: predicate<chat_proto.SendMessageRequest>(
-              (req) => req.familyId == testFamilyId && req.content == testMessage,
+              (req) =>
+                  req.familyId == testFamilyId && req.content == testMessage,
             ),
           ),
         ),
       ).called(1);
     });
 
-    testWidgets('should clear input field after sending message', (tester) async {
+    testWidgets('should clear input field after sending message', (
+      tester,
+    ) async {
       // Arrange
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
-      when(() => mockChatClient.sendMessage(any())).thenAnswer((_) => FakeResponseFuture.value(chat_proto.Message()));
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
+      when(
+        () => mockChatClient.sendMessage(any()),
+      ).thenAnswer((_) => FakeResponseFuture.value(chat_proto.Message()));
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
@@ -301,7 +375,9 @@ void main() {
 
     testWidgets('should not send empty messages', (tester) async {
       // Arrange
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
@@ -316,8 +392,12 @@ void main() {
 
     testWidgets('should submit message when Enter is pressed', (tester) async {
       // Arrange
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
-      when(() => mockChatClient.sendMessage(any())).thenAnswer((_) => FakeResponseFuture.value(chat_proto.Message()));
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
+      when(
+        () => mockChatClient.sendMessage(any()),
+      ).thenAnswer((_) => FakeResponseFuture.value(chat_proto.Message()));
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
@@ -332,17 +412,29 @@ void main() {
       // Assert
       verify(
         () => mockChatClient.sendMessage(
-          any(that: predicate<chat_proto.SendMessageRequest>((req) => req.content == testMessage)),
+          any(
+            that: predicate<chat_proto.SendMessageRequest>(
+              (req) => req.content == testMessage,
+            ),
+          ),
         ),
       ).called(1);
     });
 
-    testWidgets('should display sender profile pictures for messages', (tester) async {
+    testWidgets('should display sender profile pictures for messages', (
+      tester,
+    ) async {
       // Arrange
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
 
       getUserProfileSignal('user1').value = AsyncState.data(
-        common_proto.UserProfile(id: 'user1', displayName: 'User One', photoUrl: 'https://example.com/user1.jpg'),
+        common_proto.UserProfile(
+          id: 'user1',
+          displayName: 'User One',
+          photoUrl: 'https://example.com/user1.jpg',
+        ),
       );
 
       await tester.pumpWidget(createTestWidget());
@@ -352,20 +444,34 @@ void main() {
       expect(find.byType(CircleAvatar), findsWidgets);
     });
 
-    testWidgets('should differentiate between own messages and others', (tester) async {
+    testWidgets('should differentiate between own messages and others', (
+      tester,
+    ) async {
       // Arrange
       final mockUser = MockUser();
-      when(() => mockAuthRepository.authStateChanges).thenAnswer((_) => Stream.value(mockUser));
+      when(
+        () => mockAuthRepository.authStateChanges,
+      ).thenAnswer((_) => Stream.value(mockUser));
 
-      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(testMessages);
+      mergedChatMessagesSignal(testFamilyId).value = AsyncState.data(
+        testMessages,
+      );
 
       authRepositorySignal.value = mockAuthRepository;
 
       getUserProfileSignal('user1').value = AsyncState.data(
-        common_proto.UserProfile(id: 'user1', displayName: 'User One', photoUrl: ''),
+        common_proto.UserProfile(
+          id: 'user1',
+          displayName: 'User One',
+          photoUrl: '',
+        ),
       );
       getUserProfileSignal('user2').value = AsyncState.data(
-        common_proto.UserProfile(id: 'user2', displayName: 'User Two', photoUrl: ''),
+        common_proto.UserProfile(
+          id: 'user2',
+          displayName: 'User Two',
+          photoUrl: '',
+        ),
       );
 
       await tester.pumpWidget(createTestWidget());
@@ -373,6 +479,37 @@ void main() {
 
       // Assert - My message should be visible
       expect(find.text('My message'), findsOneWidget);
+    });
+
+    testWidgets('invokes @family for a group mention', (tester) async {
+      String? mentionedQuestion;
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: ChatPage(
+            familyId: testFamilyId,
+            familyName: testFamilyName,
+            autoLoad: false,
+            showActingMemberSelector: false,
+            initialActingMemberId: 'member-1',
+            sendMessageOverride: (_, _) async {},
+            mentionOverride: (_, memberId, question) async {
+              expect(memberId, 'member-1');
+              mentionedQuestion = question;
+            },
+          ),
+        ),
+      );
+
+      await tester.enterText(
+        find.byType(TextField),
+        '@family when is the reunion?',
+      );
+      await tester.tap(find.byIcon(Icons.send));
+      await tester.pump();
+
+      expect(mentionedQuestion, '@family when is the reunion?');
     });
   });
 }

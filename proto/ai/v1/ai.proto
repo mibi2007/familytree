@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package ai.v1;
+
+option go_package = "github.com/mibi2007/familytree/familytree_go/proto/ai/v1";
+
+service AIService {
+  rpc Ask(AskRequest) returns (AskResponse);
+  rpc AskStream(AskRequest) returns (stream AskResponse);
+}
+
+message AskRequest {
+  string family_id = 1;
+  string acting_member_id = 2;
+  string question = 3;
+  string conversation_ref = 4;
+  bool group_chat = 5;
+}
+
+message AskResponse {
+  string answer = 1;
+  string provider = 2;
+  bool final = 3;
+}

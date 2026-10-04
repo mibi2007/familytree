@@ -61,13 +61,13 @@ deploy_app() {
     # 2. Sync to Firebase Hosting folder
     echo "📂 Staging artifacts to $dest_dir..."
     mkdir -p "$dest_dir"
-    rm -rf "$dest_dir/*"
+    rm -rf "$dest_dir"/*
     cp -r build/web/* "$dest_dir/"
 
     # 3. Deploy to Firebase
     echo "🔥 Executing Firebase Deploy for target: $target_name..."
     cd "$FIREBASE_DIR"
-    firebase deploy --only hosting:$target_name -P $ENV
+    firebase deploy --only "hosting:$target_name" -P "$ENV"
 
     echo "✅ $app_name ($ENV) deployed successfully!"
     echo "App completion at: $(date)"

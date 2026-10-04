@@ -245,3 +245,19 @@ func TestJoinFamily(t *testing.T) {
 	mockTokenRepo.AssertExpectations(t)
 	mockFamilyRepo.AssertExpectations(t)
 }
+
+func TestJoinFamilyRejectsMissingToken(t *testing.T) {
+	mockFamilyRepo := new(MockFamilyRepository)
+	mockMemberRepo := new(MockMemberRepository)
+	mockTokenRepo := new(MockTokenRepository)
+	svc := app.NewFamilyService(mockFamilyRepo, mockMemberRepo, mockTokenRepo)
+
+	ctx := context.WithValue(context.Background(), middleware.UserContextKey, &auth.Token{UID: "user-123"})
+	mockTokenRepo.On("Get", ctx, "missing-token").Return(nil, nil).Once()
+
+	family, err := svc.JoinFamily(ctx, "missing-token")
+
+	assert.EqualError(t, err, "invalid token")
+	assert.Nil(t, family)
+	mockTokenRepo.AssertExpectations(t)
+}

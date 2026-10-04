@@ -39,7 +39,6 @@ class RouterRefreshNotifier extends ChangeNotifier {
 /// Equivalent to: appRouterProvider
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
   refreshListenable: RouterRefreshNotifier(),
   redirect: (context, state) {
     // Get values from AsyncState - use .value to unwrap

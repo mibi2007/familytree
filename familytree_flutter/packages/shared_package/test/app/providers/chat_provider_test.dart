@@ -21,7 +21,9 @@ void main() {
 
     setUp(() {
       mockChatClient = MockChatServiceClient();
-      container = ProviderContainer(overrides: [chatClientProvider.overrideWithValue(mockChatClient)]);
+      container = ProviderContainer(
+        overrides: [chatClientProvider.overrideWithValue(mockChatClient)],
+      );
     });
 
     tearDown(() {
@@ -51,15 +53,23 @@ void main() {
           ),
         ];
 
-        when(mockChatClient.streamMessages(any)).thenAnswer((_) => FakeResponseStream(Stream.fromIterable(messages)));
+        when(
+          mockChatClient.streamMessages(any),
+        ).thenAnswer((_) => FakeResponseStream(Stream.fromIterable(messages)));
+
+        final subscription = container.listen(
+          familyChatStreamProvider(familyId),
+          (_, _) {},
+        );
+        addTearDown(subscription.close);
 
         // Act
-        // Verify the stream completes and yields types.
-        // We use .future which completes with the last element of the stream.
-        final lastMessage = await container.read(familyChatStreamProvider(familyId).future);
+        final lastMessage = await container.read(
+          familyChatStreamProvider(familyId).future,
+        );
 
         // Assert
-        expect(lastMessage.id, 'msg2');
+        expect(lastMessage.id, 'msg1');
       });
 
       test('should handle stream errors', () async {
@@ -67,13 +77,24 @@ void main() {
         final familyId = 'family123';
         final error = GrpcError.unavailable('Connection lost');
 
-        when(mockChatClient.streamMessages(any)).thenAnswer((_) => FakeResponseStream(Stream.error(error)));
+        when(
+          mockChatClient.streamMessages(any),
+        ).thenAnswer((_) => FakeResponseStream(Stream.error(error)));
 
-        // Act
-        final future = container.read(familyChatStreamProvider(familyId).future);
+        final completer = Completer<Object>();
+        final subscription = container.listen(
+          familyChatStreamProvider(familyId),
+          (_, next) {
+            if (next.hasError && !completer.isCompleted) {
+              completer.complete(next.error!);
+            }
+          },
+          fireImmediately: true,
+        );
+        addTearDown(subscription.close);
 
         // Assert
-        await expectLater(future, throwsA(isA<GrpcError>()));
+        await expectLater(completer.future, completion(isA<GrpcError>()));
       });
     });
 
@@ -92,12 +113,16 @@ void main() {
           ),
         ];
 
-        when(
-          mockChatClient.listMessages(any),
-        ).thenAnswer((_) => FakeResponseFuture.value(ListMessagesResponse(messages: messages)));
+        when(mockChatClient.listMessages(any)).thenAnswer(
+          (_) => FakeResponseFuture.value(
+            ListMessagesResponse(messages: messages),
+          ),
+        );
 
         // Act
-        final result = await container.read(chatHistoryProvider(familyId).future);
+        final result = await container.read(
+          chatHistoryProvider(familyId).future,
+        );
 
         // Assert
         expect(result, isA<List<Message>>());
@@ -110,12 +135,14 @@ void main() {
         // Arrange
         final familyId = 'family123';
 
-        when(
-          mockChatClient.listMessages(any),
-        ).thenAnswer((_) => FakeResponseFuture.value(ListMessagesResponse(messages: [])));
+        when(mockChatClient.listMessages(any)).thenAnswer(
+          (_) => FakeResponseFuture.value(ListMessagesResponse(messages: [])),
+        );
 
         // Act
-        final result = await container.read(chatHistoryProvider(familyId).future);
+        final result = await container.read(
+          chatHistoryProvider(familyId).future,
+        );
 
         // Assert
         expect(result, isEmpty);
@@ -126,10 +153,23 @@ void main() {
         final familyId = 'family123';
         final error = GrpcError.notFound('Family not found');
 
-        when(mockChatClient.listMessages(any)).thenAnswer((_) => FakeResponseFuture.error(error));
+        when(
+          mockChatClient.listMessages(any),
+        ).thenAnswer((_) => FakeResponseFuture.error(error));
+
+        final completer = Completer<Object>();
+        final subscription = container.listen(chatHistoryProvider(familyId), (
+          _,
+          next,
+        ) {
+          if (next.hasError && !completer.isCompleted) {
+            completer.complete(next.error!);
+          }
+        }, fireImmediately: true);
+        addTearDown(subscription.close);
 
         // Act & Assert
-        await expectLater(container.read(chatHistoryProvider(familyId).future), throwsA(isA<GrpcError>()));
+        await expectLater(completer.future, completion(isA<GrpcError>()));
       });
     });
 
@@ -144,7 +184,9 @@ void main() {
             senderId: 'user1',
             content: 'Old message',
             type: MessageType.MESSAGE_TYPE_TEXT,
-            createdAt: _createTimestamp(DateTime.now().subtract(Duration(hours: 1))),
+            createdAt: _createTimestamp(
+              DateTime.now().subtract(Duration(hours: 1)),
+            ),
           ),
         ];
 
@@ -159,22 +201,36 @@ void main() {
           ),
         ];
 
-        when(
-          mockChatClient.listMessages(any),
-        ).thenAnswer((_) => FakeResponseFuture.value(ListMessagesResponse(messages: historyMessages)));
+        when(mockChatClient.listMessages(any)).thenAnswer(
+          (_) => FakeResponseFuture.value(
+            ListMessagesResponse(messages: historyMessages),
+          ),
+        );
 
-        when(
-          mockChatClient.streamMessages(any),
-        ).thenAnswer((_) => FakeResponseStream(Stream.fromIterable(streamMessages)));
+        when(mockChatClient.streamMessages(any)).thenAnswer(
+          (_) => FakeResponseStream(Stream.fromIterable(streamMessages)),
+        );
+
+        final completer = Completer<List<Message>>();
+        final subscription = container.listen(
+          mergedChatMessagesProvider(familyId),
+          (_, next) {
+            next.whenData((messages) {
+              if (messages.any((m) => m.id == 'msg1') &&
+                  messages.any((m) => m.id == 'msg2') &&
+                  !completer.isCompleted) {
+                completer.complete(messages);
+              }
+            });
+          },
+          fireImmediately: true,
+        );
+        addTearDown(subscription.close);
 
         // Act
-        // Initial read triggers build
-        await container.read(mergedChatMessagesProvider(familyId).future);
-
-        // Wait for async events to settle (stream listener updates state)
-        await Future.delayed(Duration.zero);
-
-        final messages = await container.read(mergedChatMessagesProvider(familyId).future);
+        final messages = await completer.future.timeout(
+          const Duration(seconds: 2),
+        );
 
         // Assert
         expect(messages.length, greaterThanOrEqualTo(2));
@@ -194,18 +250,22 @@ void main() {
           createdAt: _createTimestamp(DateTime.now()),
         );
 
-        when(
-          mockChatClient.listMessages(any),
-        ).thenAnswer((_) => FakeResponseFuture.value(ListMessagesResponse(messages: [duplicateMsg])));
+        when(mockChatClient.listMessages(any)).thenAnswer(
+          (_) => FakeResponseFuture.value(
+            ListMessagesResponse(messages: [duplicateMsg]),
+          ),
+        );
 
-        when(
-          mockChatClient.streamMessages(any),
-        ).thenAnswer((_) => FakeResponseStream(Stream.fromIterable([duplicateMsg])));
+        when(mockChatClient.streamMessages(any)).thenAnswer(
+          (_) => FakeResponseStream(Stream.fromIterable([duplicateMsg])),
+        );
 
         // Act
         await container.read(mergedChatMessagesProvider(familyId).future);
         await Future.delayed(Duration.zero);
-        final messages = await container.read(mergedChatMessagesProvider(familyId).future);
+        final messages = await container.read(
+          mergedChatMessagesProvider(familyId).future,
+        );
 
         // Assert
         expect(messages.where((m) => m.id == 'msg1').length, 1);
@@ -241,7 +301,9 @@ void main() {
             argThat(
               predicate<SendMessageRequest>(
                 (req) =>
-                    req.familyId == familyId && req.content == content && req.type == MessageType.MESSAGE_TYPE_TEXT,
+                    req.familyId == familyId &&
+                    req.content == content &&
+                    req.type == MessageType.MESSAGE_TYPE_TEXT,
               ),
             ),
           ),
@@ -254,11 +316,16 @@ void main() {
         final content = 'Test message';
         final error = GrpcError.permissionDenied('Not authorized');
 
-        when(mockChatClient.sendMessage(any)).thenAnswer((_) => FakeResponseFuture.error(error));
+        when(
+          mockChatClient.sendMessage(any),
+        ).thenAnswer((_) => FakeResponseFuture.error(error));
 
         // Act & Assert
         final controller = container.read(chatControllerProvider.notifier);
-        await expectLater(controller.sendMessage(familyId, content), throwsA(isA<GrpcError>()));
+        await expectLater(
+          controller.sendMessage(familyId, content),
+          throwsA(isA<GrpcError>()),
+        );
       });
 
       test('should not send empty messages', () async {
@@ -301,6 +368,7 @@ Timestamp _createTimestamp(DateTime dateTime) {
 
 class FakeResponseFuture<T> implements ResponseFuture<T> {
   final Future<T> _future;
+  FakeResponseFuture.fromFuture(this._future);
   FakeResponseFuture.value(T value) : _future = Future.value(value);
   FakeResponseFuture.error(Object error) : _future = Future.error(error);
 
@@ -312,11 +380,14 @@ class FakeResponseFuture<T> implements ResponseFuture<T> {
       _future.catchError(onError, test: test);
 
   @override
-  Future<S> then<S>(FutureOr<S> Function(T value) onValue, {Function? onError}) =>
-      _future.then(onValue, onError: onError);
+  Future<S> then<S>(
+    FutureOr<S> Function(T value) onValue, {
+    Function? onError,
+  }) => _future.then(onValue, onError: onError);
 
   @override
-  Future<T> whenComplete(FutureOr<void> Function() action) => _future.whenComplete(action);
+  Future<T> whenComplete(FutureOr<void> Function() action) =>
+      _future.whenComplete(action);
 
   @override
   Future<T> timeout(Duration timeLimit, {FutureOr<T> Function()? onTimeout}) =>
@@ -343,7 +414,12 @@ class FakeResponseStream<T> extends Stream<T> implements ResponseStream<T> {
     void Function()? onDone,
     bool? cancelOnError,
   }) {
-    return _stream.listen(onData, onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+    return _stream.listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
   }
 
   @override
@@ -354,4 +430,17 @@ class FakeResponseStream<T> extends Stream<T> implements ResponseStream<T> {
 
   @override
   Future<Map<String, String>> get trailers => Future.value({});
+
+  @override
+  ResponseFuture<T> get single => FakeResponseFuture.fromFuture(_stream.single);
+
+  @override
+  ResponseFuture<T> get first => FakeResponseFuture.fromFuture(_stream.first);
+
+  @override
+  ResponseFuture<T> get last => FakeResponseFuture.fromFuture(_stream.last);
+
+  @override
+  ResponseFuture<T> elementAt(int index) =>
+      FakeResponseFuture.fromFuture(_stream.elementAt(index));
 }

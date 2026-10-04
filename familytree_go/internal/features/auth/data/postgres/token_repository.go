@@ -36,6 +36,9 @@ func (r *TokenRepository) Get(ctx context.Context, tokenStr string) (*domain.Sec
 	var t domain.SecureToken
 	err := row.Scan(&t.Token, &t.Purpose, &t.AssociatedID, &t.CreatedBy, &t.ExpiresAt, &t.IsUsed, &t.CreatedAt)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return &t, nil

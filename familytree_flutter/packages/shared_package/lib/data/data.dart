@@ -1,4 +1,6 @@
 export 'config/app_config.dart';
+export 'grpc/generated/proto/ai/v1/ai.pb.dart';
+export 'grpc/generated/proto/ai/v1/ai.pbgrpc.dart';
 export 'grpc/generated/proto/auth/v1/auth.pb.dart';
 // Export Grpc
 export 'grpc/generated/proto/auth/v1/auth.pbgrpc.dart';

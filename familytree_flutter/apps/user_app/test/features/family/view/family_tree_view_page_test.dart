@@ -3,12 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:shared_package/data/grpc/generated/proto/family/v1/family.pbgrpc.dart' as family_proto;
+import 'package:shared_package/data/grpc/generated/proto/family/v1/family.pbgrpc.dart'
+    as family_proto;
 import 'package:shared_package/shared_package.dart';
 import 'package:user_app/features/family/view/family_tree_view_page.dart';
+import 'package:user_app/l10n/app_localizations.dart';
+import 'package:user_app/l10n/app_localizations_en.dart';
+
+final l10n = AppLocalizationsEn();
 
 // Mock classes
-class MockFamilyClient extends Mock implements family_proto.FamilyServiceClient {}
+class MockFamilyClient extends Mock
+    implements family_proto.FamilyServiceClient {}
 
 // Fake ResponseFuture
 class FakeResponseFuture<T> implements ResponseFuture<T> {
@@ -34,11 +40,14 @@ class FakeResponseFuture<T> implements ResponseFuture<T> {
       _future.catchError(onError, test: test);
 
   @override
-  Future<S> then<S>(FutureOr<S> Function(T value) onValue, {Function? onError}) =>
-      _future.then(onValue, onError: onError);
+  Future<S> then<S>(
+    FutureOr<S> Function(T value) onValue, {
+    Function? onError,
+  }) => _future.then(onValue, onError: onError);
 
   @override
-  Future<T> whenComplete(FutureOr<void> Function() action) => _future.whenComplete(action);
+  Future<T> whenComplete(FutureOr<void> Function() action) =>
+      _future.whenComplete(action);
 
   @override
   Future<T> timeout(Duration timeLimit, {FutureOr<T> Function()? onTimeout}) =>
@@ -50,6 +59,7 @@ void main() {
     registerFallbackValue(family_proto.AddMemberRequest());
     registerFallbackValue(family_proto.GetFamilyTreeRequest());
     registerFallbackValue(family_proto.CreateInviteTokenRequest());
+    registerFallbackValue(family_proto.GetKinshipRequest());
   });
 
   group('FamilyTreeViewPage Widget Tests', () {
@@ -91,9 +101,11 @@ void main() {
       ];
 
       // Default stub for getFamilyTree
-      when(
-        () => mockFamilyClient.getFamilyTree(any()),
-      ).thenAnswer((_) => FakeResponseFuture.value(family_proto.FamilyTree(members: testMembers)));
+      when(() => mockFamilyClient.getFamilyTree(any())).thenAnswer(
+        (_) => FakeResponseFuture.value(
+          family_proto.FamilyTree(members: testMembers),
+        ),
+      );
 
       // Initialize signal with data
       familyMembersSignal(testFamilyId).value = AsyncState.data(testMembers);
@@ -101,7 +113,12 @@ void main() {
 
     Widget createTestWidget() {
       return MaterialApp(
-        home: FamilyTreeViewPage(familyId: testFamilyId, familyName: testFamilyName),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: FamilyTreeViewPage(
+          familyId: testFamilyId,
+          familyName: testFamilyName,
+        ),
       );
     }
 
@@ -116,7 +133,9 @@ void main() {
       expect(find.text(testFamilyName), findsOneWidget);
     });
 
-    testWidgets('should display loading indicator when members are loading', (tester) async {
+    testWidgets('should display loading indicator when members are loading', (
+      tester,
+    ) async {
       // Arrange
       familyMembersSignal(testFamilyId).value = AsyncState.loading();
 
@@ -127,19 +146,26 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('should display error message when members fail to load', (tester) async {
+    testWidgets('should display error message when members fail to load', (
+      tester,
+    ) async {
       // Arrange
       final error = Exception('Failed to load family members');
-      familyMembersSignal(testFamilyId).value = AsyncState.error(error, StackTrace.empty);
+      familyMembersSignal(testFamilyId).value = AsyncState.error(
+        error,
+        StackTrace.empty,
+      );
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
       // Assert
-      expect(find.textContaining('Error:'), findsOneWidget);
+      expect(find.textContaining(l10n.errorMessage('')), findsOneWidget);
     });
 
-    testWidgets('should display empty state when no members exist', (tester) async {
+    testWidgets('should display empty state when no members exist', (
+      tester,
+    ) async {
       // Arrange
       familyMembersSignal(testFamilyId).value = AsyncState.data([]);
 
@@ -147,11 +173,13 @@ void main() {
       await tester.pump();
 
       // Assert
-      expect(find.textContaining('No members found'), findsOneWidget);
-      expect(find.textContaining('Add First Member'), findsOneWidget);
+      expect(find.text(l10n.noMembersFound), findsOneWidget);
+      expect(find.text(l10n.addFirstMember), findsOneWidget);
     });
 
-    testWidgets('should display family tree canvas when members exist', (tester) async {
+    testWidgets('should display family tree canvas when members exist', (
+      tester,
+    ) async {
       // Arrange
       familyMembersSignal(testFamilyId).value = AsyncState.data(testMembers);
 
@@ -174,10 +202,16 @@ void main() {
       expect(find.byIcon(Icons.person_add), findsOneWidget);
     });
 
-    testWidgets('should show invite dialog when invite menu item is tapped', (tester) async {
+    testWidgets('should show invite dialog when invite menu item is tapped', (
+      tester,
+    ) async {
       // Arrange
       when(() => mockFamilyClient.createInviteToken(any())).thenAnswer(
-        (_) => FakeResponseFuture.value(family_proto.CreateInviteTokenResponse(inviteToken: 'invite-token-123')),
+        (_) => FakeResponseFuture.value(
+          family_proto.CreateInviteTokenResponse(
+            inviteToken: 'invite-token-123',
+          ),
+        ),
       );
 
       await tester.pumpWidget(createTestWidget());
@@ -189,11 +223,53 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text('Invite Member'), findsOneWidget);
+      expect(find.text(l10n.inviteMember), findsOneWidget);
       expect(find.text('invite-token-123'), findsOneWidget);
     });
 
-    testWidgets('should show add member dialog when FAB is tapped', (tester) async {
+    testWidgets('should display a kinship title for the acting member', (
+      tester,
+    ) async {
+      when(() => mockFamilyClient.getKinship(any())).thenAnswer(
+        (_) => FakeResponseFuture.value(
+          family_proto.KinshipRelationship(
+            actingMemberId: 'member3',
+            targetMemberId: 'member1',
+            title: 'Ông nội',
+            relationship: 'grandparent',
+            side: 'paternal',
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createTestWidget());
+      await tester.pump();
+      familyMembersSignal(testFamilyId).value = AsyncState.data(testMembers);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DropdownButtonFormField<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Child Doe').last);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Switch to List'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('John Doe'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Ông nội'), findsOneWidget);
+      expect(find.text('grandparent · paternal'), findsOneWidget);
+      final request =
+          verify(
+                () => mockFamilyClient.getKinship(captureAny()),
+              ).captured.single
+              as family_proto.GetKinshipRequest;
+      expect(request.actingMemberId, 'member3');
+      expect(request.targetMemberId, 'member1');
+    });
+
+    testWidgets('should show add member dialog when FAB is tapped', (
+      tester,
+    ) async {
       // Arrange
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
@@ -203,15 +279,17 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text('Add Member'), findsOneWidget);
-      expect(find.text('Display Name'), findsOneWidget);
+      expect(find.text(l10n.addMember), findsOneWidget);
+      expect(find.text(l10n.displayName), findsOneWidget);
     });
 
     testWidgets('should add member when form is submitted', (tester) async {
       // Arrange
-      when(
-        () => mockFamilyClient.addMember(any()),
-      ).thenAnswer((_) => FakeResponseFuture.value(family_proto.Member(id: 'new', displayName: 'New Member')));
+      when(() => mockFamilyClient.addMember(any())).thenAnswer(
+        (_) => FakeResponseFuture.value(
+          family_proto.Member(id: 'new', displayName: 'New Member'),
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
@@ -221,7 +299,7 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField), 'New Member');
-      await tester.tap(find.text('Add'));
+      await tester.tap(find.text(l10n.add));
       await tester.pumpAndSettle();
 
       // Assert
@@ -229,7 +307,9 @@ void main() {
         () => mockFamilyClient.addMember(
           any(
             that: predicate<family_proto.AddMemberRequest>(
-              (req) => req.familyId == testFamilyId && req.displayName == 'New Member',
+              (req) =>
+                  req.familyId == testFamilyId &&
+                  req.displayName == 'New Member',
             ),
           ),
         ),
@@ -245,14 +325,14 @@ void main() {
       await tester.tap(find.byIcon(Icons.person_add));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Add'));
+      await tester.tap(find.text(l10n.add));
       await tester.pumpAndSettle();
 
       // Assert - Check that client was NOT called
       verifyNever(() => mockFamilyClient.addMember(any()));
 
       // Dialog should still be open
-      expect(find.text('Add Member'), findsOneWidget);
+      expect(find.text(l10n.addMember), findsOneWidget);
     });
 
     testWidgets('should cancel add member dialog', (tester) async {
@@ -264,11 +344,11 @@ void main() {
       await tester.tap(find.byIcon(Icons.person_add));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Cancel'));
+      await tester.tap(find.text(l10n.cancel));
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text('Add Member'), findsNothing);
+      expect(find.text(l10n.addMember), findsNothing);
     });
   });
 }

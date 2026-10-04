@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_package/data/grpc/generated/proto/settings/v1/settings.pb.dart' as proto;
+import 'package:shared_package/data/grpc/generated/proto/settings/v1/settings.pb.dart'
+    as proto;
 import 'package:shared_package/shared_package.dart';
 import 'package:user_app/l10n/app_localizations.dart';
 
@@ -19,13 +20,18 @@ class SettingsPage extends StatelessWidget {
         return settingsAsync.map(
           data: (settings) => _buildSettingsList(context, l10n, settings),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, __) => Center(child: Text('Error: $err')),
+          error: (err, __) =>
+              Center(child: Text(l10n.errorMessage(err.toString()))),
         );
       }),
     );
   }
 
-  Widget _buildSettingsList(BuildContext context, AppLocalizations l10n, UserSettings settings) {
+  Widget _buildSettingsList(
+    BuildContext context,
+    AppLocalizations l10n,
+    UserSettings settings,
+  ) {
     return ListView(
       children: [
         // Language Section

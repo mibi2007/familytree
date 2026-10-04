@@ -23,6 +23,7 @@ service FamilyService {
   
   // Tree Sync
   rpc GetFamilyTree(GetFamilyTreeRequest) returns (FamilyTree);
+  rpc GetKinship(GetKinshipRequest) returns (KinshipRelationship);
   rpc CreateInviteToken(CreateInviteTokenRequest) returns (CreateInviteTokenResponse);
   rpc JoinFamily(JoinFamilyRequest) returns (Family);
 }
@@ -95,6 +96,25 @@ message DeleteMemberRequest {
 message GetFamilyTreeRequest {
   string family_id = 1;
   string version_hash = 2; // For snapshot caching check
+}
+
+message GetKinshipRequest {
+  string family_id = 1;
+  string acting_member_id = 2;
+  string target_member_id = 3;
+}
+
+message KinshipRelationship {
+  string acting_member_id = 1;
+  string target_member_id = 2;
+  string title = 3;
+  string relationship = 4;
+  int32 generation = 5;
+  string side = 6;
+  string gender = 7;
+  string age_order = 8;
+  bool via_spouse = 9;
+  bool ambiguous = 10;
 }
 
 message FamilyTree {

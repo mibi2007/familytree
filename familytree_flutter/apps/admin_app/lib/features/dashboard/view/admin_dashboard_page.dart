@@ -18,9 +18,15 @@ class AdminDashboardPage extends ConsumerWidget {
             children: [
               Text(
                 'System Health',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              IconButton(onPressed: () => ref.invalidate(healthStatusProvider), icon: const Icon(Icons.refresh)),
+              IconButton(
+                onPressed: () => ref.invalidate(healthStatusProvider),
+                icon: const Icon(Icons.refresh),
+                tooltip: 'Refresh system health',
+              ),
             ],
           ),
           const SMaterialSizedBox(height: 24),
@@ -73,13 +79,18 @@ class _HealthCheckWidget extends ConsumerWidget {
             const SizedBox(width: 12),
             Text(
               'Backend Status',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
             ),
             const Spacer(),
             Chip(
               label: Text(
                 overallStatus,
-                style: TextStyle(color: statusColor, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: statusColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               backgroundColor: statusColor.withValues(alpha: 0.1),
               side: BorderSide(color: statusColor),
@@ -95,7 +106,9 @@ class _HealthCheckWidget extends ConsumerWidget {
         const SizedBox(height: 16),
         Text(
           'Last checked: ${_formatTimestamp(health.checkedAt)}',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
         ),
       ],
     );
@@ -121,13 +134,25 @@ class _HealthCheckWidget extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(component.name, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-              Text(component.message, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+              Text(
+                component.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                component.message,
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
             ],
           ),
         ),
         if (component.responseTimeMs > 0)
-          Text('${component.responseTimeMs}ms', style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+          Text(
+            '${component.responseTimeMs}ms',
+            style: TextStyle(color: Colors.grey[600], fontSize: 14),
+          ),
       ],
     );
   }
@@ -137,7 +162,10 @@ class _HealthCheckWidget extends ConsumerWidget {
       children: [
         const Icon(Icons.error_outline, size: 48, color: Colors.red),
         const SizedBox(height: 16),
-        Text('Failed to fetch health status', style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          'Failed to fetch health status',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: 8),
         Text(
           error.toString(),
@@ -185,7 +213,9 @@ class _HealthCheckWidget extends ConsumerWidget {
 
       if (seconds == 0 && nanos == 0) return 'Never';
 
-      final dt = DateTime.fromMillisecondsSinceEpoch(seconds * 1000 + nanos ~/ 1000000).toLocal();
+      final dt = DateTime.fromMillisecondsSinceEpoch(
+        seconds * 1000 + nanos ~/ 1000000,
+      ).toLocal();
       return '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}:${dt.second.toString().padLeft(2, '0')}';
     } catch (e) {
       return 'Unknown';

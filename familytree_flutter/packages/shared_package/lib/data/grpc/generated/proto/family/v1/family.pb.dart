@@ -946,6 +946,246 @@ class GetFamilyTreeRequest extends $pb.GeneratedMessage {
   void clearVersionHash() => $_clearField(2);
 }
 
+class GetKinshipRequest extends $pb.GeneratedMessage {
+  factory GetKinshipRequest({
+    $core.String? familyId,
+    $core.String? actingMemberId,
+    $core.String? targetMemberId,
+  }) {
+    final result = create();
+    if (familyId != null) result.familyId = familyId;
+    if (actingMemberId != null) result.actingMemberId = actingMemberId;
+    if (targetMemberId != null) result.targetMemberId = targetMemberId;
+    return result;
+  }
+
+  GetKinshipRequest._();
+
+  factory GetKinshipRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetKinshipRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetKinshipRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'family.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'familyId')
+    ..aOS(2, _omitFieldNames ? '' : 'actingMemberId')
+    ..aOS(3, _omitFieldNames ? '' : 'targetMemberId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetKinshipRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetKinshipRequest copyWith(void Function(GetKinshipRequest) updates) =>
+      super.copyWith((message) => updates(message as GetKinshipRequest))
+          as GetKinshipRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetKinshipRequest create() => GetKinshipRequest._();
+  @$core.override
+  GetKinshipRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static GetKinshipRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetKinshipRequest>(create);
+  static GetKinshipRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get familyId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set familyId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasFamilyId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFamilyId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get actingMemberId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set actingMemberId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasActingMemberId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearActingMemberId() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get targetMemberId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set targetMemberId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasTargetMemberId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTargetMemberId() => $_clearField(3);
+}
+
+class KinshipRelationship extends $pb.GeneratedMessage {
+  factory KinshipRelationship({
+    $core.String? actingMemberId,
+    $core.String? targetMemberId,
+    $core.String? title,
+    $core.String? relationship,
+    $core.int? generation,
+    $core.String? side,
+    $core.String? gender,
+    $core.String? ageOrder,
+    $core.bool? viaSpouse,
+    $core.bool? ambiguous,
+  }) {
+    final result = create();
+    if (actingMemberId != null) result.actingMemberId = actingMemberId;
+    if (targetMemberId != null) result.targetMemberId = targetMemberId;
+    if (title != null) result.title = title;
+    if (relationship != null) result.relationship = relationship;
+    if (generation != null) result.generation = generation;
+    if (side != null) result.side = side;
+    if (gender != null) result.gender = gender;
+    if (ageOrder != null) result.ageOrder = ageOrder;
+    if (viaSpouse != null) result.viaSpouse = viaSpouse;
+    if (ambiguous != null) result.ambiguous = ambiguous;
+    return result;
+  }
+
+  KinshipRelationship._();
+
+  factory KinshipRelationship.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory KinshipRelationship.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'KinshipRelationship',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'family.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'actingMemberId')
+    ..aOS(2, _omitFieldNames ? '' : 'targetMemberId')
+    ..aOS(3, _omitFieldNames ? '' : 'title')
+    ..aOS(4, _omitFieldNames ? '' : 'relationship')
+    ..aI(5, _omitFieldNames ? '' : 'generation')
+    ..aOS(6, _omitFieldNames ? '' : 'side')
+    ..aOS(7, _omitFieldNames ? '' : 'gender')
+    ..aOS(8, _omitFieldNames ? '' : 'ageOrder')
+    ..aOB(9, _omitFieldNames ? '' : 'viaSpouse')
+    ..aOB(10, _omitFieldNames ? '' : 'ambiguous')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  KinshipRelationship clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  KinshipRelationship copyWith(void Function(KinshipRelationship) updates) =>
+      super.copyWith((message) => updates(message as KinshipRelationship))
+          as KinshipRelationship;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static KinshipRelationship create() => KinshipRelationship._();
+  @$core.override
+  KinshipRelationship createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static KinshipRelationship getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<KinshipRelationship>(create);
+  static KinshipRelationship? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get actingMemberId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set actingMemberId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasActingMemberId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearActingMemberId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get targetMemberId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set targetMemberId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasTargetMemberId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTargetMemberId() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get title => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set title($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasTitle() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTitle() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get relationship => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set relationship($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasRelationship() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearRelationship() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get generation => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set generation($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasGeneration() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearGeneration() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get side => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set side($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasSide() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearSide() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get gender => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set gender($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasGender() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearGender() => $_clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get ageOrder => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set ageOrder($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasAgeOrder() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearAgeOrder() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.bool get viaSpouse => $_getBF(8);
+  @$pb.TagNumber(9)
+  set viaSpouse($core.bool value) => $_setBool(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasViaSpouse() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearViaSpouse() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.bool get ambiguous => $_getBF(9);
+  @$pb.TagNumber(10)
+  set ambiguous($core.bool value) => $_setBool(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasAmbiguous() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearAmbiguous() => $_clearField(10);
+}
+
 class FamilyTree extends $pb.GeneratedMessage {
   factory FamilyTree({
     $core.String? familyId,

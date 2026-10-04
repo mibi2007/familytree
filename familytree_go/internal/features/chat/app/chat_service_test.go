@@ -48,5 +48,31 @@ func TestSendMessage(t *testing.T) {
 	assert.Equal(t, "user-1", msg.SenderID)
 	assert.Equal(t, "Hello", msg.Content)
 	assert.Equal(t, 1, len(repo.messages))
+	assert.Equal(t, domain.MessageTypeText, msg.Type)
 	assert.Equal(t, 1, len(pub.published))
+}
+
+func TestSendMessage_DoesNotAllowForgedAIType(t *testing.T) {
+	repo := &mockChatRepo{}
+	service := NewChatService(repo, &mockPublisher{})
+	ctx := context.WithValue(context.Background(), middleware.UserContextKey, &auth.Token{UID: "user-1"})
+
+	msg, err := service.SendMessage(ctx, "family-1", "forged", domain.MessageTypeAI)
+
+	assert.NoError(t, err)
+	assert.Equal(t, domain.MessageTypeText, msg.Type)
+}
+
+func TestPublishAIReply_UsesVirtualFamilyIdentity(t *testing.T) {
+	repo := &mockChatRepo{}
+	pub := &mockPublisher{}
+	service := NewChatService(repo, pub)
+
+	err := service.PublishAIReply(context.Background(), "family-1", "answer")
+
+	assert.NoError(t, err)
+	assert.Len(t, repo.messages, 1)
+	assert.Equal(t, "@family", repo.messages[0].SenderID)
+	assert.Equal(t, domain.MessageTypeAI, repo.messages[0].Type)
+	assert.Len(t, pub.published, 1)
 }

@@ -6,13 +6,15 @@ import 'package:grpc/service_api.dart';
 import 'package:signals/signals.dart';
 
 import '../config/app_config.dart';
+import '../grpc/generated/proto/ai/v1/ai.pbgrpc.dart';
 import '../grpc/generated/proto/auth/v1/auth.pbgrpc.dart';
 import '../grpc/generated/proto/chat/v1/chat.pbgrpc.dart';
 import '../grpc/generated/proto/family/v1/family.pbgrpc.dart';
 import '../grpc/generated/proto/settings/v1/settings.pbgrpc.dart';
 import '../grpc/generated/proto/system/v1/system.pbgrpc.dart';
 // Conditional import for channel
-import '../grpc/grpc_channel_io.dart' if (dart.library.js_interop) '../grpc/grpc_channel_web.dart';
+import '../grpc/grpc_channel_io.dart'
+    if (dart.library.js_interop) '../grpc/grpc_channel_web.dart';
 import '../grpc/grpc_interceptor.dart';
 import 'auth_repository_signal.dart';
 
@@ -27,6 +29,7 @@ void initGrpcChannel(AppConfig config) {
 // ============================================================================
 // Mocks for Testing
 // ============================================================================
+final mockAIClientSignal = signal<AIServiceClient?>(null);
 final mockAuthClientSignal = signal<AuthServiceClient?>(null);
 final mockFamilyClientSignal = signal<FamilyServiceClient?>(null);
 final mockChatClientSignal = signal<ChatServiceClient?>(null);
@@ -43,32 +46,48 @@ final authClientSignal = computed<AuthServiceClient>(() {
 
   final channel = grpcChannelSignal.value;
   if (channel == null) {
-    throw StateError('gRPC channel not initialized. Call initGrpcChannel() first.');
+    throw StateError(
+      'gRPC channel not initialized. Call initGrpcChannel() first.',
+    );
   }
 
   final authRepo = authRepositorySignal.value;
   if (authRepo == null) {
-    throw StateError('Auth repository not initialized. Call initAuthRepository() first.');
+    throw StateError(
+      'Auth repository not initialized. Call initAuthRepository() first.',
+    );
   }
 
-  return AuthServiceClient(channel, interceptors: [GrpcAuthInterceptor(authRepo)]);
+  return AuthServiceClient(
+    channel,
+    interceptors: [GrpcAuthInterceptor(authRepo)],
+  );
 });
 
 /// Family service client signal
 final familyClientSignal = computed<FamilyServiceClient>(() {
-  if (mockFamilyClientSignal.value != null) return mockFamilyClientSignal.value!;
+  if (mockFamilyClientSignal.value != null) {
+    return mockFamilyClientSignal.value!;
+  }
 
   final channel = grpcChannelSignal.value;
   if (channel == null) {
-    throw StateError('gRPC channel not initialized. Call initGrpcChannel() first.');
+    throw StateError(
+      'gRPC channel not initialized. Call initGrpcChannel() first.',
+    );
   }
 
   final authRepo = authRepositorySignal.value;
   if (authRepo == null) {
-    throw StateError('Auth repository not initialized. Call initAuthRepository() first.');
+    throw StateError(
+      'Auth repository not initialized. Call initAuthRepository() first.',
+    );
   }
 
-  return FamilyServiceClient(channel, interceptors: [GrpcAuthInterceptor(authRepo)]);
+  return FamilyServiceClient(
+    channel,
+    interceptors: [GrpcAuthInterceptor(authRepo)],
+  );
 });
 
 /// Chat service client signal
@@ -77,24 +96,59 @@ final chatClientSignal = computed<ChatServiceClient>(() {
 
   final channel = grpcChannelSignal.value;
   if (channel == null) {
-    throw StateError('gRPC channel not initialized. Call initGrpcChannel() first.');
+    throw StateError(
+      'gRPC channel not initialized. Call initGrpcChannel() first.',
+    );
   }
 
   final authRepo = authRepositorySignal.value;
   if (authRepo == null) {
-    throw StateError('Auth repository not initialized. Call initAuthRepository() first.');
+    throw StateError(
+      'Auth repository not initialized. Call initAuthRepository() first.',
+    );
   }
 
-  return ChatServiceClient(channel, interceptors: [GrpcAuthInterceptor(authRepo)]);
+  return ChatServiceClient(
+    channel,
+    interceptors: [GrpcAuthInterceptor(authRepo)],
+  );
+});
+
+/// AI service client signal
+final aiClientSignal = computed<AIServiceClient>(() {
+  if (mockAIClientSignal.value != null) return mockAIClientSignal.value!;
+
+  final channel = grpcChannelSignal.value;
+  if (channel == null) {
+    throw StateError(
+      'gRPC channel not initialized. Call initGrpcChannel() first.',
+    );
+  }
+
+  final authRepo = authRepositorySignal.value;
+  if (authRepo == null) {
+    throw StateError(
+      'Auth repository not initialized. Call initAuthRepository() first.',
+    );
+  }
+
+  return AIServiceClient(
+    channel,
+    interceptors: [GrpcAuthInterceptor(authRepo)],
+  );
 });
 
 /// System service client signal
 final systemClientSignal = computed<SystemServiceClient>(() {
-  if (mockSystemClientSignal.value != null) return mockSystemClientSignal.value!;
+  if (mockSystemClientSignal.value != null) {
+    return mockSystemClientSignal.value!;
+  }
 
   final channel = grpcChannelSignal.value;
   if (channel == null) {
-    throw StateError('gRPC channel not initialized. Call initGrpcChannel() first.');
+    throw StateError(
+      'gRPC channel not initialized. Call initGrpcChannel() first.',
+    );
   }
 
   return SystemServiceClient(channel);
@@ -102,19 +156,28 @@ final systemClientSignal = computed<SystemServiceClient>(() {
 
 /// Settings service client signal
 final settingsClientSignal = computed<SettingsServiceClient>(() {
-  if (mockSettingsClientSignal.value != null) return mockSettingsClientSignal.value!;
+  if (mockSettingsClientSignal.value != null) {
+    return mockSettingsClientSignal.value!;
+  }
 
   final channel = grpcChannelSignal.value;
   if (channel == null) {
-    throw StateError('gRPC channel not initialized. Call initGrpcChannel() first.');
+    throw StateError(
+      'gRPC channel not initialized. Call initGrpcChannel() first.',
+    );
   }
 
   final authRepo = authRepositorySignal.value;
   if (authRepo == null) {
-    throw StateError('Auth repository not initialized. Call initAuthRepository() first.');
+    throw StateError(
+      'Auth repository not initialized. Call initAuthRepository() first.',
+    );
   }
 
-  return SettingsServiceClient(channel, interceptors: [GrpcAuthInterceptor(authRepo)]);
+  return SettingsServiceClient(
+    channel,
+    interceptors: [GrpcAuthInterceptor(authRepo)],
+  );
 });
 
 /// Dispose gRPC channel and clients

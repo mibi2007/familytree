@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 # Generate Dart gRPC specific code
 # Run this from the project root
 
@@ -15,6 +17,7 @@ protoc --dart_out=grpc:familytree_flutter/packages/shared_package/lib/data/grpc/
     proto/chat/v1/chat.proto \
     proto/system/v1/system.proto \
     proto/settings/v1/settings.proto \
+    proto/ai/v1/ai.proto \
     google/protobuf/timestamp.proto \
     google/protobuf/empty.proto
 

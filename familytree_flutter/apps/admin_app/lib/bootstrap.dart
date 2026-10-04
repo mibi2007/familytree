@@ -12,6 +12,7 @@ Future<void> bootstrap({
   String appTitle = 'Family Chat Admin',
   Color seedColor = Colors.blueGrey,
   bool initFirebase = true,
+  Future<void> Function()? beforeRunApp,
 }) async {
   await sharedBootstrap(
     firebaseOptions: firebaseOptions,
@@ -20,6 +21,7 @@ Future<void> bootstrap({
     grpcPort: grpcPort,
     useSecureGrpc: useSecureGrpc,
     initFirebase: initFirebase,
+    beforeRunApp: beforeRunApp,
     builder: (config) => AdminApp(title: appTitle, seedColor: seedColor),
   );
 }

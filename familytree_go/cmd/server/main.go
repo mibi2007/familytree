@@ -10,6 +10,10 @@ import (
 
 	"github.com/mibi2007/familytree/familytree_go/internal/config"
 	"github.com/mibi2007/familytree/familytree_go/internal/db"
+	aiApp "github.com/mibi2007/familytree/familytree_go/internal/features/ai/app"
+	aiGenkit "github.com/mibi2007/familytree/familytree_go/internal/features/ai/data/genkit"
+	aiPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/ai/data/postgres"
+	aiGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/ai/interfaces/grpc"
 	authApp "github.com/mibi2007/familytree/familytree_go/internal/features/auth/app"
 	authPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/auth/data/postgres"
 	authGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/auth/interfaces/grpc"
@@ -26,6 +30,7 @@ import (
 	systemPostgres "github.com/mibi2007/familytree/familytree_go/internal/features/system/data/postgres"
 	systemGrpc "github.com/mibi2007/familytree/familytree_go/internal/features/system/interfaces/grpc"
 	"github.com/mibi2007/familytree/familytree_go/internal/middleware"
+	aiv1 "github.com/mibi2007/familytree/familytree_go/proto/ai/v1"
 	authv1 "github.com/mibi2007/familytree/familytree_go/proto/auth/v1"
 	chatv1 "github.com/mibi2007/familytree/familytree_go/proto/chat/v1"
 	familyv1 "github.com/mibi2007/familytree/familytree_go/proto/family/v1"
@@ -46,6 +51,25 @@ import (
 
 func main() {
 	cfg := config.Load()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// 0. AI Foundation Bootstrap
+	aiProvider := aiGenkit.NewProvider(aiGenkit.ProviderConfig{
+		Enabled:      cfg.AIEnabled,
+		ProviderName: cfg.AIProvider,
+		GeminiAPIKey: cfg.GeminiAPIKey,
+	})
+	aiBootstrap := aiApp.NewBootstrapServiceWithProvider(aiProvider)
+	if err := aiBootstrap.Initialize(ctx); err != nil {
+		log.Fatalf("failed to bootstrap ai foundation: %v", err)
+	}
+
+	if aiBootstrap.Enabled() {
+		log.Printf("AI foundation enabled (provider=%s)", aiBootstrap.ProviderName())
+	} else {
+		log.Printf("AI foundation disabled (set AI_ENABLED=true to enable)")
+	}
 
 	// 1. Database Connection
 	dbConn, err := db.Connect(cfg.DBConn)
@@ -94,6 +118,7 @@ func main() {
 	logRepo := systemPostgres.NewLogRepository(dbConn)
 	chatRepo := chatPostgres.NewChatRepository(dbConn)
 	settingsRepo := settingsPostgres.NewPostgresSettingsRepository(dbConn)
+	aiContextRepo := aiPostgres.NewContextRepository(dbConn)
 
 	// 4. Initialize Services (Application Layer)
 	authService := authApp.NewAuthService(tokenRepo, userRepo, adminRepo)
@@ -102,11 +127,15 @@ func main() {
 	chatService := chatApp.NewChatService(chatRepo, chatPublisher)
 	systemService := systemApp.NewSystemService(dbConn, gcsClient)
 	settingsService := settingsApp.NewSettingsService(settingsRepo)
+	kinshipService := familyApp.NewKinshipService(memberRepo, familyRepo)
+	aiContextBuilder := aiApp.NewContextBuilder(aiContextRepo, kinshipService)
+	aiAssistant := aiApp.NewAssistantService(aiContextBuilder, aiGenkit.NewAgent(aiProvider), aiPostgres.NewFamilyAccessService(dbConn), chatService)
+	aiHandler := aiGrpc.NewAIHandler(aiBootstrap, aiAssistant)
+	if !aiHandler.Ready() {
+		log.Fatal("failed to bootstrap ai module: handler is not ready")
+	}
 
 	// 5. Start Background Jobs
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
 	cleanupJob := authApp.NewTokenCleanupJob(tokenRepo)
 	go cleanupJob.Start(ctx, 24*time.Hour)
 
@@ -126,10 +155,11 @@ func main() {
 
 	// 8. Register Services (Interface Layer)
 	authv1.RegisterAuthServiceServer(s, authGrpc.NewAuthHandler(authService))
-	familyv1.RegisterFamilyServiceServer(s, familyGrpc.NewFamilyHandler(familyService))
+	familyv1.RegisterFamilyServiceServer(s, familyGrpc.NewFamilyHandler(familyService, kinshipService))
 	chatv1.RegisterChatServiceServer(s, chatGrpc.NewChatHandler(chatService))
 	systemv1.RegisterSystemServiceServer(s, systemGrpc.NewSystemHandler(systemService))
 	settingsv1.RegisterSettingsServiceServer(s, settingsGrpc.NewSettingsHandler(settingsService))
+	aiv1.RegisterAIServiceServer(s, aiHandler)
 
 	// 9. Reflection for Debugging
 	reflection.Register(s)

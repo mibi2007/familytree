@@ -235,6 +235,48 @@ final $typed_data.Uint8List getFamilyTreeRequestDescriptor = $convert.base64Deco
     'ChRHZXRGYW1pbHlUcmVlUmVxdWVzdBIbCglmYW1pbHlfaWQYASABKAlSCGZhbWlseUlkEiEKDH'
     'ZlcnNpb25faGFzaBgCIAEoCVILdmVyc2lvbkhhc2g=');
 
+@$core.Deprecated('Use getKinshipRequestDescriptor instead')
+const GetKinshipRequest$json = {
+  '1': 'GetKinshipRequest',
+  '2': [
+    {'1': 'family_id', '3': 1, '4': 1, '5': 9, '10': 'familyId'},
+    {'1': 'acting_member_id', '3': 2, '4': 1, '5': 9, '10': 'actingMemberId'},
+    {'1': 'target_member_id', '3': 3, '4': 1, '5': 9, '10': 'targetMemberId'},
+  ],
+};
+
+/// Descriptor for `GetKinshipRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getKinshipRequestDescriptor = $convert.base64Decode(
+    'ChFHZXRLaW5zaGlwUmVxdWVzdBIbCglmYW1pbHlfaWQYASABKAlSCGZhbWlseUlkEigKEGFjdG'
+    'luZ19tZW1iZXJfaWQYAiABKAlSDmFjdGluZ01lbWJlcklkEigKEHRhcmdldF9tZW1iZXJfaWQY'
+    'AyABKAlSDnRhcmdldE1lbWJlcklk');
+
+@$core.Deprecated('Use kinshipRelationshipDescriptor instead')
+const KinshipRelationship$json = {
+  '1': 'KinshipRelationship',
+  '2': [
+    {'1': 'acting_member_id', '3': 1, '4': 1, '5': 9, '10': 'actingMemberId'},
+    {'1': 'target_member_id', '3': 2, '4': 1, '5': 9, '10': 'targetMemberId'},
+    {'1': 'title', '3': 3, '4': 1, '5': 9, '10': 'title'},
+    {'1': 'relationship', '3': 4, '4': 1, '5': 9, '10': 'relationship'},
+    {'1': 'generation', '3': 5, '4': 1, '5': 5, '10': 'generation'},
+    {'1': 'side', '3': 6, '4': 1, '5': 9, '10': 'side'},
+    {'1': 'gender', '3': 7, '4': 1, '5': 9, '10': 'gender'},
+    {'1': 'age_order', '3': 8, '4': 1, '5': 9, '10': 'ageOrder'},
+    {'1': 'via_spouse', '3': 9, '4': 1, '5': 8, '10': 'viaSpouse'},
+    {'1': 'ambiguous', '3': 10, '4': 1, '5': 8, '10': 'ambiguous'},
+  ],
+};
+
+/// Descriptor for `KinshipRelationship`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List kinshipRelationshipDescriptor = $convert.base64Decode(
+    'ChNLaW5zaGlwUmVsYXRpb25zaGlwEigKEGFjdGluZ19tZW1iZXJfaWQYASABKAlSDmFjdGluZ0'
+    '1lbWJlcklkEigKEHRhcmdldF9tZW1iZXJfaWQYAiABKAlSDnRhcmdldE1lbWJlcklkEhQKBXRp'
+    'dGxlGAMgASgJUgV0aXRsZRIiCgxyZWxhdGlvbnNoaXAYBCABKAlSDHJlbGF0aW9uc2hpcBIeCg'
+    'pnZW5lcmF0aW9uGAUgASgFUgpnZW5lcmF0aW9uEhIKBHNpZGUYBiABKAlSBHNpZGUSFgoGZ2Vu'
+    'ZGVyGAcgASgJUgZnZW5kZXISGwoJYWdlX29yZGVyGAggASgJUghhZ2VPcmRlchIdCgp2aWFfc3'
+    'BvdXNlGAkgASgIUgl2aWFTcG91c2USHAoJYW1iaWd1b3VzGAogASgIUglhbWJpZ3VvdXM=');
+
 @$core.Deprecated('Use familyTreeDescriptor instead')
 const FamilyTree$json = {
   '1': 'FamilyTree',

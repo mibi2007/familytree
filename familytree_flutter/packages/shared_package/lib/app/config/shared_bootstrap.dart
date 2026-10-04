@@ -9,6 +9,7 @@ Future<void> sharedBootstrap({
   int grpcPort = 50051,
   bool useSecureGrpc = true,
   bool initFirebase = true,
+  Future<void> Function()? beforeRunApp,
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -64,6 +65,8 @@ Future<void> sharedBootstrap({
     initAuthRepository();
   }
 
+  await beforeRunApp?.call();
+
   // 4. Global Auth State Listener
   // Syncs settings when user logs in/out
   authUserSignal.subscribe((authState) {
@@ -79,5 +82,10 @@ Future<void> sharedBootstrap({
   });
 
   // 5. Run App
-  runApp(ProviderScope(overrides: [appConfigProvider.overrideWithValue(appConfig)], child: builder(appConfig)));
+  runApp(
+    ProviderScope(
+      overrides: [appConfigProvider.overrideWithValue(appConfig)],
+      child: builder(appConfig),
+    ),
+  );
 }

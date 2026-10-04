@@ -7,6 +7,20 @@ This workflow guides you through starting the full Family Tree ecosystem locally
 ### 1. Prerequisites
 - Ensure [Docker Desktop](https://www.docker.com/products/docker-desktop/) is running (for PostgreSQL).
 - Ensure [Firebase CLI](https://firebase.google.com/docs/cli) is installed (`npm install -g firebase-tools`).
+- Setup development toolchains (Go + protobuf):
+  ```bash
+  task setup-dev
+  ```
+  or run individually:
+  ```bash
+  ./scripts/setup_go_dev.sh
+  ./scripts/setup_proto_dev.sh
+  ```
+  (see `.agent/workflows/setup-go-dev.md` and `.agent/workflows/setup-proto-dev.md`)
+- Run tooling health check:
+  ```bash
+  task doctor
+  ```
 
 ### 2. Start PostgreSQL
 Ensure the PostgreSQL service is running on your Windows machine.

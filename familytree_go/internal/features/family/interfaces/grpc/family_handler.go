@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"errors"
 
 	"github.com/mibi2007/familytree/familytree_go/internal/features/family/app"
 	"github.com/mibi2007/familytree/familytree_go/internal/features/family/domain"
@@ -15,12 +16,52 @@ import (
 type FamilyHandler struct {
 	familyv1.UnimplementedFamilyServiceServer
 	appService *app.FamilyService
+	kinship    *app.KinshipService
 }
 
-func NewFamilyHandler(appService *app.FamilyService) *FamilyHandler {
+func NewFamilyHandler(appService *app.FamilyService, kinship *app.KinshipService) *FamilyHandler {
 	return &FamilyHandler{
 		appService: appService,
+		kinship:    kinship,
 	}
+}
+
+func (s *FamilyHandler) GetKinship(ctx context.Context, req *familyv1.GetKinshipRequest) (*familyv1.KinshipRelationship, error) {
+	if req == nil || req.FamilyId == "" || req.ActingMemberId == "" || req.TargetMemberId == "" {
+		return nil, status.Error(codes.InvalidArgument, "family, acting member, and target member are required")
+	}
+	if s == nil || s.kinship == nil {
+		return nil, status.Error(codes.Unavailable, "kinship service is unavailable")
+	}
+
+	result, err := s.kinship.Calculate(ctx, req.FamilyId, req.ActingMemberId, req.TargetMemberId)
+	if err != nil {
+		switch {
+		case errors.Is(err, domain.ErrKinshipUnauthenticated):
+			return nil, status.Error(codes.Unauthenticated, err.Error())
+		case errors.Is(err, domain.ErrKinshipAccessDenied):
+			return nil, status.Error(codes.PermissionDenied, err.Error())
+		case errors.Is(err, domain.ErrKinshipMemberNotFound):
+			return nil, status.Error(codes.NotFound, err.Error())
+		case errors.Is(err, domain.ErrKinshipNotResolved):
+			return nil, status.Error(codes.FailedPrecondition, err.Error())
+		default:
+			return nil, status.Error(codes.Internal, "failed to calculate kinship")
+		}
+	}
+
+	return &familyv1.KinshipRelationship{
+		ActingMemberId: result.ActorID,
+		TargetMemberId: result.TargetID,
+		Title:          result.Title,
+		Relationship:   string(result.Kind),
+		Generation:     int32(result.Generation),
+		Side:           string(result.Side),
+		Gender:         string(result.Gender),
+		AgeOrder:       string(result.AgeOrder),
+		ViaSpouse:      result.ViaSpouse,
+		Ambiguous:      result.Ambiguous,
+	}, nil
 }
 
 func (s *FamilyHandler) CreateFamily(ctx context.Context, req *familyv1.CreateFamilyRequest) (*familyv1.Family, error) {

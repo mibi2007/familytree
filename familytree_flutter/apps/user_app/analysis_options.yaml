@@ -7,6 +7,20 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+    # These entrypoints depend on environment-specific FlutterFire output.
+    - lib/main_dev.dart
+    - lib/main_local.dart
+    - lib/main_mock.dart
+    - lib/main_prod.dart
 include: package:flutter_lints/flutter.yaml
 
 linter:

@@ -111,6 +111,9 @@ func (s *AuthService) ValidateInviteToken(ctx context.Context, tokenStr string) 
 		// return specific errors if needed
 		return nil, false, err
 	}
+	if token == nil {
+		return nil, false, nil
+	}
 
 	if token.IsUsed {
 		return token, false, nil
@@ -134,6 +137,7 @@ func (s *AuthService) RegisterUser(ctx context.Context, uid string, email string
 		DisplayName:   displayName,
 		PhotoURL:      photoURL,
 		EmailVerified: emailVerified,
+		Role:          domain.SystemRoleUser,
 	}
 
 	if err := s.userRepo.UpsertUser(ctx, user); err != nil {
@@ -150,6 +154,7 @@ func (s *AuthService) UpdateUserProfile(ctx context.Context, uid string, email s
 		DisplayName:   displayName,
 		PhotoURL:      photoURL,
 		EmailVerified: emailVerified,
+		Role:          domain.SystemRoleUser,
 	}
 	// TODO: Maybe only update specific fields or check for changes
 

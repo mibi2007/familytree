@@ -2,7 +2,8 @@
   "projects": {
     "default": "mibi-family-tree",
     "prod": "mibi-family-tree",
-    "dev": "mibi-family-tree-dev"
+    "dev": "mibi-family-tree-dev",
+    "stg": "mibi-family-tree-dev"
   },
   "targets": {
     "mibi-family-tree": {
@@ -34,8 +35,15 @@
         ],
         "admin_prod": [
           "mibi-family-tree-admin"
+        ],
+        "user_stg": [
+          "mibi-family-tree-stg"
+        ],
+        "admin_stg": [
+          "mibi-family-tree-admin-stg"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }

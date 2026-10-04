@@ -21,7 +21,10 @@ func (r *MemberRepository) Create(ctx context.Context, m *domain.Member) error {
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), NOW())
 		RETURNING created_at, updated_at
 	`
-	var parentID, spouseID, userID sql.NullString
+	var birthDate, parentID, spouseID, userID sql.NullString
+	if m.BirthDate != "" {
+		birthDate = sql.NullString{String: m.BirthDate, Valid: true}
+	}
 	if m.ParentID != "" {
 		parentID = sql.NullString{String: m.ParentID, Valid: true}
 	}
@@ -33,13 +36,13 @@ func (r *MemberRepository) Create(ctx context.Context, m *domain.Member) error {
 	}
 
 	return r.db.QueryRowContext(ctx, query,
-		m.ID, m.FamilyID, m.DisplayName, m.BirthDate, m.Gender, m.Level, parentID, spouseID, userID,
+		m.ID, m.FamilyID, m.DisplayName, birthDate, m.Gender, m.Level, parentID, spouseID, userID,
 	).Scan(&m.CreatedAt, &m.UpdatedAt)
 }
 
 func (r *MemberRepository) GetByID(ctx context.Context, id string) (*domain.Member, error) {
 	query := `
-		SELECT id, family_id, display_name, birth_date, gender, level, parent_id, spouse_id, user_id, created_at, updated_at
+		SELECT id, family_id, display_name, birth_date::text, gender, level, parent_id, spouse_id, user_id, created_at, updated_at
 		FROM family_members
 		WHERE id = $1
 	`
@@ -81,7 +84,10 @@ func (r *MemberRepository) Update(ctx context.Context, m *domain.Member) error {
 		SET family_id = $1, display_name = $2, birth_date = $3, gender = $4, level = $5, parent_id = $6, spouse_id = $7, user_id = $8, updated_at = NOW()
 		WHERE id = $9
 	`
-	var parentID, spouseID, userID sql.NullString
+	var birthDate, parentID, spouseID, userID sql.NullString
+	if m.BirthDate != "" {
+		birthDate = sql.NullString{String: m.BirthDate, Valid: true}
+	}
 	if m.ParentID != "" {
 		parentID = sql.NullString{String: m.ParentID, Valid: true}
 	}
@@ -93,7 +99,7 @@ func (r *MemberRepository) Update(ctx context.Context, m *domain.Member) error {
 	}
 
 	_, err := r.db.ExecContext(ctx, query,
-		m.FamilyID, m.DisplayName, m.BirthDate, m.Gender, m.Level, parentID, spouseID, userID, m.ID,
+		m.FamilyID, m.DisplayName, birthDate, m.Gender, m.Level, parentID, spouseID, userID, m.ID,
 	)
 	return err
 }
@@ -106,7 +112,7 @@ func (r *MemberRepository) Delete(ctx context.Context, id string) error {
 
 func (r *MemberRepository) ListByFamily(ctx context.Context, familyID string) ([]*domain.Member, error) {
 	query := `
-		SELECT id, family_id, display_name, birth_date, gender, level, parent_id, spouse_id, user_id, created_at, updated_at
+		SELECT id, family_id, display_name, birth_date::text, gender, level, parent_id, spouse_id, user_id, created_at, updated_at
 		FROM family_members
 		WHERE family_id = $1
 		ORDER BY level ASC, created_at ASC

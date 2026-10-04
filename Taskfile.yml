@@ -12,9 +12,15 @@ tasks:
       - echo "  task proto      - Generate both Go and Flutter Protobufs & Swagger"
       - echo "  task proto-go   - Generate Go Protobufs & Swagger"
       - echo "  task proto-dart - Generate Flutter Protobufs"
+      - echo "  task setup-go      - Setup Go toolchain + Go proto plugins"
+      - echo "  task setup-proto   - Setup protoc + proto plugins (Go/Dart)"
+      - echo "  task setup-dev     - Setup both Go and protobuf toolchains"
+      - echo "  task doctor        - Validate local development tooling"
       - echo "  task run-be     - Run the Go Backend (Dev Env)"
       - echo "  task run-fe-user  - Run User App (Dev)"
       - echo "  task run-fe-admin - Run Admin App (Dev)"
+      - echo "  task e2e:install  - Install Playwright and Chromium"
+      - echo "  task e2e:test     - Run the local Playwright E2E suite"
     silent: true
 
   proto:
@@ -25,14 +31,14 @@ tasks:
     desc: Generate Go codes and Swagger
     cmds:
       - echo "Generating Go Protos..."
-      - protoc --go_out=familytree_go --go_opt=paths=source_relative --go-grpc_out=familytree_go --go-grpc_opt=paths=source_relative -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto
+      - protoc --go_out=familytree_go --go_opt=paths=source_relative --go-grpc_out=familytree_go --go-grpc_opt=paths=source_relative -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto proto/settings/v1/settings.proto
       - echo "Generating Swagger definitions..."
       # Create directory (ignore error if exists)
       - cmd: powershell -Command "New-Item -ItemType Directory -Force -Path 'familytree_flutter/apps/admin_app/web/swagger' | Out-Null"
         platforms: [windows]
       - cmd: mkdir -p familytree_flutter/apps/admin_app/web/swagger
         platforms: [linux, darwin]
-      - protoc --openapiv2_out=json_names_for_fields=false:familytree_flutter/apps/admin_app/web/swagger --openapiv2_opt=allow_merge=true,merge_file_name=api -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto
+      - protoc --openapiv2_out=json_names_for_fields=false:familytree_flutter/apps/admin_app/web/swagger --openapiv2_opt=allow_merge=true,merge_file_name=api -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto proto/settings/v1/settings.proto
 
   proto-dart:
     desc: Generate Dart codes
@@ -43,7 +49,26 @@ tasks:
         platforms: [windows]
       - cmd: mkdir -p familytree_flutter/packages/shared_package/lib/data/grpc/generated
         platforms: [linux, darwin]
-      - protoc --dart_out=grpc:familytree_flutter/packages/shared_package/lib/data/grpc/generated -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto google/protobuf/timestamp.proto google/protobuf/empty.proto
+      - protoc --dart_out=grpc:familytree_flutter/packages/shared_package/lib/data/grpc/generated -I . proto/common/v1/common.proto proto/auth/v1/auth.proto proto/family/v1/family.proto proto/chat/v1/chat.proto proto/system/v1/system.proto proto/settings/v1/settings.proto google/protobuf/timestamp.proto google/protobuf/empty.proto
+
+  setup-go:
+    desc: Setup Go toolchain + Go proto plugins
+    cmds:
+      - bash scripts/setup_go_dev.sh
+
+  setup-proto:
+    desc: Setup protoc + protobuf plugins for Go and Dart
+    cmds:
+      - bash scripts/setup_proto_dev.sh
+
+  setup-dev:
+    desc: Setup both Go and protobuf toolchains
+    deps: [setup-go, setup-proto]
+
+  doctor:
+    desc: Validate local development tooling
+    cmds:
+      - bash scripts/doctor_dev.sh
 
   run-be:
     desc: Run Backend
@@ -69,3 +94,28 @@ tasks:
     dir: familytree_flutter/apps/admin_app
     cmds:
       - flutter run -d chrome --target lib/main_dev.dart --web-port 8081
+
+  e2e:install:
+    desc: Install Playwright dependencies and Chromium
+    dir: e2e
+    cmds:
+      - bun install
+      - bun run install:browsers
+
+  e2e:test:
+    desc: Reset the local E2E stack and run Playwright
+    dir: e2e
+    cmds:
+      - bun run test
+
+  e2e:test-ui:
+    desc: Run Playwright with the interactive UI
+    dir: e2e
+    cmds:
+      - bun run test:ui
+
+  e2e:report:
+    desc: Open the latest Playwright HTML report
+    dir: e2e
+    cmds:
+      - bun run report

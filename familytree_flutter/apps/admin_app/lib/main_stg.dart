@@ -1,12 +1,12 @@
-// import 'package:shared_package/shared_package.dart';
+import 'package:shared_package/shared_package.dart';
 
-// import 'bootstrap.dart';
-// import 'core/config/firebase_options_stg.dart';
+import 'bootstrap.dart';
+import 'core/config/firebase_options_stg.dart';
 
-// void main() async {
-//   await bootstrap(
-//     firebaseOptions: DefaultFirebaseOptionsStg.currentPlatform,
-//     environment: AppEnvironment.stg,
-//     appTitle: 'Admin App (DEV)',
-//   );
-// }
+void main() async {
+  await bootstrap(
+    firebaseOptions: DefaultFirebaseOptionsStg.currentPlatform,
+    environment: AppEnvironment.stg,
+    appTitle: 'Admin App (STG)',
+  );
+}

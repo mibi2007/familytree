@@ -142,6 +142,9 @@ func (s *FamilyService) JoinFamily(ctx context.Context, inviteToken string) (*do
 	if err != nil {
 		return nil, fmt.Errorf("invalid token")
 	}
+	if token == nil {
+		return nil, fmt.Errorf("invalid token")
+	}
 	if token.IsUsed {
 		return nil, fmt.Errorf("token already used")
 	}

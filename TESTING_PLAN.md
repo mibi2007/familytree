@@ -6,7 +6,9 @@
 
 ---
 
-## 📊 Current State
+## 📊 Historical Baseline
+
+The percentages below are the original February 2026 baseline. They must not be treated as current until fresh coverage reports are generated.
 
 ### Backend (Go) - **70%** ✅
 - ✅ Auth Service: 80%
@@ -65,18 +67,37 @@
    - [x] Test panic recovery
    - **Estimated Coverage**: +10%
 
-### Phase 3: Integration Tests (Priority: LOW)
+### Phase 3: Integration Tests (COMPLETE)
 **Goal**: End-to-end flow validation
 
-6. **User Flow Integration** (`user_app/integration_test/`)
-   - [ ] Login → Create Family → Add Member → Send Message
-   - [ ] Join Family via invite token
-   - **Estimated Coverage**: +5%
+Browser-level system tests use Playwright in `e2e/` and validate Firebase, gRPC-Web, Go, and PostgreSQL together. Separate Flutter `integration_test` duplication is not required for these system flows.
 
-7. **Admin Flow Integration** (`admin_app/integration_test/`)
-   - [ ] Login → Approve Request → Revoke Admin
-   - [ ] Generate invite token
-   - **Estimated Coverage**: +5%
+6. **User Flow Integration** (`e2e/tests/user/`)
+   - [x] Login → Create Family → Add Member → Send Message
+   - [x] Join Family via invite token
+   - [x] Parent/child creation and kinship lookup
+   - [x] Invalid and reused invite-token handling
+
+7. **Admin Flow Integration** (`e2e/tests/admin/`)
+   - [x] Login → Approve Request → Revoke Admin
+   - [x] Generate invite token (covered by Playwright)
+   - [x] Pending/rejected onboarding routing
+   - [x] Submit onboarding request → visible to root admin
+
+8. **Playwright System E2E** (`e2e/`)
+   - [x] Deterministic local stack and seeded identities
+   - [x] User/admin smoke coverage
+   - [x] Invalid user credential feedback
+   - [x] Email signup, backend profile registration, and re-login
+   - [x] English/Vietnamese localization key parity, rendering, and persisted language switching
+   - [x] Theme and notification preference persistence
+   - [x] Authenticated user logout
+   - [x] Create family → add member → invite/join → chat flow
+   - [x] Parent/child member creation and kinship lookup
+   - [x] Invalid and single-use family invite-token enforcement without backend interruption
+   - [x] Admin health, onboarding submission/routing, request approval/rejection, and revocation flows
+   - [x] Admin invitation-token generation, expiry, and copy controls
+   - [x] Full traces, videos, and screenshots for every test
 
 ---
 
@@ -84,31 +105,30 @@
 
 ### Immediate Actions (Today)
 - [x] Create TESTING_PLAN.md
-- [ ] Implement Chat Provider Tests
-- [ ] Implement Chat Page Widget Tests
-- [ ] Implement Family Tree View Tests
+- [x] Implement Chat Provider Tests
+- [x] Implement Chat Page Widget Tests
+- [x] Implement Family Tree View Tests
 
 ### This Week
-- [ ] Improve Chat Service Tests
-- [ ] Add Middleware Tests
+- [x] Improve Chat Service Tests
+- [x] Add Middleware Tests
 - [ ] Run full test suite and measure coverage
 
 ### Next Week
-- [ ] Integration tests for User App
-- [ ] Integration tests for Admin App
-- [ ] CI/CD pipeline integration
+- [x] Integration tests for User App via Playwright
+- [x] Integration tests for Admin App via Playwright
 
 ---
 
 ## 🎯 Success Metrics
 
-| Metric | Current | Target | Status |
-|--------|---------|--------|--------|
-| Overall Coverage | 55% | 65% | 🔴 In Progress |
-| Backend Coverage | 70% | 80% | 🟡 Good |
-| Frontend Coverage | 40% | 60% | 🔴 Needs Work |
-| User App Widgets | 20% | 60% | 🔴 Critical |
-| Chat Features | 35% | 70% | 🔴 Critical |
+| Metric | Historical | Target | Current Status |
+|--------|------------|--------|----------------|
+| Overall Coverage | 55% | 65% | Needs fresh measurement |
+| Backend Coverage | 70% | 80% | Needs fresh measurement |
+| Frontend Coverage | 40% | 60% | Needs fresh measurement |
+| User App Widgets | 20% | 60% | Needs fresh measurement |
+| Chat Features | 35% | 70% | Needs fresh measurement |
 
 ---
 
@@ -208,14 +228,12 @@ func TestServiceMethod(t *testing.T) {
 
 ## 🚀 Next Steps
 
-1. **Prioritize Chat Tests** - Critical user feature
-2. **Add Family Tree Tests** - Core functionality
-3. **Improve Backend Coverage** - Edge cases
-4. **Set up CI/CD** - Automated test runs
-5. **Generate Coverage Reports** - Track progress
+1. **Generate Coverage Reports** - Run Go and Flutter coverage commands locally.
+2. **Update Success Metrics** - Replace historical percentages with measured results.
+3. **Maintain Focused Tests** - Run only the affected package/project while developing.
+4. **Run Full Validation Manually** - Use the full suite only at release checkpoints.
 
 ---
 
-**Status**: 🔴 In Progress  
-**Target Completion**: This Week  
+**Status**: 🟡 Test implementation complete; coverage measurement pending  
 **Owner**: Development Team

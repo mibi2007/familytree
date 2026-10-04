@@ -32,7 +32,7 @@ func (s *ChatService) SendMessage(ctx context.Context, familyID, content string,
 		FamilyID:  familyID,
 		SenderID:  user.UID,
 		Content:   content,
-		Type:      msgType,
+		Type:      domain.MessageTypeText,
 		CreatedAt: time.Now(),
 	}
 
@@ -43,6 +43,22 @@ func (s *ChatService) SendMessage(ctx context.Context, familyID, content string,
 	s.publisher.Publish(msg)
 
 	return msg, nil
+}
+
+func (s *ChatService) PublishAIReply(ctx context.Context, familyID, answer string) error {
+	msg := &domain.Message{
+		ID:        fmt.Sprintf("ai_%d", time.Now().UnixNano()),
+		FamilyID:  familyID,
+		SenderID:  "@family",
+		Content:   answer,
+		Type:      domain.MessageTypeAI,
+		CreatedAt: time.Now(),
+	}
+	if err := s.repo.SaveMessage(ctx, msg); err != nil {
+		return err
+	}
+	s.publisher.Publish(msg)
+	return nil
 }
 
 func (s *ChatService) ListMessages(ctx context.Context, familyID string, limit int, beforeID string) ([]*domain.Message, error) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_package/data/grpc/generated/proto/family/v1/family.pbgrpc.dart' as family_proto;
+import 'package:shared_package/data/grpc/generated/proto/family/v1/family.pbgrpc.dart'
+    as family_proto;
 import 'package:shared_package/shared_package.dart';
 import 'package:user_app/l10n/app_localizations.dart';
 
@@ -52,16 +53,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.appTitle),
-        actions: [IconButton(onPressed: () => authSignalsController.signOut(), icon: const Icon(Icons.logout))],
+        actions: [
+          IconButton(
+            onPressed: () => authSignalsController.signOut(),
+            icon: const Icon(Icons.logout),
+            tooltip: l10n.signOut,
+          ),
+        ],
       ),
       drawer: Drawer(
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(user?.displayName ?? 'User'),
+              accountName: Text(user?.displayName ?? l10n.defaultUser),
               accountEmail: Text(user?.email ?? ''),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: user?.photoURL != null ? NetworkImage(user!.photoURL!) : null,
+                backgroundImage: user?.photoURL != null
+                    ? NetworkImage(user!.photoURL!)
+                    : null,
                 child: user?.photoURL == null ? const Icon(Icons.person) : null,
               ),
             ),
@@ -70,13 +79,16 @@ class _HomePageState extends State<HomePage> {
               title: Text(l10n.settings),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
               },
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
+              title: Text(l10n.logout),
               onTap: () => authSignalsController.signOut(),
             ),
           ],
@@ -90,10 +102,15 @@ class _HomePageState extends State<HomePage> {
           return _FamilyList(families: families);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) =>
+            Center(child: Text(l10n.errorMessage(err.toString()))),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(context: context, builder: (context) => const CreateFamilyDialog()),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => const CreateFamilyDialog(),
+        ),
+        tooltip: l10n.createFamily,
         child: const Icon(Icons.add),
       ),
     );
@@ -112,32 +129,51 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.family_restroom, size: 100, color: Colors.blueGrey),
+            const Icon(
+              Icons.family_restroom,
+              size: 100,
+              color: Colors.blueGrey,
+            ),
             const SizedBox(height: 24),
             Text(
-              'Welcome, ${user?.displayName ?? 'User'}!',
+              AppLocalizations.of(context)!.welcomeUser(
+                user?.displayName ?? AppLocalizations.of(context)!.defaultUser,
+              ),
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'You are not part of any family tree yet. Start by creating your own family or join one via an invite link.',
+            Text(
+              AppLocalizations.of(context)!.noFamilyDescription,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
-              onPressed: () => showDialog(context: context, builder: (context) => const CreateFamilyDialog()),
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => const CreateFamilyDialog(),
+              ),
               icon: const Icon(Icons.add),
-              label: const Text('Create My Family'),
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
+              label: Text(AppLocalizations.of(context)!.createMyFamily),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+              ),
             ),
             const SizedBox(height: 12),
             OutlinedButton.icon(
               onPressed: () => _showJoinDialog(context),
               icon: const Icon(Icons.group_add),
-              label: const Text('Join via Invite Token'),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
+              label: Text(AppLocalizations.of(context)!.joinViaInviteToken),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+              ),
             ),
           ],
         ),
@@ -146,7 +182,10 @@ class _EmptyState extends StatelessWidget {
   }
 
   void _showJoinDialog(BuildContext context) {
-    showDialog(context: context, builder: (context) => const JoinFamilyDialog());
+    showDialog(
+      context: context,
+      builder: (context) => const JoinFamilyDialog(),
+    );
   }
 }
 
@@ -165,12 +204,15 @@ class _FamilyList extends StatelessWidget {
           child: ListTile(
             leading: const CircleAvatar(child: Icon(Icons.groups)),
             title: Text(family.name),
-            subtitle: Text('ID: ${family.id}'),
+            subtitle: Text(AppLocalizations.of(context)!.familyId(family.id)),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => FamilyTreeViewPage(familyId: family.id, familyName: family.name),
+                  builder: (context) => FamilyTreeViewPage(
+                    familyId: family.id,
+                    familyName: family.name,
+                  ),
                 ),
               );
             },

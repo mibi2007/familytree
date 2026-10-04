@@ -55,9 +55,7 @@ func (s *AuthHandler) GetAuthStatus(ctx context.Context, _ *emptypb.Empty) (*aut
 	if req != nil {
 		// If they already have SUPER_ADMIN role, we don't necessarily need to rely on the request entry
 		// but we still report the latest request status if it exists.
-		if v, ok := authv1.RequestStatus_value[string(req.Status)]; ok {
-			resp.PendingRequestStatus = authv1.RequestStatus(v)
-		}
+		resp.PendingRequestStatus = toPbRequestStatus(req.Status)
 	}
 
 	return resp, nil
@@ -269,16 +267,11 @@ func (s *AuthHandler) ReviewAdminRequest(ctx context.Context, req *authv1.Review
 }
 
 func toPbAdminReq(d *domain.SuperAdminRequest) *authv1.AdminAccessRequest {
-	var status authv1.RequestStatus
-	if v, ok := authv1.RequestStatus_value[string(d.Status)]; ok {
-		status = authv1.RequestStatus(v)
-	}
-
 	resp := &authv1.AdminAccessRequest{
 		Id:            d.ID,
 		UserId:        d.UserID,
 		RequestedRole: string(d.RequestedRole),
-		Status:        status,
+		Status:        toPbRequestStatus(d.Status),
 		Reason:        d.Reason,
 		ReviewedBy:    d.ReviewedBy,
 		UpdatedAt:     timestamppb.New(d.UpdatedAt),
@@ -295,6 +288,19 @@ func toPbAdminReq(d *domain.SuperAdminRequest) *authv1.AdminAccessRequest {
 	}
 
 	return resp
+}
+
+func toPbRequestStatus(value domain.RequestStatus) authv1.RequestStatus {
+	switch value {
+	case domain.RequestStatusPending:
+		return authv1.RequestStatus_REQUEST_STATUS_PENDING
+	case domain.RequestStatusApproved:
+		return authv1.RequestStatus_REQUEST_STATUS_APPROVED
+	case domain.RequestStatusRejected:
+		return authv1.RequestStatus_REQUEST_STATUS_REJECTED
+	default:
+		return authv1.RequestStatus_REQUEST_STATUS_UNSPECIFIED
+	}
 }
 
 func (s *AuthHandler) ListAdmins(ctx context.Context, req *authv1.ListAdminsRequest) (*authv1.ListAdminsResponse, error) {

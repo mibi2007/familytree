@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_package/data/grpc/generated/proto/auth/v1/auth.pb.dart' as auth_proto;
+import 'package:shared_package/data/grpc/generated/proto/auth/v1/auth.pb.dart'
+    as auth_proto;
 import 'package:shared_package/shared_package.dart';
 
 import 'providers/invite_provider.dart';
@@ -27,12 +28,18 @@ class InviteGeneratorDialog extends ConsumerWidget {
 
           if (inviteState.hasError) ...[
             const SizedBox(height: 16),
-            Text('Error: ${inviteState.error}', style: const TextStyle(color: Colors.red)),
+            Text(
+              'Error: ${inviteState.error}',
+              style: const TextStyle(color: Colors.red),
+            ),
           ],
 
           if (inviteState.value != null) ...[
             const SizedBox(height: 16),
-            const Text('Token Generated:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Token Generated:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.all(12),
@@ -43,34 +50,53 @@ class InviteGeneratorDialog extends ConsumerWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: SelectableText(
-                      inviteState.value!.token,
-                      style: const TextStyle(fontFamily: 'Courier', fontWeight: FontWeight.bold),
+                    child: Semantics(
+                      label: 'Admin invite token: ${inviteState.value!.token}',
+                      child: ExcludeSemantics(
+                        child: SelectableText(
+                          inviteState.value!.token,
+                          style: const TextStyle(
+                            fontFamily: 'Courier',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.copy),
+                    tooltip: 'Copy admin invite token',
                     onPressed: () {
-                      Clipboard.setData(ClipboardData(text: inviteState.value!.token));
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(const SnackBar(content: Text('Token copied to clipboard')));
+                      Clipboard.setData(
+                        ClipboardData(text: inviteState.value!.token),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Token copied to clipboard'),
+                        ),
+                      );
                     },
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              'Expires: ${inviteState.value!.expiresAt.toDateTime().toLocal()}',
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            Semantics(
+              label: 'Admin invite expiry',
+              child: Text(
+                'Expires: ${inviteState.value!.expiresAt.toDateTime().toLocal()}',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ),
           ],
         ],
       ),
       actions: [
         if (inviteState.value == null)
-          TextButton(onPressed: isProcessing ? null : () => Navigator.of(context).pop(), child: const Text('Cancel')),
+          TextButton(
+            onPressed: isProcessing ? null : () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
 
         if (inviteState.value == null)
           ElevatedButton(
@@ -78,13 +104,22 @@ class InviteGeneratorDialog extends ConsumerWidget {
                 ? null
                 : () => ref
                       .read(inviteControllerProvider.notifier)
-                      .generateToken(auth_proto.TokenPurpose.TOKEN_PURPOSE_ADMIN_ONBOARDING),
+                      .generateToken(
+                        auth_proto.TokenPurpose.TOKEN_PURPOSE_ADMIN_ONBOARDING,
+                      ),
             child: isProcessing
-                ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
                 : const Text('Generate'),
           )
         else
-          ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Done')),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Done'),
+          ),
       ],
     );
   }

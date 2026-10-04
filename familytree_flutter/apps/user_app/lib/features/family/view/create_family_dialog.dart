@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_package/shared_package.dart';
+import 'package:user_app/l10n/app_localizations.dart';
 
 class CreateFamilyDialog extends StatefulWidget {
   const CreateFamilyDialog({super.key});
@@ -37,7 +38,14 @@ class _CreateFamilyDialogState extends State<CreateFamilyDialog> {
       if (familySignalsController.error != null) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${familySignalsController.error}'), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(
+                  context,
+                )!.errorMessage(familySignalsController.error!),
+              ),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       } else {
@@ -46,7 +54,14 @@ class _CreateFamilyDialogState extends State<CreateFamilyDialog> {
     } catch (e) {
       // Should be caught by controller, but just in case
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.errorMessage(e.toString()),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -59,21 +74,32 @@ class _CreateFamilyDialogState extends State<CreateFamilyDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: const Text('Create New Family'),
+      title: Text(l10n.createNewFamily),
       content: TextField(
         controller: _nameController,
-        decoration: const InputDecoration(labelText: 'Family Name', hintText: 'e.g. The Smith Family'),
+        decoration: InputDecoration(
+          labelText: l10n.familyName,
+          hintText: l10n.familyNameHint,
+        ),
         enabled: !_isLoading,
         autofocus: true,
       ),
       actions: [
-        TextButton(onPressed: _isLoading ? null : () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        TextButton(
+          onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel),
+        ),
         ElevatedButton(
           onPressed: _isLoading ? null : _submit,
           child: _isLoading
-              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
-              : const Text('Create'),
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(l10n.create),
         ),
       ],
     );

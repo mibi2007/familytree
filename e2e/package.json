@@ -1,0 +1,27 @@
+{
+  "name": "familytree-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:browsers": "playwright install chromium",
+    "test": "bun run scripts/run-e2e.ts",
+    "test:user": "bun run scripts/run-e2e.ts --project=user-smoke --project=user-core --project=user-i18n --project=user-settings",
+    "test:user-smoke": "bun run scripts/run-e2e.ts --project=user-smoke",
+    "test:user-core": "bun run scripts/run-e2e.ts --project=user-core",
+    "test:user-i18n": "bun run scripts/run-e2e.ts --project=user-i18n",
+    "test:user-settings": "bun run scripts/run-e2e.ts --project=user-settings",
+    "test:admin": "bun run scripts/run-e2e.ts --project=admin-smoke --project=admin-core",
+    "test:admin-smoke": "bun run scripts/run-e2e.ts --project=admin-smoke",
+    "test:admin-core": "bun run scripts/run-e2e.ts --project=admin-core",
+    "test:direct": "playwright test",
+    "test:ui": "bun run scripts/run-e2e.ts --ui",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "@types/bun": "^1.3.12",
+    "@types/node": "^24.5.2",
+    "postgres": "^3.4.7",
+    "typescript": "^5.9.2"
+  }
+}

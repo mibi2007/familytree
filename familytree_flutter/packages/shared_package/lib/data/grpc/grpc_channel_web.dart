@@ -4,5 +4,7 @@ import '../config/app_config.dart';
 
 dynamic getGrpcChannel(AppConfig config) {
   final scheme = config.useSecureGrpc ? 'https' : 'http';
-  return GrpcWebClientChannel.xhr(Uri.parse('$scheme://${config.grpcHost}:${config.grpcPort}'));
+  return GrpcWebClientChannel.xhr(
+    Uri.parse('$scheme://${config.grpcHost}:${config.grpcPort}'),
+  );
 }

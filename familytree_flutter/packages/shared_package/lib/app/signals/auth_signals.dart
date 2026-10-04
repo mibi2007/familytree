@@ -7,7 +7,8 @@ import 'package:protobuf/well_known_types/google/protobuf/empty.pb.dart';
 import 'package:signals/signals.dart';
 
 import '../../data/grpc/generated/proto/auth/v1/auth.pbgrpc.dart' as auth_proto;
-import '../../data/grpc/generated/proto/common/v1/common.pb.dart' as common_proto;
+import '../../data/grpc/generated/proto/common/v1/common.pb.dart'
+    as common_proto;
 import '../../data/repositories/firebase_auth_repository.dart';
 import '../../data/signals/auth_repository_signal.dart';
 import '../../data/signals/grpc_client_signals.dart';
@@ -36,7 +37,11 @@ final authUserSignal = streamSignal<fb.User?>(() {
 ///
 /// Reactively updates when auth state changes.
 final isAuthenticatedSignal = computed<bool>(() {
-  return authUserSignal.value.map(data: (user) => user != null, loading: () => false, error: (_, _) => false);
+  return authUserSignal.value.map(
+    data: (user) => user != null,
+    loading: () => false,
+    error: (_, _) => false,
+  );
 });
 
 /// Current user signal (computed from auth stream)
@@ -44,52 +49,73 @@ final isAuthenticatedSignal = computed<bool>(() {
 /// Returns the current user or null.
 /// For full user profile, use `currentUserProfileSignal`.
 final currentUserSignal = computed<fb.User?>(() {
-  return authUserSignal.value.map(data: (user) => user, loading: () => null, error: (_, _) => null);
+  return authUserSignal.value.map(
+    data: (user) => user,
+    loading: () => null,
+    error: (_, _) => null,
+  );
 });
 
 /// Current user profile signal (full backend profile)
 ///
 /// Fetches the full user profile from backend.
 /// Equivalent to: `currentUser` provider
-final currentUserProfileSignal = futureSignal<common_proto.UserProfile?>(() async {
-  final user = authUserSignal.value.value;
-  if (user == null) return null;
+final currentUserProfileSignal = futureSignal<common_proto.UserProfile?>(
+  () async {
+    final user = authUserSignal.value.value;
+    if (user == null) return null;
 
-  try {
-    final client = authClientSignal.value;
-    return await client.getUserProfile(auth_proto.GetUserProfileRequest(userId: user.uid));
-  } catch (e) {
-    return null;
-  }
-});
+    try {
+      final client = authClientSignal.value;
+      return await client.getUserProfile(
+        auth_proto.GetUserProfileRequest(userId: user.uid),
+      );
+    } catch (e) {
+      return null;
+    }
+  },
+);
 
 /// Admin status signal - fetches from backend
 ///
 /// Checks if current user has admin role.
 /// Equivalent to: `adminStatusProvider`
-final adminStatusSignal = futureSignal<auth_proto.AuthStatusResponse?>(() async {
-  final user = authUserSignal.value.value;
-  if (user == null) {
-    return null;
-  }
+final adminStatusSignal = futureSignal<auth_proto.AuthStatusResponse?>(
+  () async {
+    final user = authUserSignal.value.value;
+    if (user == null) {
+      return null;
+    }
 
-  try {
-    final client = authClientSignal.value;
-    return await client.getAuthStatus(Empty());
-  } catch (e) {
-    return null;
-  }
-});
+    try {
+      final client = authClientSignal.value;
+      return await client.getAuthStatus(Empty());
+    } catch (e) {
+      return null;
+    }
+  },
+);
 
-/// User profile signal factory
-///
-/// Creates a future signal for fetching a specific user's profile.
-/// Equivalent to: `userProfileProvider(userId)`
+final _userProfileSignals = <String, FutureSignal<common_proto.UserProfile>>{};
+
+/// Returns one stable profile signal per user.
 FutureSignal<common_proto.UserProfile> getUserProfileSignal(String userId) {
-  return futureSignal(() async {
-    final client = authClientSignal.value;
-    return await client.getUserProfile(auth_proto.GetUserProfileRequest(userId: userId));
-  });
+  return _userProfileSignals.putIfAbsent(
+    userId,
+    () => futureSignal(() async {
+      final client = authClientSignal.value;
+      return await client.getUserProfile(
+        auth_proto.GetUserProfileRequest(userId: userId),
+      );
+    }),
+  );
+}
+
+void resetUserProfileSignals() {
+  for (final profileSignal in _userProfileSignals.values) {
+    profileSignal.dispose();
+  }
+  _userProfileSignals.clear();
 }
 
 // ... (other parts of file are fine or need updates inside controller)
@@ -282,7 +308,9 @@ class AuthSignalsController {
 
     try {
       final client = authClientSignal.value;
-      await client.requestAccountDeletion(auth_proto.RequestAccountDeletionRequest());
+      await client.requestAccountDeletion(
+        auth_proto.RequestAccountDeletionRequest(),
+      );
       // After requesting deletion, sign out the user
       await signOut();
     } catch (e) {
@@ -302,7 +330,9 @@ class AuthSignalsController {
 
       final client = authClientSignal.value;
       // Revoke our own role
-      await client.revokeAdminRole(auth_proto.RevokeAdminRoleRequest(userId: user.uid));
+      await client.revokeAdminRole(
+        auth_proto.RevokeAdminRoleRequest(userId: user.uid),
+      );
 
       // Force sign out immediately
       await signOut();

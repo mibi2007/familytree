@@ -9,8 +9,8 @@ Future<void> bootstrap({
   int grpcPort = 50051,
   bool useSecureGrpc = true,
   String appTitle = 'Family Chat',
-
   bool initFirebase = true,
+  Future<void> Function()? beforeRunApp,
 }) async {
   await sharedBootstrap(
     firebaseOptions: firebaseOptions,
@@ -19,6 +19,7 @@ Future<void> bootstrap({
     grpcPort: grpcPort,
     useSecureGrpc: useSecureGrpc,
     initFirebase: initFirebase,
+    beforeRunApp: beforeRunApp,
     builder: (config) => UserApp(title: appTitle),
   );
 }

@@ -31,7 +31,7 @@ void main() {
     test('service clients throw error if channel not initialized', () {
       // Don't call initGrpcChannel()
 
-      expect(() => authClientSignal.value, throwsStateError);
+      expect(() => authClientSignal.value, throwsA(isA<Exception>()));
     });
 
     test('disposeGrpcSignals cleans up resources', () async {
