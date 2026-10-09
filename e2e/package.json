@@ -15,7 +15,7 @@
     "test:admin-core": "bun run scripts/run-e2e.ts --project=admin-core",
     "test:direct": "playwright test",
     "test:ui": "bun run scripts/run-e2e.ts --ui",
-    "report": "playwright show-report"
+    "report": "playwright show-report playwright-report --host 127.0.0.1 --port 9324"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.1",

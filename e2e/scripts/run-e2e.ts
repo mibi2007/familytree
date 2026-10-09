@@ -72,12 +72,12 @@ async function waitForChildPort(child: Child, port: number, timeoutMs = 120_000)
   ]);
 }
 
-async function waitForHttp(url: string, timeoutMs = 120_000): Promise<void> {
+async function waitForHttp(url: string, timeoutMs = 120_000, minBodyBytes = 0): Promise<void> {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     try {
       const response = await fetch(url, { cache: 'no-store' });
-      if (response.ok) return;
+      if (response.ok && (minBodyBytes === 0 || (await response.arrayBuffer()).byteLength >= minBodyBytes)) return;
     } catch {
       // The server may have opened its port before the Flutter compiler is ready.
     }
@@ -407,7 +407,7 @@ async function main(): Promise<number> {
       path.join(rootDir, 'familytree_flutter', 'apps', 'user_app'),
     );
     appPorts.push(waitForChildPort(userApp, 8082, 180_000));
-    appAssets.push(waitForHttp('http://127.0.0.1:8082/main.dart.js', 180_000));
+    appAssets.push(waitForHttp('http://127.0.0.1:8082/main_module.bootstrap.js', 180_000, 10_000));
   }
   if (frontends.admin) {
     const adminApp = start(
@@ -427,7 +427,7 @@ async function main(): Promise<number> {
       path.join(rootDir, 'familytree_flutter', 'apps', 'admin_app'),
     );
     appPorts.push(waitForChildPort(adminApp, 8081, 180_000));
-    appAssets.push(waitForHttp('http://127.0.0.1:8081/main.dart.js', 180_000));
+    appAssets.push(waitForHttp('http://127.0.0.1:8081/main_module.bootstrap.js', 180_000, 10_000));
   }
   await Promise.all(appPorts);
   await Promise.all(appAssets);
