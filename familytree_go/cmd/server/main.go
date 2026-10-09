@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net"
+	"net/http"
 	"os"
 	"time"
 
@@ -32,8 +33,10 @@ import (
 	systemv1 "github.com/mibi2007/familytree/familytree_go/proto/system/v1"
 
 	"cloud.google.com/go/storage"
-
 	firebase "firebase.google.com/go/v4"
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
@@ -162,8 +165,28 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	log.Printf("Starting gRPC server on port %s", cfg.Port)
-	if err := s.Serve(lis); err != nil {
+	// Wrap the gRPC server so it also handles gRPC-Web (Flutter Web clients)
+	// Native gRPC clients (mobile/desktop) use h2c and hit s.ServeHTTP directly.
+	wrappedGrpc := grpcweb.WrapServer(s,
+		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
+		grpcweb.WithAllowedRequestHeaders([]string{"*"}),
+	)
+
+	httpHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if wrappedGrpc.IsGrpcWebRequest(r) || wrappedGrpc.IsAcceptableGrpcCorsRequest(r) {
+			wrappedGrpc.ServeHTTP(w, r)
+			return
+		}
+		// Native gRPC over HTTP/2 (h2c)
+		s.ServeHTTP(w, r)
+	})
+
+	httpServer := &http.Server{
+		Handler: h2c.NewHandler(httpHandler, &http2.Server{}),
+	}
+
+	log.Printf("Starting server (gRPC + gRPC-Web) on port %s", cfg.Port)
+	if err := httpServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

@@ -46,4 +46,22 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get general => 'Chung';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Mật khẩu';
+
+  @override
+  String get signIn => 'Đăng nhập';
+
+  @override
+  String get signUp => 'Đăng ký';
+
+  @override
+  String get signInWithGoogle => 'Đăng nhập bằng Google';
+
+  @override
+  String get dontHaveAccount => 'Chưa có tài khoản? Đăng ký ngay';
 }

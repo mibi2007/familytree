@@ -7,6 +7,9 @@ void main() async {
   await bootstrap(
     firebaseOptions: DefaultFirebaseOptionsDev.currentPlatform,
     environment: AppEnvironment.dev,
+    grpcHost: '35.197.150.183.nip.io',
+    grpcPort: 443,
+    useSecureGrpc: true,
     appTitle: 'Family Chat (DEV)',
   );
 }

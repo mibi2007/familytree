@@ -27,5 +27,17 @@
     "pushNotifications": "Push Notifications",
     "@pushNotifications": {},
     "general": "General",
-    "@general": {}
+    "@general": {},
+    "email": "Email",
+    "@email": {},
+    "password": "Password",
+    "@password": {},
+    "signIn": "Sign In",
+    "@signIn": {},
+    "signUp": "Sign Up",
+    "@signUp": {},
+    "signInWithGoogle": "Sign in with Google",
+    "@signInWithGoogle": {},
+    "dontHaveAccount": "Don't have an account? Sign Up",
+    "@dontHaveAccount": {}
 }

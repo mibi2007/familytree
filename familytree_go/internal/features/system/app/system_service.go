@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"database/sql"
+	"os"
 	"time"
 
 	"cloud.google.com/go/storage"
@@ -90,8 +91,9 @@ func (s *SystemService) checkGCS(ctx context.Context) *systemv1.ComponentStatus 
 		}
 	}
 
-	// Try to list buckets as a health check
-	_, err := s.gcs.Buckets(ctx, "familytree-db-all").Next()
+	// List buckets in the current project as a connectivity health check
+	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
+	_, err := s.gcs.Buckets(ctx, projectID).Next()
 	if err != nil && err.Error() != "no more items in iterator" {
 		return &systemv1.ComponentStatus{
 			Name:           "Google Cloud Storage",

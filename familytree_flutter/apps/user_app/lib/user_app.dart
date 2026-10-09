@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_package/shared_package.dart' hide ThemeMode;
 import 'package:user_app/l10n/app_localizations.dart';
-
-import 'features/auth/view/login_page.dart';
-import 'features/home/view/home_page.dart';
+import 'package:user_app/core/routing/app_router.dart';
 
 class UserApp extends StatelessWidget {
   final String title;
-  final Color seedColor;
-
-  const UserApp({super.key, this.title = 'Family Chat', this.seedColor = Colors.deepPurple});
+  const UserApp({super.key, this.title = 'Family Chat'});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +18,12 @@ class UserApp extends StatelessWidget {
       final language = languageSignal.value; // Access computed language signal
       final locale = _toLocale(language);
 
-      return MaterialApp(
+      return MaterialApp.router(
+        routerConfig: appRouter,
         debugShowCheckedModeBanner: false,
         title: title,
-        theme: ThemeData(useMaterial3: true, colorScheme: ColorScheme.fromSeed(seedColor: seedColor)),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: seedColor, brightness: Brightness.dark),
-        ),
+        theme: MaterialTheme(const TextTheme()).light(),
+        darkTheme: MaterialTheme(const TextTheme()).dark(),
         themeMode: themeMode,
         locale: locale,
         localizationsDelegates: const [
@@ -60,7 +54,6 @@ class UserApp extends StatelessWidget {
           // Requirement: "If no language detected, fallback to English"
           return const Locale('en');
         },
-        home: const _UserAuthWrapper(),
       );
     });
   }
@@ -75,31 +68,5 @@ class UserApp extends StatelessWidget {
       default:
         return null; // Let MaterialApp handle resolution via localeResolutionCallback
     }
-  }
-}
-
-class _UserAuthWrapper extends StatelessWidget {
-  const _UserAuthWrapper();
-
-  @override
-  Widget build(BuildContext context) {
-    return Watch((context) {
-      return authUserSignal.value.map(
-        data: (user) => user != null ? const HomePage() : const LoginPage(),
-        loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
-        error: (err, __) => Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                const SizedBox(height: 16),
-                Text('Auth Error: $err', textAlign: TextAlign.center),
-              ],
-            ),
-          ),
-        ),
-      );
-    });
   }
 }

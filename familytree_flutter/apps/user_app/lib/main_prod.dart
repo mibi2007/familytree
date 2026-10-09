@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:shared_package/shared_package.dart';
 
 import 'bootstrap.dart';
@@ -9,6 +8,5 @@ void main() async {
     firebaseOptions: DefaultFirebaseOptionsProd.currentPlatform,
     environment: AppEnvironment.prod,
     appTitle: 'Family Chat',
-    seedColor: Colors.teal,
   );
 }

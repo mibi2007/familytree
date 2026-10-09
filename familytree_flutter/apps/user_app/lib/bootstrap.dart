@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:shared_package/shared_package.dart';
 
 import 'user_app.dart';
@@ -10,7 +9,7 @@ Future<void> bootstrap({
   int grpcPort = 50051,
   bool useSecureGrpc = true,
   String appTitle = 'Family Chat',
-  Color seedColor = Colors.deepPurple,
+
   bool initFirebase = true,
 }) async {
   await sharedBootstrap(
@@ -20,6 +19,6 @@ Future<void> bootstrap({
     grpcPort: grpcPort,
     useSecureGrpc: useSecureGrpc,
     initFirebase: initFirebase,
-    builder: (config) => UserApp(title: appTitle, seedColor: seedColor),
+    builder: (config) => UserApp(title: appTitle),
   );
 }

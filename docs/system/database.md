@@ -4,25 +4,18 @@
 The project uses **PostgreSQL** as the primary relational database for persistent metadata, family structure, and user relationships.
 
 ## Deployment Architecture
-- **Infrastructure Strategy**: **Single Shared VM**.
-  - **Project ID**: `familytree-db-all` (GCP).
-  - **Machine Type**: `e2-medium` (or higher) to support concurrent workloads.
-- **Databases**:
-  - `family_tree_prod` (Owner: `prod_user`).
-  - `family_tree_dev` (Owner: `dev_user`).
-- **Access Management**:
-  - **Caddy** manages ingress for both environments.
-  - Connection strings distinguish environments via **Database Name** and **Credentials**.
+- **Infrastructure Strategy**: **PostgreSQL runs inside Docker Compose on each environment's VM** (co-located with the Go backend and Caddy).
+  - `dev` environment → `familytree-dev-server` VM (GCP project: `mibi-family-tree-dev`)
+  - `prod` environment → `familytree-prod-server` VM (GCP project: `mibi-family-tree-prod`)
+- **Database per environment**:
+  - Dev DB: configured via `familytree_go/.env.dev` (`POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`)
+  - Prod DB: configured via `familytree_go/.env.prod`
+- **No shared/central DB VM** — the old `familytree-db-all` GCP project is no longer used.
 
 ## Connection
-- **VM Name**: `familytree-db-main`
-- **Zone**: `asia-southeast1-b`
-- **External IP**: `34.2.28.4`
-- **Port**: `5432` (Postgres Standard)
-- **Services Connection**:
-    - **Host**: `34.2.28.4` (or Internal IP `10.148.0.2` if within same VPC)
-    - **Dev**: User `dev_user`, DB `family_tree_dev`
-    - **Prod**: User `prod_user`, DB `family_tree_prod`
+- Database is accessed internally within Docker Compose via the service name `db` on port `5432`.
+- Connection string format: `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable`
+- External access is **not exposed** — PostgreSQL port is not published to the host.
 
 ## Maintenance & Backups
 - **Strategy**: Automated and Manual triggers.

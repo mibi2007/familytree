@@ -39,3 +39,8 @@ build_old/
 # Qdrant MCP
 qdrant_mcp/
 qdrant_storage/
+
+# Deploy artifacts
+backend-deploy.zip
+*.zip
+*.tar.gz

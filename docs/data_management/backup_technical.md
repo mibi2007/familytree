@@ -27,9 +27,8 @@ sequenceDiagram
 - **Service Account**: Go Backend uses a GCP Service Account with `Storage Object Admin` role.
 - **Encryption**: GCS Server-Side Encryption (default) + Transfer via HTTPS.
 ### APIs & Prerequisites
-- **GCP Project**: `familytree-db-all` (Hosts VM + Backups).
+- **GCP Project**: Each environment uses its own GCP project (`GOOGLE_CLOUD_PROJECT` env var — e.g. `mibi-family-tree-dev` or `mibi-family-tree-prod`).
 - **Required APIs**:
-  - `compute.googleapis.com` (For VM Management).
   - `storage.googleapis.com` (Cloud Storage API for Backups).
 - **Buckets**:
   - `gs://familytree-backups-prod`

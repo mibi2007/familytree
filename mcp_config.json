@@ -1,13 +1,11 @@
 {
   "mcpServers": {
     "qdrant": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@qdrant/mcp-server"
-      ],
+      "command": "d:/Code/FamilyTree/source/qdrant_mcp/.venv/Scripts/mcp-server-qdrant.exe",
+      "args": [],
       "env": {
-        "QDRANT_URL": "http://localhost:6333"
+        "QDRANT_LOCAL_PATH": "d:/Code/FamilyTree/source/qdrant_storage",
+        "COLLECTION_NAME": "family_tree_data"
       }
     }
   }

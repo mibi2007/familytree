@@ -1,0 +1,17 @@
+{
+    # Global options
+    email admin@familytree.com
+}
+
+{$DOMAIN_NAME} {
+    # Proxy all traffic (including OPTIONS) to backend over h2c
+    handle {
+        reverse_proxy h2c://backend:50051 {
+            flush_interval -1
+        }
+    }
+
+    log {
+        output stdout
+    }
+}

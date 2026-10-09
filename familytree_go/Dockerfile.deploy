@@ -1,0 +1,16 @@
+FROM alpine:latest
+
+# Install runtime dependencies (certificates, timezone)
+RUN apk add --no-cache ca-certificates tzdata
+
+WORKDIR /app
+
+# Copy binary
+COPY server .
+RUN chmod +x server
+
+# Expose gRPC port
+EXPOSE 50051
+
+# Run the server
+CMD ["./server"]

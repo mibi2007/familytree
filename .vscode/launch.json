@@ -47,7 +47,7 @@
             "args": [
                 "-d",
                 "web-server",
-                "--web-port", 
+                "--web-port",
                 "8082"
             ]
         },

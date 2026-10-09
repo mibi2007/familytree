@@ -14,7 +14,7 @@ Enable users to customize their app experience, including language and theme pre
   - English.
   - **Logic**: If "System Language" is selected (or no user preference exists), the app will attempt to use the device's language if supported. If the device language is not supported, it will fallback to **English**.
 - **Notification Settings**:
-  - Opt-in/out for **Email** and **Device (Push)** notifications.
+  - Opt-in/out for **Email** and **Device (Push)** notifications. **(Authenticated users only)**
 - **Accessibility**:
   - Settings must be accessible **unauthenticated** (from the Login screen) and **authenticated** (from the main profile/drawer).
 - **Persistence & Synchronization**:

@@ -44,12 +44,12 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 32),
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder()),
+              decoration: InputDecoration(labelText: l10n.email, border: const OutlineInputBorder()),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
+              decoration: InputDecoration(labelText: l10n.password, border: const OutlineInputBorder()),
               obscureText: true,
             ),
             const SizedBox(height: 24),
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: isLoading
                       ? null
                       : () => authSignalsController.signInWithEmail(_emailController.text, _passwordController.text),
-                  child: isLoading ? const CircularProgressIndicator() : const Text('Sign In'),
+                  child: isLoading ? const CircularProgressIndicator() : Text(l10n.signIn),
                 ),
               );
             }),
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: isLoading
                     ? null
                     : () => authSignalsController.signUpWithEmail(_emailController.text, _passwordController.text),
-                child: const Text('Don\'t have an account? Sign Up'),
+                child: Text(l10n.dontHaveAccount),
               );
             }),
             const Divider(height: 48),
@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: OutlinedButton.icon(
                   onPressed: isLoading ? null : authSignalsController.signInWithGoogle,
                   icon: const Icon(Icons.login),
-                  label: const Text('Sign in with Google'),
+                  label: Text(l10n.signInWithGoogle),
                 ),
               );
             }),

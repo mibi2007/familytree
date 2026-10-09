@@ -14,6 +14,10 @@ Cross-platform development for User and Admin applications.
 - **Material 3**: Modern, responsive design system.
 - **Shared Package**: Centralized themes, widgets, and gRPC clients to ensure consistency.
 - **Multi-Flavor**: Isolated configurations for `dev`, `stg`, and `prod`.
+- **Design System Usage**:
+  - **Strict Rule**: Do NOT manually add new custom colors inside the code (e.g. `Colors.red`, `Color(0xFF...)`).
+  - **Requirement**: ALL colors must be accessed using the theme helper method (e.g. `Theme.of(context).colorScheme.primary` or `context.color.customColor`).
+  - **Read-Only**: The file `familytree_flutter/packages/shared_package/lib/view/theme.dart` is an export from design tools. Treat it as **READ-ONLY**.
 
 ## State Management Migration
 **Current Status**: Migrating from Riverpod to Signals (Phase 1-10)

@@ -1,0 +1,26 @@
+# Git
+.git
+.gitignore
+
+# Go
+main.exe
+server.exe
+*.test
+*.out
+vendor/
+
+# Environment
+.env*
+! .env.prod # Optional: Include specific env files if needed, but usually we mount them
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+docker-compose.yml

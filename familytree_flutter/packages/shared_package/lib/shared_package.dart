@@ -4,6 +4,7 @@ export 'package:firebase_database/firebase_database.dart';
 export 'package:firebase_storage/firebase_storage.dart' hide Task;
 export 'package:flutter_hooks/flutter_hooks.dart';
 export 'package:fpdart/fpdart.dart' hide State;
+export 'package:go_router/go_router.dart';
 export 'package:grpc/grpc.dart';
 // Export Core Libraries
 export 'package:hooks_riverpod/hooks_riverpod.dart';

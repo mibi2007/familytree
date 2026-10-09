@@ -1,4 +1,4 @@
-# Family Tree Chat - Project Roadmap
+﻿# Family Tree Chat - Project Roadmap
 
 ## Phase 0: Conceptualization & Design (DONE ✅)
 - [x] **Documentation System**: Established `docs/` for Auth, Family, Chat, AI, Admin, and Data.
@@ -133,7 +133,23 @@
     - [x] "Go to Home" Button after admin approval.
     - [x] Fixed navigation timing issues.
 
-## Phase 6: Advanced Features (PLANNED �)
+## Phase 6: Cloud Deployment (Backend) (IN PROGRESS 🚧)
+- [x] **Containerization**:
+    - [x] Create multi-stage `Dockerfile` and `docker-compose.yml`.
+    - [x] Verify local build.
+- [x] **Infrastructure (GCP)**:
+    - [x] Provision GCE VM (`e2-small` for Dev/Prod).
+    - [x] Setup Static IP and Firewall rules.
+    - [ ] Configure DNS for API domain.
+- [x] **Automation**:
+    - [x] Create `deploy_backend.sh` script (Robust local cross-compile).
+    - [ ] (Optional) Github Actions workflow.
+- [x] **SSL/HTTPS**:
+    - [x] Setup Caddy for automatic HTTPS & gRPC-Web.
+    - [x] Fix gRPC-Web Content-Type support.
+    - [ ] Verify secure connection from Frontend.
+
+## Phase 7: Advanced Features (PLANNED ï¿½)
 - [ ] **AI Assistant**: Gemini context integration via Genkit Go.
     - [ ] Set up Genkit Go framework.
     - [ ] Create AI service with context injection.

@@ -101,29 +101,30 @@ class SettingsPage extends StatelessWidget {
           },
         ),
 
-        const Divider(),
-
-        // Notifications Section
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Text(
-            l10n.notifications,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.bold,
+        // Notifications Section (Authenticated Users Only)
+        if (isAuthenticatedSignal.value) ...[
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Text(
+              l10n.notifications,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        SwitchListTile(
-          title: Text(l10n.emailNotifications),
-          value: settings.emailNotificationsEnabled,
-          onChanged: (val) => updateNotifications(email: val),
-        ),
-        SwitchListTile(
-          title: Text(l10n.pushNotifications),
-          value: settings.pushNotificationsEnabled,
-          onChanged: (val) => updateNotifications(push: val),
-        ),
+          SwitchListTile(
+            title: Text(l10n.emailNotifications),
+            value: settings.emailNotificationsEnabled,
+            onChanged: (val) => updateNotifications(email: val),
+          ),
+          SwitchListTile(
+            title: Text(l10n.pushNotifications),
+            value: settings.pushNotificationsEnabled,
+            onChanged: (val) => updateNotifications(push: val),
+          ),
+        ],
       ],
     );
   }
